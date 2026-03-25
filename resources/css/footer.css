@@ -1,0 +1,139 @@
+/* Footer Styles */
+
+/* Footer Container */
+.main-footer {
+    background-color: #343a40;
+    color: #ffffff;
+    padding: 40px 0 20px;
+    margin-top: auto;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Desktop Grid Layout */
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.footer-section h6 {
+    color: #ffc107;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.footer-section p {
+    margin: 5px 0;
+    line-height: 1.5;
+    font-size: 0.9rem;
+}
+
+/* Mobile Accordion Layout */
+.footer-accordion {
+    display: none;
+}
+
+.footer-accordion .accordion-item {
+    border-bottom: 1px solid #495057;
+}
+
+.footer-accordion .accordion-header {
+    margin: 0;
+}
+
+.footer-accordion .accordion-button {
+    background: none;
+    border: none;
+    color: #ffffff;
+    padding: 15px 0;
+    width: 100%;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.footer-accordion .accordion-button:hover {
+    color: #ffc107;
+}
+
+.footer-accordion .accordion-button.active {
+    color: #ffc107;
+}
+
+.footer-accordion .accordion-icon {
+    transition: transform 0.3s;
+}
+
+.footer-accordion .accordion-button.active .accordion-icon {
+    transform: rotate(180deg);
+}
+
+.footer-accordion .accordion-body {
+    display: none;
+    padding: 0 0 15px 0;
+}
+
+.footer-accordion .accordion-body.show {
+    display: block;
+}
+
+.footer-accordion .accordion-body p {
+    margin: 10px 0;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+/* Footer Bottom */
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #495057;
+    margin-top: 30px;
+}
+
+.footer-bottom p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #adb5bd;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .footer-grid {
+        display: none;
+    }
+
+    .footer-accordion {
+        display: block;
+    }
+
+    .main-footer {
+        padding: 20px 0 10px;
+    }
+
+    .footer-container {
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-accordion .accordion-button {
+        padding: 12px 0;
+        font-size: 0.9rem;
+    }
+
+    .footer-accordion .accordion-body p {
+        font-size: 0.8rem;
+    }
+}

@@ -1,0 +1,94 @@
+    .bg-navbar {
+        background-color: hsl(220, 49%, 51%) !important;
+    }
+
+    .navbar .nav-link {
+        color: #fff !important;
+    }
+
+    .navbar .nav-link:hover {
+        color: #00c0ef !important; /* optional hover color */
+    }
+
+    /* Desktop layout - expanded */
+    .navbar-nav {
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+    }
+
+    /* Mobile/Tablet layout - collapsed */
+    @media (max-width: 991.98px) {
+        .navbar {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        .navbar-nav {
+            flex-direction: column;
+            width: 100%;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .navbar-collapse {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 80vw;
+            height: 100vh;
+            background-color: hsl(220, 100%, 19%) !important;
+            z-index: 1050;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .navbar-collapse.show {
+            transform: translateX(0);
+        }
+
+        .nav-item {
+            text-align: left;
+            margin: 10px 0;
+            width: 100%;
+        }
+
+        .nav-item .nav-link {
+            padding: 15px 20px;
+            display: block;
+            width: 100%;
+        }
+
+        /* Overlay to close menu when clicking outside - only shown when nav is open */
+        .navbar-collapse::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 80vw;
+            width: 20vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1049; /* Lower than navbar-collapse but higher than content */
+            cursor: pointer;
+            visibility: hidden;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .navbar-collapse.show::before {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Ensure burger icon stays visible and clickable */
+        .navbar-toggler {
+            z-index: 1051;
+            position: relative;
+
+            border: none !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+    }
