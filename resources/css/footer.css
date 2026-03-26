@@ -1,139 +1,59 @@
-/* Footer Styles */
-
-/* Footer Container */
+/* Footer theme styling (Bootstrap handles responsive behavior) */
 .main-footer {
-    background-color: #343a40;
-    color: #ffffff;
-    padding: 40px 0 20px;
-    margin-top: auto;
+  background: linear-gradient(180deg, #003f8d 0%, #0b3b82 40%, #0e63b8 100%);
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  padding: 1.5rem 0;
 }
 
-.footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+.footer-title h3 {
+  color: #ffffff;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
-/* Desktop Grid Layout */
-.footer-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-    margin-bottom: 30px;
+.footer-title p {
+  color: #e6f2ff;
+  margin: 0;
 }
 
 .footer-section h6 {
-    color: #ffc107;
-    font-size: 1.1rem;
-    margin-bottom: 15px;
-    font-weight: bold;
+  color: #f8f9fa;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
 }
 
 .footer-section p {
-    margin: 5px 0;
-    line-height: 1.5;
-    font-size: 0.9rem;
+  color: #e6f2ff;
+  margin: 0.15rem 0;
+  font-size: 0.85rem;
 }
 
-/* Mobile Accordion Layout */
-.footer-accordion {
-    display: none;
-}
-
-.footer-accordion .accordion-item {
-    border-bottom: 1px solid #495057;
-}
-
-.footer-accordion .accordion-header {
-    margin: 0;
-}
-
-.footer-accordion .accordion-button {
-    background: none;
-    border: none;
-    color: #ffffff;
-    padding: 15px 0;
-    width: 100%;
-    text-align: left;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: color 0.3s;
-}
-
-.footer-accordion .accordion-button:hover {
-    color: #ffc107;
-}
-
-.footer-accordion .accordion-button.active {
-    color: #ffc107;
-}
-
-.footer-accordion .accordion-icon {
-    transition: transform 0.3s;
-}
-
-.footer-accordion .accordion-button.active .accordion-icon {
-    transform: rotate(180deg);
-}
-
-.footer-accordion .accordion-body {
-    display: none;
-    padding: 0 0 15px 0;
-}
-
-.footer-accordion .accordion-body.show {
-    display: block;
-}
-
-.footer-accordion .accordion-body p {
-    margin: 10px 0;
-    font-size: 0.85rem;
-    line-height: 1.4;
-}
-
-/* Footer Bottom */
 .footer-bottom {
-    text-align: center;
-    padding-top: 20px;
-    border-top: 1px solid #495057;
-    margin-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+}
+
+.footer-bottom h3,
+.footer-bottom p {
+  color: #ffffff;
+  margin: 0;
 }
 
 .footer-bottom p {
-    margin: 0;
-    font-size: 0.9rem;
-    color: #adb5bd;
+  font-size: 0.9rem;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .footer-grid {
-        display: none;
-    }
-
-    .footer-accordion {
-        display: block;
-    }
-
-    .main-footer {
-        padding: 20px 0 10px;
-    }
-
-    .footer-container {
-        padding: 0 15px;
-    }
+.footer-accordion .accordion-button {
+  background: #003f8d;
+  color: #ffffff;
+  font-weight: 700;
 }
 
-@media (max-width: 480px) {
-    .footer-accordion .accordion-button {
-        padding: 12px 0;
-        font-size: 0.9rem;
-    }
-
-    .footer-accordion .accordion-body p {
-        font-size: 0.8rem;
-    }
+.footer-accordion .accordion-body {
+  background: #ffffff;
+  color: #222;
 }

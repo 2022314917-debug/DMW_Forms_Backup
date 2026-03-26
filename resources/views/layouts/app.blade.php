@@ -73,168 +73,201 @@
 
 
 
-    <footer class="main-footer">
-        <div class="footer-container">
-            <!-- Desktop View: Grid Layout -->
-            <div class="footer-grid">
-                <!-- Division 1: About Us -->
-                <div class="footer-section">
-                    <h6>DMW RO3 Annex​</h6>
-                    <p>Government Express Service, 3rd Floor, Main Building, SM City Pampanga</p>
-                    <p>Contact Number: 0919-067-4019</p>
-                    <p>Email: processing.ro3@dmw.gov.ph​</p>
+    <footer class="main-footer" style="background: linear-gradient(180deg, #003f8d 0%, #0b3b82 40%, #0e63b8 100%);">
+        <!-- Desktop View -->
+        <div class="row d-none d-lg-block px-4 py-3" style="border-bottom: 3px solid rgba(255,255,255,0.3);">
+            <!-- Header Row with Logo and Title -->
+            <div class="col-auto d-flex align-items-start me-3">
+                <div class="col-auto">
+                    <img src="{{ asset('images/republika_ng_pilipinas.png') }}" alt="Republika ng Pilipinas Logo" class="img-fluid" style="max-width: 150px;">
                 </div>
-
-                <!-- Division 2: Quick Links -->
-                <div class="footer-section">
-                    <h6>OSSCO CLARK</h6>
-                    <p>One Stop Shop Government Center (Clark Polytechnic), Jose Abad Santos Ave. Clark Freepointgt Zone</p>
-                    <p>Contact Number: 0919-067-4043</p>
-                    <p>Email: processing.ro3@dmw.gov.ph​</p>
-                </div>
-
-                <!-- Division 3: Assistance -->
-                <div class="footer-section">
-                    <h6>Bataan Office​</h6>
-                    <p>2nd Floor 1BOSSCO The Bunker Bldg. San Jose Balanga City, Bataan</p>
-                    <p>Contact Number: 0991-650-0855</p>
-                    <p>Email: bataan@dmw.gov.ph</p>
-                </div>
-
-                <!-- Division 4: Resources -->
-                <div class="footer-section">
-                    <h6>Bulacan Office​</h6>
-                    <p>Rooms 301 & 302 PESO Bldg., Bulacan Capitol Compound, Malolos City, Bulacan​</p>
-                </div>
-
-                <!-- Division 5: Legal -->
-                <div class="footer-section">
-                    <h6>Nueva Ecija Office​</h6>
-                    <p>G/F Business Hub OSSCO Brgy. Singalat, Palayan City, Nueva Ecija</p>
-                    <p>Contact Number: 0967-634-1092</p>
-                    <p>Email: ossco_palayan@dmw.gov.ph​</p>
-                </div>
-
-                <!-- Division 6: Contact -->
-                <div class="footer-section">
-                    <h6>Tarlac Office​</h6>
-                    <p>Ground Floor Right Wing IT Training Center Bldg. IT Park 1, Tibag, Tarlac City​</p>
-                </div>
-
-                <!-- Division 7: Social Media -->
-                <div class="footer-section">
-                    <h6>Zambales Office​</h6>
-                    <p>Lot 374-C-3-C, Brgy. Palanginan, Iba, Zambales​</p>
+                <div class="col d-block d-sm-none">
+                    <h3 class="text-white fw-bold text-uppercase mb-0" style="font-size: 1rem;">
+                        Provincial Offices of DMW - RO3
+                    </h3>
                 </div>
             </div>
 
-            <!-- Mobile & Tablet View: Custom Accordion -->
-            <div class="footer-accordion">
-                <!-- Accordion Item 1 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button" type="button" onclick="toggleAccordion(this)">
-                            <span>DMW RO3 Annex​</span>
-                            <i class="fas fa-chevron-up accordion-icon"></i>
-                        </button>
-                    </h2>
-                    <div class="accordion-body">
-                        <p>Government Express Service, 3rd Floor, Main Building, SM City Pampanga</p>
-                        <p>Contact Number: 0919-067-4019</p>
-                        <p>Email: processing.ro3@dmw.gov.ph​</p>
+            <div class="col-">
+                <div class="row align-items-center">
+                    <div class="col-12 mb-2">
+                        <h3 class="text-white fw-bold text-uppercase mb-0" style="font-size: 1rem;">
+                            Provincial Offices of DMW - RO3
+                        </h3>
                     </div>
-                </div>
 
-                <!-- Accordion Item 2 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button" type="button" onclick="toggleAccordion(this)">
-                            <span>OSSCO CLARK​</span>
-                            <i class="fas fa-chevron-up accordion-icon"></i>
-                        </button>
-                    </h2>
-                    <div class="accordion-body">
-                        <p>One Stop Shop Government Center (Clark Polytechnic), Jose Abad Santos Ave. Clark Freepointgt Zone</p>
-                        <p>Contact Number: 0919-067-4043</p>
-                        <p>Email: processing.ro3@dmw.gov.ph​​</p>
-                    </div>
-                </div>
+                    <div class="col-12">
+                        <div class="row g-3">
+                            <div class="col-6 col-md-4 col-lg">
+                                <h6 class="text-white fw-bold text-uppercase mb-1" style="font-size: 0.75rem;">DMW RO3 Annex</h6>
+                                <p class="text-white mb-1" style="font-size: 0.65rem;">Government Express Service, 3rd Floor, Main Building, SM City Pampanga</p>
+                                <p class="text-white mb-1" style="font-size: 0.65rem;">Contact Number: 0919-067-4019</p>
+                                <p class="text-white mb-0" style="font-size: 0.65rem;">Email: processing.ro3@dmw.gov.ph</p>
+                            </div>
 
-                <!-- Accordion Item 3 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button" type="button" onclick="toggleAccordion(this)">
-                            <span>Bataan Office​</span>
-                            <i class="fas fa-chevron-up accordion-icon"></i>
-                        </button>
-                    </h2>
-                    <div class="accordion-body">
-                        <p>2nd Floor 1BOSSCO The Bunker Bldg. San Jose Balanga City, Bataan</p>
-                        <p>Contact Number: 0991-650-0855</p>
-                        <p>Email: bataan@dmw.gov.ph​​</p>
-                    </div>
-                </div>
+                            <div class="col-6 col-md-4 col-lg">
+                                <h6 class="text-white fw-bold text-uppercase mb-1" style="font-size: 0.75rem;">OSSCO CLARK</h6>
+                                <p class="text-white mb-1" style="font-size: 0.65rem;">One Stop Shop Government Center (Clark Polytechnic), Jose Abad Santos Ave.</p>
+                                <p class="text-white mb-1" style="font-size: 0.65rem;">Contact Number: 0919-067-4043</p>
+                                <p class="text-white mb-0" style="font-size: 0.65rem;">Email: processing.ro3@dmw.gov.ph</p>
+                            </div>
 
-                <!-- Accordion Item 4 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button" type="button" onclick="toggleAccordion(this)">
-                            <span>Bulacan Office​</span>
-                            <i class="fas fa-chevron-up accordion-icon"></i>
-                        </button>
-                    </h2>
-                    <div class="accordion-body">
-                        <p>Rooms 301 & 302 PESO Bldg., Bulacan Capitol Compound, Malolos City, Bulacan​</p>
-                    </div>
-                </div>
+                            <div class="col-6 col-md-4 col-lg">
+                                <h6 class="text-white fw-bold text-uppercase mb-1" style="font-size: 0.75rem;">Bataan Office</h6>
+                                <p class="text-white mb-1" style="font-size: 0.65rem;">2nd Floor 1BOSSCO The Bunker Bldg. San Jose Balanga City</p>
+                                <p class="text-white mb-1" style="font-size: 0.65rem;">Contact Number: 0991-650-0855</p>
+                                <p class="text-white mb-0" style="font-size: 0.65rem;">Email: bataan@dmw.gov.ph</p>
+                            </div>
 
-                <!-- Accordion Item 5 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button" type="button" onclick="toggleAccordion(this)">
-                            <span>Nueva Ecija Office​</span>
-                            <i class="fas fa-chevron-up accordion-icon"></i>
-                        </button>
-                    </h2>
-                    <div class="accordion-body">
-                        <p>G/F Business Hub OSSCO Brgy. Singalat, Palayan City, Nueva Ecija</p>
-                        <p>Contact Number: 0967-634-1092</p>
-                        <p>Email: ossco_palayan@dmw.gov.ph​​​</p>
-                    </div>
-                </div>
+                            <div class="col-6 col-md-4 col-lg">
+                                <h6 class="text-white fw-bold text-uppercase mb-1" style="font-size: 0.75rem;">Bulacan Office</h6>
+                                <p class="text-white mb-0" style="font-size: 0.65rem;">Rooms 301 & 302 PESO Bldg., Bulacan Capitol Compound</p>
+                            </div>
 
-                <!-- Accordion Item 6 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button" type="button" onclick="toggleAccordion(this)">
-                            <span>Tarlac Office​</span>
-                            <i class="fas fa-chevron-up accordion-icon"></i>
-                        </button>
-                    </h2>
-                    <div class="accordion-body">
-                        <p>Ground Floor Right Wing IT Training Center Bldg. IT Park 1, Tibag, Tarlac City​</p>
-                    </div>
-                </div>
+                            <div class="col-6 col-md-4 col-lg">
+                                <h6 class="text-white fw-bold text-uppercase mb-1" style="font-size: 0.75rem;">Nueva Ecija Office</h6>
+                                <p class="text-white mb-1" style="font-size: 0.65rem;">G/F Business Hub OSSCO Brgy. Singalat, Palayan City</p>
+                                <p class="text-white mb-1" style="font-size: 0.65rem;">Contact Number: 0967-634-1092</p>
+                                <p class="text-white mb-0" style="font-size: 0.65rem;">Email: ossco_palayan@dmw.gov.ph</p>
+                            </div>
 
-                <!-- Accordion Item 7 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button" type="button" onclick="toggleAccordion(this)">
-                            <span>Zambales Office​</span>
-                            <i class="fas fa-chevron-up accordion-icon"></i>
-                        </button>
-                    </h2>
-                    <div class="accordion-body">
-                        <p>Lot 374-C-3-C, Brgy. Palanginan, Iba, Zambales​</p>
+                            <div class="col-6 col-md-4 col-lg">
+                                <h6 class="text-white fw-bold text-uppercase mb-1" style="font-size: 0.75rem;">Tarlac Office</h6>
+                                <p class="text-white mb-0" style="font-size: 0.65rem;">Ground Floor Right Wing IT Training Center Bldg.</p>
+                            </div>
+
+                            <div class="col-6 col-md-4 col-lg">
+                                <h6 class="text-white fw-bold text-uppercase mb-1" style="font-size: 0.75rem;">Zambales Office</h6>
+                                <p class="text-white mb-0" style="font-size: 0.65rem;">Lot 374-C-3-C, Brgy. Palanginan, Iba</p>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Footer Bottom -->
-            <div class="footer-bottom">
-                <p>&copy; 2026 Department of Migrant Workers. All rights reserved.</p>
+            <!-- Offices Grid - 7 columns -->
+            
+        </div>
+
+        <!-- Mobile/Tablet View - Accordion -->
+        <div class="d-lg-none px-3 py-3">
+            <div class="row align-items-start mb-3">
+                <div class="col-auto">
+                    <img src="{{ asset('images/republika_ng_pilipinas.png') }}" alt="Republika ng Pilipinas Logo" class="img-fluid" style="max-width: 120px;">
+                </div>
+                <div class="col d-block d-sm-none">
+                    <h3 class="text-white fw-bold text-uppercase mb-0" style="font-size: 0.9rem;">Provincial Offices of DMW - RO3</h3>
+                </div>
+            </div>
+
+            <div class="accordion accordion-flush" id="footerAccordion">
+                <div class="accordion-item" style="border: 1px solid rgba(255,255,255,0.2); margin-bottom: 0.5rem; border-radius: 0.25rem; background-color: #0b357e;">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed text-white fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
+                            DMW RO3 Annex​
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#footerAccordion">
+                        <div class="accordion-body text-dark bg-white p-2" style="font-size: 0.7rem;">
+                            <p class="mb-1">Government Express Service, 3rd Floor, Main Building, SM City Pampanga</p>
+                            <p class="mb-1">Contact Number: 0919-067-4019</p>
+                            <p class="mb-0">Email: processing.ro3@dmw.gov.ph</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item" style="border: 1px solid rgba(255,255,255,0.2); margin-bottom: 0.5rem; border-radius: 0.25rem; background-color: #0b357e;">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed text-white fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
+                            OSSCO CLARK​
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#footerAccordion">
+                        <div class="accordion-body text-dark bg-white p-2" style="font-size: 0.7rem;">
+                            <p class="mb-1">One Stop Shop Government Center (Clark Polytechnic), Jose Abad Santos Ave. Clark Freeport Zone</p>
+                            <p class="mb-1">Contact Number: 0919-067-4043</p>
+                            <p class="mb-0">Email: processing.ro3@dmw.gov.ph</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item" style="border: 1px solid rgba(255,255,255,0.2); margin-bottom: 0.5rem; border-radius: 0.25rem; background-color: #0b357e;">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed text-white fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
+                            Bataan Office​
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#footerAccordion">
+                        <div class="accordion-body text-dark bg-white p-2" style="font-size: 0.7rem;">
+                            <p class="mb-1">2nd Floor 1BOSSCO The Bunker Bldg. San Jose Balanga City, Bataan</p>
+                            <p class="mb-1">Contact Number: 0991-650-0855</p>
+                            <p class="mb-0">Email: bataan@dmw.gov.ph</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item" style="border: 1px solid rgba(255,255,255,0.2); margin-bottom: 0.5rem; border-radius: 0.25rem; background-color: #0b357e;">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed text-white fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
+                            Bulacan Office​
+                        </button>
+                    </h2>
+                    <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#footerAccordion">
+                        <div class="accordion-body text-dark bg-white p-2" style="font-size: 0.7rem;">
+                            <p class="mb-0">Rooms 301 & 302 PESO Bldg., Bulacan Capitol Compound, Malolos City, Bulacan</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item" style="border: 1px solid rgba(255,255,255,0.2); margin-bottom: 0.5rem; border-radius: 0.25rem; background-color: #0b357e;">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed text-white fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
+                            Nueva Ecija Office​
+                        </button>
+                    </h2>
+                    <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#footerAccordion">
+                        <div class="accordion-body text-dark bg-white p-2" style="font-size: 0.7rem;">
+                            <p class="mb-1">G/F Business Hub OSSCO Brgy. Singalat, Palayan City, Nueva Ecija</p>
+                            <p class="mb-1">Contact Number: 0967-634-1092</p>
+                            <p class="mb-0">Email: ossco_palayan@dmw.gov.ph</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item" style="border: 1px solid rgba(255,255,255,0.2); margin-bottom: 0.5rem; border-radius: 0.25rem; background-color: #0b357e;">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed text-white fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
+                            Tarlac Office​
+                        </button>
+                    </h2>
+                    <div id="collapseSix" class="accordion-collapse collapse" data-bs-parent="#footerAccordion">
+                        <div class="accordion-body text-dark bg-white p-2" style="font-size: 0.7rem;">
+                            <p class="mb-0">Ground Floor Right Wing IT Training Center Bldg. IT Park 1, Tibag, Tarlac City</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item" style="border: 1px solid rgba(255,255,255,0.2); margin-bottom: 0.5rem; border-radius: 0.25rem; background-color: #0b357e;">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed text-white fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
+                            Zambales Office​
+                        </button>
+                    </h2>
+                    <div id="collapseSeven" class="accordion-collapse collapse" data-bs-parent="#footerAccordion">
+                        <div class="accordion-body text-dark bg-white p-2" style="font-size: 0.7rem;">
+                            <p class="mb-0">Lot 374-C-3-C, Brgy. Palanginan, Iba, Zambales</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
+
+    </footer>
+</div>
+
+            
+
+        <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <h3>Department of Migrant Workers (DMW) Regional No. 3</h3>
+                <p>215 MacArthur Hwy, Barangay Dolores, San Fernando, 2000 Pampanga, Philippines</p>
+            </div>
     </footer>
 
 </div>
