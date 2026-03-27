@@ -381,13 +381,14 @@
         </div>
 
         <!-- Submit Button -->
-        <div class="d-grid gap-2">
-          <button type="submit" class="btn btn-success btn-lg fw-bold" style="background-color: #2d7a2d; border-color: #2d7a2d;">Submit</button>
-        </div>
+
       </form>
+      
     </div>
 
-    
+    <div class="d-grid gap-2">
+          <button type="submit" class="btn btn-success btn-lg fw-bold" style="background-color: #2d7a2d; border-color: #2d7a2d;">Submit</button>
+        </div>
   </div>
 
   <!-- Bootstrap JS -->
@@ -492,16 +493,40 @@
       resetSelect(municipalitySelect, 'City / Municipality');
       resetSelect(barangaySelect, 'Barangay');
 
+      const staticRegion3Provinces = [
+        { code: '030800000', name: 'Bataan' },
+        { code: '031400000', name: 'Bulacan' },
+        { code: '034900000', name: 'Nueva Ecija' },
+        { code: '035400000', name: 'Pampanga' },
+        { code: '036900000', name: 'Tarlac' },
+        { code: '037100000', name: 'Zambales' },
+        { code: '037700000', name: 'Aurora' }
+      ];
+
       fetch('https://psgc.gitlab.io/api/provinces/')
         .then(response => response.json())
         .then(data => {
-          populateSelect(provinceSelect, data, 'code', 'name');
-          provinceSelect.insertAdjacentHTML('afterbegin', '<option selected disabled>Province</option>');
-          provinceSelect.value = '';
+          const provinceData = Array.isArray(data)
+            ? data
+            : (Array.isArray(data.value) ? data.value : []);
+
+          const region3Provinces = provinceData.filter(p => {
+            if (!p || !p.regionCode) return false;
+            // Accept exact Region 3 code or prefix style
+            return p.regionCode === '030000000' || String(p.regionCode).startsWith('030');
+          });
+
+          if (!region3Provinces.length) {
+            console.warn('PSGC returned no Region 3 provinces, using static fallback');
+            populateSelect(provinceSelect, staticRegion3Provinces, 'code', 'name');
+            return;
+          }
+
+          populateSelect(provinceSelect, region3Provinces, 'code', 'name');
         })
         .catch(error => {
           console.error('Error fetching provinces:', error);
-          resetSelect(provinceSelect, 'Province');
+          populateSelect(provinceSelect, staticRegion3Provinces, 'code', 'name');
         });
 
       provinceSelect.addEventListener('change', function() {
