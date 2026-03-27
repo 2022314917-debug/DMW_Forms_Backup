@@ -190,7 +190,7 @@
           </div>
           <div class="col-6 col-md-3">
             <label class="form-label">Bansa</label>
-            <select class="form-select">
+            <select class="form-select" id="country">
               <option selected disabled>Select</option>
             </select>
           </div>
@@ -472,6 +472,7 @@
       const provinceSelect = document.getElementById('province');
       const municipalitySelect = document.getElementById('municipality');
       const barangaySelect = document.getElementById('barangay');
+      const countrySelect = document.getElementById('country');
 
       function resetSelect(selectEl, text) {
         selectEl.innerHTML = `<option selected disabled>${text}</option>`;
@@ -479,7 +480,15 @@
       }
 
       function populateSelect(selectEl, items, valueKey, labelKey) {
-        resetSelect(selectEl, selectEl === provinceSelect ? 'Province' : selectEl === municipalitySelect ? 'City / Municipality' : 'Barangay');
+        const defaultText = selectEl === provinceSelect
+          ? 'Province'
+          : selectEl === municipalitySelect
+          ? 'City / Municipality'
+          : selectEl === barangaySelect
+          ? 'Barangay'
+          : 'Select';
+
+        resetSelect(selectEl, defaultText);
         items.forEach(item => {
           const option = document.createElement('option');
           option.value = item[valueKey];
@@ -492,6 +501,69 @@
       resetSelect(provinceSelect, 'Loading provinces...');
       resetSelect(municipalitySelect, 'City / Municipality');
       resetSelect(barangaySelect, 'Barangay');
+      resetSelect(countrySelect, 'Loading countries...');
+
+      // Load country list from first.org (free, no payment, good CORS)
+    //   console.log('Loading countries from first.org API...');
+      fetch('https://api.first.org/data/v1/countries?limit=250')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Country API status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (!data || !data.data) {
+            throw new Error('No countries found');
+          }
+
+          const countries = Object.entries(data.data)
+            .map(([code, value]) => {
+              let name = (value.country || '').trim();
+
+              // Normalize to remove parentheses/annotations and reduce to base country name
+              // Examples: "Congo (the Democratic Republic of the)" => "Congo"
+              //           "the Bahamas" => "Bahamas"
+              //           "(French Southern Territories)" => "French Southern Territories"
+              name = name.replace(/\s*\(.*?\)/g, '').trim();
+              name = name.replace(/^the\s+/i, '').trim();
+              name = name.replace(/\s{2,}/g, ' ').trim();
+
+              // If parentheses stripped to nothing, fallback to values from name fields
+              if (!name && value.name && typeof value.name === 'object') {
+                name = (value.name.common || value.name.official || '').trim();
+              }
+
+              return { code: code.toUpperCase(), name };
+            })
+            .filter(c => c.code && c.name)
+            .reduce((acc, item) => {
+              // dedupe by normalized name
+              const found = acc.find(i => i.name.toLowerCase() === item.name.toLowerCase());
+              if (!found) acc.push(item);
+              return acc;
+            }, [])
+            .sort((a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' }));
+
+          if (!countries.length) {
+            throw new Error('No selectable countries found after mapping');
+          }
+
+        //   console.log(`Loaded ${countries.length} countries`);
+          populateSelect(countrySelect, countries, 'code', 'name');
+        })
+        .catch(error => {
+          console.error('Error fetching countries:', error);
+          const fallbackCountries = [
+            { code: 'PH', name: 'Philippines' },
+            { code: 'US', name: 'United States' },
+            { code: 'CA', name: 'Canada' },
+            { code: 'GB', name: 'United Kingdom' },
+            { code: 'AU', name: 'Australia' }
+          ];
+          console.warn('Using fallback country list');
+          populateSelect(countrySelect, fallbackCountries, 'code', 'name');
+        });
 
       const staticRegion3Provinces = [
         { code: '030800000', name: 'Bataan' },
