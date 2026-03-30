@@ -495,9 +495,9 @@
         function resetSelect(selectEl, text) {
         selectEl.innerHTML = `<option selected disabled>${text}</option>`;
         selectEl.disabled = true;
-        }
+      }
 
-        function populateSelect(selectEl, items, valueKey, labelKey) {
+      function populateSelect(selectEl, items, valueKey, labelKey) {
         const defaultText = selectEl === provinceSelect
             ? 'Province'
             : selectEl === municipalitySelect
@@ -508,10 +508,10 @@
 
         resetSelect(selectEl, defaultText);
         items.forEach(item => {
-            const option = document.createElement('option');
-            option.value = item[valueKey];
-            option.textContent = item[labelKey];
-            selectEl.appendChild(option);
+          const option = document.createElement('option');
+          option.value = item[valueKey];
+          option.textContent = item[labelKey];
+          selectEl.appendChild(option);
         });
         selectEl.disabled = false;
         }
