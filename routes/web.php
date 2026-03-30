@@ -16,6 +16,10 @@ Route::get('forms', [\App\Http\Controllers\FormController::class, 'index'])->nam
 Route::get('forms/general', [\App\Http\Controllers\FormController::class, 'generalForm'])->name('forms.general');
 Route::post('forms/general', [\App\Http\Controllers\FormController::class, 'storeGeneralForm'])->name('forms.general.store');
 
+Route::get('forms/aksyon', [\App\Http\Controllers\FormController::class, 'aksyonForm'])->name('forms.aksyon');
+
+Route::get('forms/sena', [\App\Http\Controllers\FormController::class, 'senaForm'])->name('forms.sena');
+
 Route::middleware('auth')->group(function () {
     Route::view('about', 'about')->name('about');
 
