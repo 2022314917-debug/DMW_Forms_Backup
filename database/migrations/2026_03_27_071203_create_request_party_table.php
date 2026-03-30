@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('party_ename')->nullable();
             $table->string('party_mname')->nullable();
             $table->string('party_email');
+            $table->string('party_phone');
             $table->date('party_bday');
             $table->string('party_gender');
             $table->string('party_relationship');

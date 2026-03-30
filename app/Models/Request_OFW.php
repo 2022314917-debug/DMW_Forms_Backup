@@ -18,7 +18,13 @@ class Request_OFW extends Model
         'ofw_country',
         'ofw_job',
         'ofw_employer',
+        'ofw_agency',
         'bday',
         'gender'
     ];
+
+    public function request()
+    {
+        return $this->belongsTo(Request::class);
+    }
 }

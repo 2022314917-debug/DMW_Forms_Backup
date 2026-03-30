@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('ofw_country');
             $table->string('ofw_job');
             $table->string('ofw_employer');
+            $table->string('ofw_agency');
             $table->date('bday');
             $table->string('gender');
             $table->timestamps();

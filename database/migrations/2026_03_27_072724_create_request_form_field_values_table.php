@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('request_form_field_values', function (Blueprint $table) {
             $table->id();
             $table->foreignId('request_form_entry_id')
-                ->constrained('request')
+                ->constrained('request_form_entries')
                 ->cascadeOnDelete();
             $table->foreignId('request_form_field_id')
                 ->constrained('request_form_field')

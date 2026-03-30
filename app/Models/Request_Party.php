@@ -15,9 +15,19 @@ class Request_Party extends Model
         'party_ename',
         'party_mname',
         'party_email',
+        'party_phone',
         'party_bday',
         'party_gender',
         'party_relationship'
     ];
 
+    public function request()
+    {
+        return $this->belongsTo(Request::class);
+    }
+
+    public function address()
+    {
+        return $this->hasOne(Request_Party_Address::class);
+    }
 }
