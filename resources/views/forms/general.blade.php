@@ -479,7 +479,16 @@
         selectEl.disabled = true;
       }
 
+      function sortItems(items, labelKey) {
+        return [...items].sort((a, b) => {
+          const aVal = String(a[labelKey] || '').toLowerCase();
+          const bVal = String(b[labelKey] || '').toLowerCase();
+          return aVal.localeCompare(bVal, undefined, { sensitivity: 'base' });
+        });
+      }
+
       function populateSelect(selectEl, items, valueKey, labelKey) {
+        const sortedItems = sortItems(items, labelKey);
         const defaultText = selectEl === provinceSelect
           ? 'Province'
           : selectEl === municipalitySelect
@@ -489,7 +498,7 @@
           : 'Select';
 
         resetSelect(selectEl, defaultText);
-        items.forEach(item => {
+        sortedItems.forEach(item => {
           const option = document.createElement('option');
           option.value = item[valueKey];
           option.textContent = item[labelKey];

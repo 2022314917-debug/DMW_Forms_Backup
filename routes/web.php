@@ -23,5 +23,13 @@ Route::middleware('auth')->group(function () {
 
     Route::get('forms', [\App\Http\Controllers\FormController::class, 'index'])->name('forms.index');
     Route::get('forms/general', [\App\Http\Controllers\FormController::class, 'generalForm'])->name('forms.general');
+    Route::get('forms/processing', [\App\Http\Controllers\FormController::class, 'processingForm'])->name('forms.processing');
+    Route::post('forms/processing', [\App\Http\Controllers\FormController::class, 'storeProcessing'])->name('forms.processing.store');
+
+    Route::get('forms/sena', [\App\Http\Controllers\FormController::class, 'senaForm'])->name('forms.sena');
+    Route::post('forms/sena', [\App\Http\Controllers\FormController::class, 'storeSena'])->name('forms.sena.store');
+
+    Route::get('forms/aksyon', [\App\Http\Controllers\FormController::class, 'aksyonForm'])->name('forms.aksyon');
+    Route::post('forms/aksyon', [\App\Http\Controllers\FormController::class, 'storeAksyon'])->name('forms.aksyon.store');
 
 });
