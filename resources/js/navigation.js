@@ -4,7 +4,7 @@ $(document).ready(function() {
     var $navbar = $('.navbar');
 
     function updateCollapsePosition() {
-        if (window.matchMedia('(max-width: 991.98px)').matches) {
+        if (window.matchMedia('(max-width: 767.98px)').matches) {
             var headerHeight = $header.outerHeight() || 0;
             var navbarHeight = $navbar.outerHeight() || 0;
             var totalTop = headerHeight + navbarHeight;

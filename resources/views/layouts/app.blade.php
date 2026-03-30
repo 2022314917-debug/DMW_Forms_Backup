@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- AdminLTE CSS -->
-    <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}">
+    <!-- <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}"> -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 
     <!-- Bootstrap Icons -->
@@ -150,17 +150,17 @@
 
                             <div class="col-6 col-md-3 col-lg">
                                 <div class="w-100 d-flex flex-column h-100 dmw-info">
-                                    <h6 class="text-white fw-bold text-uppercase mb-1" style="font-size: 0.75rem;">Bulacan Office</h6>
-                                    <p class="text-white mb-0" style="font-size: 0.65rem;">Rooms 301 & 302 PESO Bldg., Bulacan Capitol Compound</p>
+                                    <h6 class="text-white fw-bold text-uppercase mb-1" style="font-size: 0.75rem;">Nueva Ecija Office</h6>
+                                    <p class="text-white mb-1" style="font-size: 0.65rem;">G/F Business Hub OSSCO Brgy. Singalat, Palayan City</p>
+                                    <p class="text-white mb-1" style="font-size: 0.65rem;">Contact Number: 0967-634-1092</p>
+                                    <p class="text-white mb-0" style="font-size: 0.65rem;">Email: ossco_palayan@dmw.gov.ph</p>
                                 </div>
                             </div>
 
                             <div class="col-6 col-md-3 col-lg">
                                 <div class="w-100 d-flex flex-column h-100 dmw-info">
-                                    <h6 class="text-white fw-bold text-uppercase mb-1" style="font-size: 0.75rem;">Nueva Ecija Office</h6>
-                                    <p class="text-white mb-1" style="font-size: 0.65rem;">G/F Business Hub OSSCO Brgy. Singalat, Palayan City</p>
-                                    <p class="text-white mb-1" style="font-size: 0.65rem;">Contact Number: 0967-634-1092</p>
-                                    <p class="text-white mb-0" style="font-size: 0.65rem;">Email: ossco_palayan@dmw.gov.ph</p>
+                                    <h6 class="text-white fw-bold text-uppercase mb-1" style="font-size: 0.75rem;">Bulacan Office</h6>
+                                    <p class="text-white mb-0" style="font-size: 0.65rem;">Rooms 301 & 302 PESO Bldg., Bulacan Capitol Compound</p>
                                 </div>
                             </div>
 
@@ -246,18 +246,7 @@
                     </div>
                 </div>
                 <div class="accordion-item" style="border: 1px solid rgba(255,255,255,0.2); margin-bottom: 0.5rem; border-radius: 0.25rem; background-color: #0b357e;">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed text-white fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
-                            Bulacan Office​
-                        </button>
-                    </h2>
-                    <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#footerAccordion">
-                        <div class="accordion-body text-dark bg-white p-2" style="font-size: 0.7rem;">
-                            <p class="mb-0">Rooms 301 & 302 PESO Bldg., Bulacan Capitol Compound, Malolos City, Bulacan</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item" style="border: 1px solid rgba(255,255,255,0.2); margin-bottom: 0.5rem; border-radius: 0.25rem; background-color: #0b357e;">
+
                     <h2 class="accordion-header">
                         <button class="accordion-button collapsed text-white fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
                             Nueva Ecija Office​
@@ -268,6 +257,18 @@
                             <p class="mb-1">G/F Business Hub OSSCO Brgy. Singalat, Palayan City, Nueva Ecija</p>
                             <p class="mb-1">Contact Number: 0967-634-1092</p>
                             <p class="mb-0">Email: ossco_palayan@dmw.gov.ph</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item" style="border: 1px solid rgba(255,255,255,0.2); margin-bottom: 0.5rem; border-radius: 0.25rem; background-color: #0b357e;">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed text-white fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
+                            Bulacan Office​
+                        </button>
+                    </h2>
+                    <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#footerAccordion">
+                        <div class="accordion-body text-dark bg-white p-2" style="font-size: 0.7rem;">
+                            <p class="mb-0">Rooms 301 & 302 PESO Bldg., Bulacan Capitol Compound, Malolos City, Bulacan</p>
                         </div>
                     </div>
                 </div>
@@ -320,7 +321,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- Bootstrap Bundle (includes Popper) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script> -->
 
 <!-- AdminLTE -->
 <script src="{{ asset('js/adminlte.min.js') }}"></script>

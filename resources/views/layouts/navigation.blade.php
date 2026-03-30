@@ -1,8 +1,8 @@
 @vite(['resources/css/navigation.css', 'resources/js/navigation.js'])
 
-<nav class="main-header navbar navbar-expand-lg navbar-dark bg-navbar sticky-top">
+<nav class="main-header navbar navbar-expand-md navbar-dark bg-navbar sticky-top">
     <!-- Mobile/Tablet burger menu button -->
-    <button class="navbar-toggler d-lg-none" type="button" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler d-md-none" type="button" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <i class="fas fa-bars"></i>
     </button>
 
@@ -11,21 +11,21 @@
         <ul class="navbar-nav">
 
             <li class="nav-item mx-3">
-                <a href="#" class="nav-link text-white">Home</a>
+                <a href="{{ route('home') }}" class="nav-link text-white">Home</a>
             </li>
 
             <li class="nav-item dropdown mx-3">
-                <a href="#" class="nav-link text-white">About</a>
+                <a href="{{ route('about') }}" class="nav-link text-white">About</a>
                 
             </li>
 
             <li class="nav-item mx-3">
-                <a href="#" class="nav-link text-white">Forms</a>
+                <a href="{{ route('forms.general') }}" class="nav-link text-white">Forms</a>
             </li>
 
             @auth
             <!-- Desktop: logout icon with dropdown -->
-            <li class="nav-item ms-auto d-none d-lg-flex align-items-center position-relative">
+            <li class="nav-item ms-auto d-none d-md-flex align-items-center position-relative">
                 <button id="logoutIconBtn" class="btn btn-link nav-link text-white px-4" type="button" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-sign-out-alt"></i>
                 </button>
@@ -35,7 +35,7 @@
             </li>
 
             <!-- Mobile/Tablet: plain logout item under Forms -->
-            <li id="mobile-logout-item" class="nav-item d-lg-none">
+            <li id="mobile-logout-item" class="nav-item d-md-none">
                 <a href="#" class="nav-link text-white" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
             </li>
 
