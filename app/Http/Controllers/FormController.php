@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Models\Request;
+use Illuminate\Http\Request;
+use App\Models\Request_Number;
 use App\Models\Request_Party;
 use App\Models\Request_OFW;
 use App\Models\Request_Party_Address;
@@ -89,8 +89,8 @@ class FormController extends Controller
             Log::info('Database transaction started');
 
             // Create Request record
-            /** @var \App\Models\Request $newRequest */
-            $newRequest = Request::create([
+            /** @var \App\Models\Request_Number $newRequest */
+            $newRequest = Request_Number::create([
                 'status' => 'pending'
             ]);
             Log::info('Request created with ID: ' . $newRequest->id);

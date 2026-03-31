@@ -34,6 +34,8 @@
     .form-label {
       font-weight: 500;
     }
+
+ 
   </style>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700&display=swap" rel="stylesheet">
  
@@ -152,7 +154,8 @@
                 <input type="hidden" name="barangay_name" id="barangay_name">
               </div>
               <div class="col-6 col-md-3">
-                <input type="number" class="form-control" name="zip_code" placeholder="ex. 2016" value="{{ old('zip_code') }}">
+                <input type="text" class="form-control" name="zip_code" placeholder="ex. 2016" value="{{ old('zip_code') }}" 
+                              minlength="4" maxlength="4" pattern="\d{4}" inputmode="numeric" required>
               </div>
             </div>
           </div>
@@ -684,6 +687,11 @@
         document.getElementById('barangay_name').value = barangayName;
         });
     });
+
+
+
+
+
 
   </script>
 
