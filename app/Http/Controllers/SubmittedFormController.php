@@ -45,8 +45,7 @@ class SubmittedFormController extends Controller
     /**
      * Show specific GENERAL form
      */
-    public function showGeneral($id)
-    {
+    public function showGeneral($id){
         // Main request
         $request = Request_Number::findOrFail($id);
 
@@ -62,13 +61,15 @@ class SubmittedFormController extends Controller
         // Section C values
         $sectionC = DB::table('request_form_entries as rfe')
             ->join('request_form_field_values as rffv', 'rffv.request_form_entry_id', '=', 'rfe.id')
-            ->join('request_form_field as rff', 'rff.id', '=', 'rfe.request_form_field_id')
+            ->join('request_form_field as rff', 'rff.id', '=', 'rffv.request_form_field_id')
             ->where('rfe.request_id', $id)
             ->select(
                 'rff.field_name',
+                'rff.field_label',
                 'rffv.value'
             )
-            ->get();
+            ->get()
+            ->keyBy('field_name'); // IMPORTANT
 
         return view('forms-submitted.general', compact(
             'request',

@@ -279,7 +279,7 @@
                   <label class="form-check-label" for="germany">Germany</label>
                 </div>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="g2g_country" id="others" value="others" onchange="toggleG2GOthers()" disabled>
+                  <input class="form-check-input" type="radio" name="g2g_country" id="g2g_others" value="g2g_others" onchange="toggleG2GOthers()" disabled>
                   <label class="form-check-label" for="others">Others:</label>
                 </div>
                 <input type="text" id="g2g_others_text" class="form-control" name="g2g_others_text" style="margin-left: 1.5rem; margin-top: 0.25rem; width: calc(100% - 1.5rem);" placeholder="Specify others" readonly>
@@ -433,7 +433,7 @@
         const textbox = document.getElementById('g2g_others_text');
         let selected = false;
         for (let radio of radios) {
-        if (radio.checked && radio.value === 'others') {
+        if (radio.checked && radio.value === 'g2g_others') {
             selected = true;
             break;
         }
