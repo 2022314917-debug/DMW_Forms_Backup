@@ -11,8 +11,6 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('users', [\App\Http\Controllers\UserController::class, 'index'])->name('users.index');
-
-
 //  GENERAL FORM ROUTES
 Route::get('forms', [\App\Http\Controllers\FormController::class, 'index'])->name('forms.index');
 Route::get('forms/general', [\App\Http\Controllers\FormController::class, 'generalForm'])->name('forms.general');
@@ -44,10 +42,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    
 
-    //SUBMITTED FORMS ------ GENERAL
-    Route::get('forms-submitted', [\App\Http\Controllers\SubmittedFormController::class, 'index'])->name('submitted-forms.index');
-    Route::get('forms-submitted/general', [\App\Http\Controllers\SubmittedFormController::class, 'general'])->name('submitted-forms.general');
-    Route::get('forms-submitted/general/{id}', [\App\Http\Controllers\SubmittedFormController::class, 'showGeneral'])->name('submitted-forms.general.show');
 
 });

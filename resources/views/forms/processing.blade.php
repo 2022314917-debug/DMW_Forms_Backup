@@ -74,13 +74,7 @@
       width: 100%;
     }
 
-    .row.align-items-center .col-md-3 {
-      flex: 0 0 170px;
-      max-width: 170px;
-      min-width: 170px;
-      padding-left: 0;
-      padding-right: 0.5rem;
-    }
+
 
     .row.align-items-center .col-md-3 .form-label,
     .row.align-items-center .col-md-3 h6,
