@@ -247,14 +247,14 @@
 
             <div class="mb-2">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="oec_processing" name="mwpd[]" value="oec_processing">
+                <input class="form-check-input" type="checkbox" id="oec_processing" name="mwpd[]" value="oec_processing" disabled>
                 <label class="form-check-label" for="oec_processing">Direct-Hire OEC processing concerns</label>
               </div>
             </div>
 
             <div class="mb-2">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="gov_to_gov" name="mwpd[]" value="gov_to_gov" onchange="toggleG2GCountries()">
+                <input class="form-check-input" type="checkbox" id="gov_to_gov" name="mwpd[]" value="gov_to_gov" onchange="toggleG2GCountries()" disabled>
                 <label class="form-check-label" for="gov_to_gov">Submission of Government-to-Government application</label>
               </div>
               <div style="margin-left: 1.5rem; margin-top: 0.5rem;">
@@ -280,7 +280,7 @@
                 </div>
                 <div class="form-check form-check-inline">
                   <input class="form-check-input" type="radio" name="g2g_country" id="g2g_others" value="g2g_others" onchange="toggleG2GOthers()" disabled>
-                  <label class="form-check-label" for="others">Others:</label>
+                  <label class="form-check-label" for="g2g_others">Others:</label>
                 </div>
                 <input type="text" id="g2g_others_text" class="form-control" name="g2g_others_text" style="margin-left: 1.5rem; margin-top: 0.25rem; width: calc(100% - 1.5rem);" placeholder="Specify others" readonly>
               </div>
@@ -288,7 +288,7 @@
 
             <div class="mb-2">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="other_concerns_mwpd" name="mwpd[]" value="other_concerns_mwpd" onchange="toggleTextbox('other_concerns_mwpd_text', this.checked)">
+                <input class="form-check-input" type="checkbox" id="other_concerns_mwpd" name="mwpd[]" value="other_concerns_mwpd" onchange="toggleTextbox('other_concerns_mwpd_text', this.checked)" disabled>
                 <label class="form-check-label" for="other_concerns_mwpd">Other Concerns</label>
               </div>
               <input type="text" class="form-control" id="other_concerns_mwpd_text" name="other_concerns_mwpd_text" placeholder="Specify other concerns" style="margin-top: 0.25rem; padding-left: 1.5rem;" readonly>
@@ -301,7 +301,7 @@
             
             <div class="mb-2">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="reint_serv" name="wrsd[]" value="reint_serv" onchange="toggleTextbox('reint_serv_text', this.checked)">
+                <input class="form-check-input" type="checkbox" id="reint_serv" name="wrsd[]" value="reint_serv" onchange="toggleTextbox('reint_serv_text', this.checked)" disabled>
                 <label class="form-check-label" for="reint_serv">Reintegration Services:</label>
               </div>
               <input type="text" id="reint_serv_text" name="reint_serv_text" class="form-control" placeholder="Specify services" style="width: calc(100% - 1.5rem); margin-left: 1.5rem; margin-top: 0.25rem; margin-bottom: 0.75rem;" readonly>
@@ -309,14 +309,14 @@
 
             <div class="mb-2">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="spims" name="wrsd[]" value="spims">
+                <input class="form-check-input" type="checkbox" id="spims" name="wrsd[]" value="spims" disabled>
                 <label class="form-check-label" for="spims">Sa Pinas, Ikaw ang Ma'am at Sir (SPIMS)</label>
               </div>
             </div>
 
             <div class="mb-2">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="assistance_nationals" name="wrsd[]" value="assistance_nationals" onchange="toggleAssistanceTypeRadios()">
+                <input class="form-check-input" type="checkbox" id="assistance_nationals" name="wrsd[]" value="assistance_nationals" onchange="toggleAssistanceTypeRadios()" disabled>
                 <label class="form-check-label" for="assistance_nationals">Assistance to Nationals:</label>
               </div>
               <div style="margin-left: 1.5rem; margin-top: 0.5rem;">
@@ -334,7 +334,7 @@
 
             <div class="mb-2">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="repatriation" name="wrsd[]" value="repatriation">
+                <input class="form-check-input" type="checkbox" id="repatriation" name="wrsd[]" value="repatriation" disabled>
                 <label class="form-check-label" for="repatriation">Repatriation</label>
               </div>
             </div>
@@ -348,7 +348,7 @@
 
             <div class="mb-2">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="other_concerns_wrsd" name="wrsd[]" value="others" onchange="toggleTextbox('other_concerns_wrsd_text', this.checked)">
+                <input class="form-check-input" type="checkbox" id="other_concerns_wrsd" name="wrsd[]" value="others" onchange="toggleTextbox('other_concerns_wrsd_text', this.checked)" disabled>
                 <label class="form-check-label" for="other_concerns_wrsd">Others</label>
               </div>
               <input type="text" class="form-control" id="other_concerns_wrsd_text" name="other_concerns_wrsd_text" placeholder="Specify other concerns" style="margin-top: 0.25rem; padding-left: 1.5rem;" readonly>
@@ -375,28 +375,28 @@
 
             <div class="mb-2">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="legal_assistance" name="mwpd_protection[]" value="legal_assistance">
+                <input class="form-check-input" type="checkbox" id="legal_assistance" name="mwpd_protection[]" value="legal_assistance" disabled>
                 <label class="form-check-label" for="legal_assistance">Request for legal assistance/counseling</label>
               </div>
             </div>
 
             <div class="mb-2">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="illegal_recruitment" name="mwpd_protection[]" value="illegal_recruitment">
+                <input class="form-check-input" type="checkbox" id="illegal_recruitment" name="mwpd_protection[]" value="illegal_recruitment" disabled>
                 <label class="form-check-label" for="illegal_recruitment">Request for the issuance of Illegal Recruitment Certification</label>
               </div>
             </div>
 
             <div class="mb-2">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="disc_action" name="mwpd_protection[]" value="disc_action">
+                <input class="form-check-input" type="checkbox" id="disc_action" name="mwpd_protection[]" value="disc_action" disabled>
                 <label class="form-check-label" for="disc_action">Request for the issuance of Disciplinary Action Agains Employer / Work and/or Recruitment Violation</label>
               </div>
             </div>
 
             <div class="mb-2">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="other_concerns_mwpd_protection" name="mwpd_protection[]" value="others" onchange="toggleTextbox('other_concerns_mwpd_protection_text', this.checked)">
+                <input class="form-check-input" type="checkbox" id="other_concerns_mwpd_protection" name="mwpd_protection[]" value="others" onchange="toggleTextbox('other_concerns_mwpd_protection_text', this.checked)" disabled>
                 <label class="form-check-label" for="other_concerns_mwpd_protection">Others</label>
               </div>
               <input type="text" class="form-control" id="other_concerns_mwpd_protection_text" name="other_concerns_mwpd_protection_text" placeholder="Specify other concerns" style="margin-top: 0.25rem; padding-left: 1.5rem;" readonly>
@@ -408,7 +408,7 @@
       </div>
 
       <div class="d-grid gap-2">
-        <button type="submit" class="btn btn-success btn-lg fw-bold" style="background-color: #2d7a2d; border-color: #2d7a2d;">Submit</button>
+        <button type="submit" class="btn btn-success btn-lg fw-bold" style="background-color: #2d7a2d; border-color: #2d7a2d;">Next</button>
       </div>
     </form>
   </div>

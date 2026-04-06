@@ -68,13 +68,13 @@
 
         .nav-item {
             text-align: left;
-            margin: 10px 0;
+            /* margin: 10px 0; */
             width: 100%;
         }
 
         .nav-item .nav-link,
         .nav-item .btn {
-            padding: 15px 20px;
+            padding: 10px 20px;
             display: block;
             width: 100%;
             text-align: left;
@@ -162,6 +162,6 @@
 
         .navbar-nav .nav-item.d-lg-none {
             margin-top: auto;
-            padding-bottom: 600px;
+            /* padding-bottom: 600px; */
         }
     }

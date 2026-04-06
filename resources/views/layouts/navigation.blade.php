@@ -14,7 +14,7 @@
                 <a href="{{ route('home') }}" class="nav-link text-white">Home</a>
             </li>
 
-            <li class="nav-item dropdown mx-3">
+            <li class="nav-item mx-3">
                 <a href="{{ route('about') }}" class="nav-link text-white">About</a>
                 
             </li>

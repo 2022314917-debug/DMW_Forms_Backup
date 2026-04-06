@@ -28,13 +28,19 @@ Route::post('forms/processing/store', [\App\Http\Controllers\FormController::cla
 // AKSYON FORM ROUTES
 
 Route::get('forms/aksyon', [\App\Http\Controllers\FormController::class, 'aksyonForm'])->name('forms.aksyon');
-Route::post('forms/aksyon', [\App\Http\Controllers\FormController::class, 'storeAksyonForm'])->name('forms.aksyon.store');
+Route::post('forms/aksyon/store', [\App\Http\Controllers\FormController::class, 'storeAksyonForm'])->name('forms.aksyon.store');
 
 
 //SENA FORM ROUTES
 
 Route::get('forms/sena', [\App\Http\Controllers\FormController::class, 'senaForm'])->name('forms.sena');
 Route::post('forms/sena', [\App\Http\Controllers\FormController::class, 'storeSenaForm'])->name('forms.sena.store');
+
+
+// FORMS ROUTES
+Route::get('/forms/step/{step}', [\App\Http\Controllers\FormController::class, 'showStep']);
+Route::post('/forms/step/{step}', [\App\Http\Controllers\FormController::class, 'storeStep']);
+
 
 Route::middleware('auth')->group(function () {
     Route::view('about', 'about')->name('about');

@@ -36,26 +36,6 @@
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
 
-    <style>
-        @media (min-width: 768px) and (max-width: 991.98px) {
-
-            .footer-logo-res img {
-                max-width: 150px !important;
-            }
-
-            
-            .dmw-info h6 {
-                font-size: 0.65rem !important;
-            }
-            .dmw-info p {
-                font-size: 0.55rem !important;
-            }
-
-            .footer-accordion-icon{
-                color: #fff;
-            }
-        }
-    </style>
 
 </head>
 

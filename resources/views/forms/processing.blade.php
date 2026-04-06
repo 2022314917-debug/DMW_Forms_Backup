@@ -1,5 +1,27 @@
 @extends('layouts.app')
 
+@php
+    $steps = session('forms.steps', []);
+    $currentStep = request()->segment(3); // /forms/step/{step}
+@endphp
+
+<nav>
+    <ul class="pagination justify-content-center">
+        @foreach($steps as $index => $step)
+
+            <li class="page-item 
+                {{ $step == $currentStep ? 'active' : '' }}
+                {{ array_search($step,$steps) < array_search($currentStep,$steps) ? 'completed' : '' }}">
+                
+                <span class="page-link">
+                    {{ $index + 1 }}
+                </span>
+            </li>
+
+        @endforeach
+    </ul>
+</nav>
+
 @section('content')
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -95,6 +117,17 @@
       margin-left: 0;
     }
 
+    .pagination .completed .page-link {
+        background-color: #198754;
+        color: white;
+        border-color: #198754;
+    }
+
+    .pagination .active .page-link {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+
     @media (max-width: 992px) and (min-width: 768px) {
       .row.text-center .col-md-3 {
         flex: 0 0 50% !important;
@@ -164,43 +197,43 @@
       </small>
     </div>
 
-    <form method="POST" action="{{ route('forms.processing.store') }}">
+    <form method="POST" action="{{ url('/forms/step/ofw_info_sheet_mwpd') }}">
       @csrf
       <div class="form-section">
         <h5>FULL NAME (Pangalan ng OFW)</h5>
         <div class="row g-3 mb-3">
           <div class="col-md-4">
             <label class="form-label">Surname</label>
-            <input type="text" class="form-control" name="ofw_family_name" placeholder="Dela Cruz" id="ofw_family_name">
+            <input type="text" class="form-control" name="ofw_lname" placeholder="Dela Cruz" id="ofw_lname" value="{{ session('general_form_data.ofw_lname') }}" required>
           </div>
           <div class="col-md-4">
             <label class="form-label">First Name</label>
-            <input type="text" class="form-control" placeholder="Juan" id="ofw_first_name">
+            <input type="text" class="form-control" name="ofw_fname" placeholder="Juan" id="ofw_fname" value="{{ session('general_form_data.ofw_fname') }}" required>
           </div>
           <div class="col-md-4">
             <label class="form-label">Middle Name</label>
-            <input type="text" class="form-control" placeholder="Santos" id="ofw_middle_name">
+            <input type="text" class="form-control" name="ofw_mname" placeholder="Santos" id="ofw_mname" value="{{ session('general_form_data.ofw_mname') }}">
           </div>
         </div>
 
         <div class="row g-3 mb-3">
           <div class="col-md-4">
             <label class="form-label">Jobsite (Bansang Pinagtatrabahuhan)</label>
-            <input type="text" class="form-control" name="jobsite" placeholder="ex. UAE" id="jobsite">
+            <input type="text" class="form-control" name="ofw_country_name" placeholder="ex. UAE" id="jobsite" value="{{ session('general_form_data.ofw_country_name') }}">
           </div>
           <div class="col-md-4">
             <label class="form-label">Record Needed - Year (Kailangang Record - Taon)</label>
-            <input type="text" class="form-control" name="record_year" placeholder="ex. 2024" id="record_year">
+            <input type="text" class="form-control" name="records_needed" placeholder="ex. 2024" id="records_needed">
           </div>
           <div class="col-md-4">
             <label class="form-label">Purpose (Saan gagamitin ang kinakuhang record)</label>
-            <input type="text" class="form-control" name="purpose" placeholder="ex. Employment Verification" id="purpose">
+            <input type="text" class="form-control" name="record_purpose" placeholder="ex. Employment Verification" id="record_purpose">
           </div>
         </div>
 
         <div class="mb-3">
           <label class="form-label">Name of Agency</label>
-          <input type="text" class="form-control" name="agency_name" placeholder="ex. ABC Agency" id="agency_name">
+          <input type="text" class="form-control" name="ofw_agency" placeholder="ex. ABC Agency" id="ofw_agency" value="{{ session('general_form_data.ofw_agency') }}">
         </div>
     </div>
 
@@ -209,36 +242,36 @@
         <div class="row g-3 mb-3">
           <div class="col-md-4">
             <label class="form-label">Surname</label>
-            <input type="text" class="form-control" name="req_family_name" placeholder="Dela Cruz" id="req_family_name">
+            <input type="text" class="form-control" name="req_family_name" placeholder="Dela Cruz" id="req_family_name" value="{{ session('general_form_data.party_lname') }}">
           </div>
           <div class="col-md-4">
             <label class="form-label">First Name</label>
-            <input type="text" class="form-control" name="req_first_name" placeholder="Juan" id="req_first_name">
+            <input type="text" class="form-control" name="req_first_name" placeholder="Juan" id="req_first_name" value="{{ session('general_form_data.party_fname') }}">
           </div>
           <div class="col-md-4">
             <label class="form-label">Middle Name</label>
-            <input type="text" class="form-control" name="req_middle_name" placeholder="Santos" id="req_middle_name">
+            <input type="text" class="form-control" name="req_middle_name" placeholder="Santos" id="req_middle_name" value="{{ session('general_form_data.party_mname') }}">
           </div>
         </div>
 
         <div class="row g-3 mb-3">
           <div class="col-md-6">
             <label class="form-label">Relationship to OFW</label>
-            <input type="text" class="form-control" name="relationship_ofw" placeholder="ex. Brother" id="relationship_ofw">
+            <input type="text" class="form-control" name="relationship_ofw" placeholder="ex. Brother" id="relationship_ofw" value="{{ session('general_form_data.party_relationship') }}">
           </div>
           <div class="col-md-6">
             <label class="form-label">Contact Number</label>
-            <input type="text" class="form-control" name="contact_number" placeholder="ex. 09123456789" id="contact_number">
+            <input type="text" class="form-control" name="contact_number" placeholder="ex. 09123456789" id="contact_number" value="{{ session('general_form_data.party_phone') }}">
           </div>
         </div>
 
         <div class="mb-3">
           <label class="form-label">Complete Address in the Philippines</label>
-          <input type="text" class="form-control mb-2" name="phil_address" placeholder="Unit/Room/House Number/Street name" id="phil_address">
+          <input type="text" class="form-control mb-2" name="phil_address" placeholder="Unit/Room/House Number/Street name" id="phil_address" value="{{ session('general_form_data.party_address_street') }}">
 
           <div class="row g-3">
             <div class="col-md-3">
-              <select class="form-select" name="province" id="province">
+              <select class="form-select" name="province" id="province" value="{{ session('general_form_data.party_province') }}">
                 <option selected disabled>Province</option>
               </select>
             </div>
@@ -253,7 +286,7 @@
               </select>
             </div>
             <div class="col-md-3">
-              <input type="text" class="form-control" name="zipcode" placeholder="ex. 2016" id="zipcode">
+              <input type="text" class="form-control" name="zipcode" placeholder="ex. 2016" id="zipcode" value="{{ session('general_form_data.zip_code') }}">
             </div>
           </div>
 
@@ -264,13 +297,13 @@
             </div>
             <div class="col-md-6">
               <label class="form-label">Email Address</label>
-              <input type="email" class="form-control" name="email_address" placeholder="ex. sample@email.com" id="email_address">
+              <input type="email" class="form-control" name="email_address" placeholder="ex. sample@email.com" id="email_address" value="{{ session('general_form_data.party_email') }}">
             </div>
           </div>
         </div>
     </div>
 
-    <div class="form-section" style="background-color: rgba(219, 232, 255, 0.95);">
+    <div class="form-section" style="background-color: rgba(219, 232, 255, 0.95); display: none;">
       <h5 class="text-center fw-bold">Do not fill out this portion: FOR POEA PERSONNEL ONLY</h5>
 
       <div class="row g-3 mb-3">
@@ -450,7 +483,7 @@
     </div>
 
     <div class="d-grid gap-2">
-      <button type="submit" class="btn btn-success btn-lg fw-bold" style="background-color: #2d7a2d; border-color: #2d7a2d; color: #ffffff; box-shadow: none;">Submit Request</button>
+      <button type="submit" class="btn btn-success btn-lg fw-bold" style="background-color: #2d7a2d; border-color: #2d7a2d; color: #ffffff; box-shadow: none;">Next</button>
     </div>
     </form>
   </div>
@@ -461,6 +494,10 @@
       const provinceSelect = document.getElementById('province');
       const municipalitySelect = document.getElementById('municipality');
       const barangaySelect = document.getElementById('barangay');
+
+      const sessionProvince = "{{ session('general_form_data.province') }}";
+      const sessionMunicipality = "{{ session('general_form_data.municipality') }}";
+      const sessionBarangay = "{{ session('general_form_data.barangay') }}";
 
       function resetSelect(selectEl, text) {
         selectEl.innerHTML = `<option selected disabled>${text}</option>`;
@@ -543,6 +580,11 @@
         .then(response => response.json())
         .then(data => {
           populateSelect(provinceSelect, data, 'code', 'name');
+
+          if (sessionProvince) {
+            provinceSelect.value = sessionProvince;
+            provinceSelect.dispatchEvent(new Event('change'));
+          }
         })
         .catch(error => {
           console.error('Error fetching provinces:', error);
@@ -550,39 +592,38 @@
         });
 
       provinceSelect.addEventListener('change', function() {
-        const provinceCode = this.value;
-        resetSelect(municipalitySelect, 'Loading municipalities...');
-        resetSelect(barangaySelect, 'Barangay');
+      const provinceCode = this.value;
+      resetSelect(municipalitySelect, 'Loading municipalities...');
+      resetSelect(barangaySelect, 'Barangay');
 
-        if (!provinceCode) {
+      fetch(`https://psgc.gitlab.io/api/provinces/${provinceCode}/cities-municipalities/`)
+        .then(response => response.json())
+        .then(data => {
+          populateSelect(municipalitySelect, data, 'code', 'name');
+
+          if (sessionMunicipality) {
+            municipalitySelect.value = sessionMunicipality;
+            municipalitySelect.dispatchEvent(new Event('change'));
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching municipalities:', error);
           resetSelect(municipalitySelect, 'City / Municipality');
-          return;
-        }
-
-        fetch(`https://psgc.gitlab.io/api/provinces/${provinceCode}/cities-municipalities/`)
-          .then(response => response.json())
-          .then(data => {
-            populateSelect(municipalitySelect, data, 'code', 'name');
-          })
-          .catch(error => {
-            console.error('Error fetching municipalities:', error);
-            resetSelect(municipalitySelect, 'City / Municipality');
-          });
-      });
+        });
+    });
 
       municipalitySelect.addEventListener('change', function() {
         const cityCode = this.value;
         resetSelect(barangaySelect, 'Loading barangays...');
 
-        if (!cityCode) {
-          resetSelect(barangaySelect, 'Barangay');
-          return;
-        }
-
         fetch(`https://psgc.gitlab.io/api/cities-municipalities/${cityCode}/barangays/`)
           .then(response => response.json())
           .then(data => {
             populateSelect(barangaySelect, data, 'code', 'name');
+
+            if (sessionBarangay) {
+              barangaySelect.value = sessionBarangay;
+            }
           })
           .catch(error => {
             console.error('Error fetching barangays:', error);
