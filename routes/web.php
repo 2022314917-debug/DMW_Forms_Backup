@@ -28,12 +28,18 @@ Route::post('forms/processing/store', [\App\Http\Controllers\FormController::cla
 Route::get('forms/aksyon', [\App\Http\Controllers\FormController::class, 'aksyonForm'])->name('forms.aksyon');
 Route::post('forms/aksyon/store', [\App\Http\Controllers\FormController::class, 'storeAksyonForm'])->name('forms.aksyon.store');
 
+// OFW INFO SHEET PROTECTION DIVISION ROUTES
+Route::get('forms/ofwinfo_protection', [\App\Http\Controllers\FormController::class, 'ofwinfo_protection'])->name('forms.ofwinfo_protection');
+
 
 //SENA FORM ROUTES
 
 Route::get('forms/sena', [\App\Http\Controllers\FormController::class, 'senaForm'])->name('forms.sena');
 Route::post('forms/sena', [\App\Http\Controllers\FormController::class, 'storeSenaForm'])->name('forms.sena.store');
 
+
+//REQUIREMENTS ROUTES
+Route::get('/forms/requirements', [\App\Http\Controllers\FormController::class, 'requirements'])->name('forms.requirements');
 
 // FORMS ROUTES
 Route::get('/forms/step/{step}', [\App\Http\Controllers\FormController::class, 'showStep']);

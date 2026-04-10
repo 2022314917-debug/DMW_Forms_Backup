@@ -20,7 +20,8 @@
             </li>
 
             <li class="nav-item mx-3">
-                <a href="{{ route('forms.general') }}" class="nav-link text-white">Forms</a>
+                <!-- <a href="{{ route('forms.general') }}" class="nav-link text-white">Forms</a> -->
+                 <a href="{{ url('/forms/step/general') }}" class="nav-link text-white">Forms</a>
             </li>
 
             @auth

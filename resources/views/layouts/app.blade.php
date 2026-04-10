@@ -5,9 +5,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <!-- <title> {{ config('app.name', 'DMW Forms') }} </title> -->
+     <title> DMW Forms </title>
 
-    <link rel="icon" href="" type="image/png">
+    <link rel="icon" href="{{ asset('images/dmwlogo.png') }}" type="image/png">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <!-- Google Font: Source Sans Pro, Cinzel, Grenze Gotisch, Inter, and Average -->
@@ -36,6 +37,150 @@
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
     <link rel="stylesheet" href="{{ asset('css/footer.css') }}">
 
+    <style>
+        .disabled{
+            pointer-events: none;
+            opacity: 0.6;
+        }
+        .step-wrapper{
+            display:flex;
+            justify-content:center;
+            margin-bottom:20px;
+        }
+
+        .steps{
+            display:flex;
+            list-style:none;
+            padding:0;
+            margin:0;
+            align-items:center;
+        }
+
+        .steps .step{
+            position:relative;
+            width:36px;
+            height:28px;
+            background:#e9ecef;
+            color:#000;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            border-radius:6px;
+            font-weight:600;
+        }
+
+        /* spacing between steps */
+        .steps .step + .step{
+            margin-left:40px;
+        }
+
+        /* connector line */
+        .steps .step + .step::before{
+            content:"";
+            position:absolute;
+            left:-40px;
+            top:50%;
+            transform:translateY(-50%);
+            width:40px;
+            height:4px;
+            background:#e9ecef;
+        }
+
+        /* active */
+        .steps .step.active{
+            background: hsl(225, 80%, 34%);
+            color:white;
+        }
+
+        /* completed */
+        .steps .step.completed{
+            background: hsl(225, 71%, 66%);
+            color:white;
+        }
+
+        /* completed line */
+        .steps .step.completed + .step::before{
+            background: hsl(225, 71%, 66%);
+        }
+
+
+        /* BACK BUTTON */
+        .btn-back{
+            background:#4e73df;
+            color:white;
+            border-radius:8px;
+            padding:10px 22px;
+            font-weight:600;
+            border:none;
+        }
+
+        .btn-back:hover{
+            background:#3c5ec4;
+            color:white;
+        }
+
+        /* NEXT BUTTON */
+        .btn-next{
+            background:#4e73df;
+            color:white;
+            border-radius:8px;
+            padding:10px 22px;
+            font-weight:600;
+            border:none;
+        }
+
+        .btn-next:hover{
+            background:#3c5ec4;
+            color:white;
+        }
+
+        /* MOBILE tweaks */
+        @media (max-width: 768px) {
+
+            .step-wrapper{
+                margin-bottom:15px;
+            }
+            .steps .step {
+                width: 32px;
+                height: 26px;
+                font-size: 12px;
+            }
+
+            .steps .step + .step {
+                margin-left: 25px;
+            }
+
+            .steps .step + .step::before {
+                left: -25px;
+                width: 25px;
+            }
+        }
+
+        @media (max-width: 425px) {
+
+            .step-wrapper{
+                margin-bottom:12px;
+            }
+
+            .steps .step {
+                width: 28px;
+                height: 24px;
+                font-size: 11px;
+            }
+
+            .steps .step + .step {
+                margin-left: 15px;
+            }
+
+            .steps .step + .step::before {
+                left: -15px;
+                width: 15px;
+            }
+        }
+
+    
+    </style>
+
 
 </head>
 
@@ -52,7 +197,7 @@
             <h1>REPUBLIC OF THE PHILIPPINES</h1>
             <h2>Department of Migrant Workers</h2>
             <p class="region-office">Region Office No. III - Gitnang Luzon</p>
-            <p class="address">DMW-RO3-MAIN OFFICE, JOSE ABAD SANTOS AVENUE, LAGUNDI, MEXICO, PAMPANGA</p>
+            <p class="address">215 MacArthur Hwy, Barangay Dolores, San Fernando, 2000 Pampanga, Philippines</p>
         </div>
         <div class="bagong-pilipinas">
             <img src="{{ asset('images/Bagong_Pilipinas.png') }}" alt="Bagong Pilipinas Logo">
@@ -74,7 +219,7 @@
 
 
 
-    <footer class="main-footer" style="background: linear-gradient(180deg, #003f8d 0%, #0b3b82 40%, #0e63b8 100%);">
+    <footer class="main-footer" style="background: linear-gradient(180deg, #003f8d 0%, #0b3b82 40%, #0e63b8 100%); ">
         <!-- Desktop View -->
         <div class="d-none d-md-flex align-items-md-center align-items-lg-start px-4 py-3 flex-nowrap" style="border-bottom: 3px solid rgba(255,255,255,0.3);">
             <!-- Header Row with Logo and Title -->
@@ -167,7 +312,7 @@
             
         </div>
 
-        <!-- Mobile/Tablet View - Accordion -->
+        <!-- Mobile View - Accordion -->
         <div class="d-block d-md-none px-3 py-0">
             <div class="d-block d-sm-none text-center mb-3">
                 <div>
@@ -185,7 +330,7 @@
             <div class="accordion accordion-flush" id="footerAccordion">
                 <div class="accordion-item" style="border: 1px solid rgba(255,255,255,0.2); margin-bottom: 0.5rem; border-radius: 0.25rem; background-color: #0b357e;">
                     <h2 class="accordion-header">
-                        <button class="accordion-button collapsed text-white fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
+                        <button class="accordion-button footer-accordion-button collapsed text-white fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
                             DMW RO3 Annex​
                         </button>
                     </h2>
@@ -199,7 +344,7 @@
                 </div>
                 <div class="accordion-item" style="border: 1px solid rgba(255,255,255,0.2); margin-bottom: 0.5rem; border-radius: 0.25rem; background-color: #0b357e;">
                     <h2 class="accordion-header">
-                        <button class="accordion-button collapsed text-white fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
+                        <button class="accordion-button footer-accordion-button collapsed text-white fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
                             OSSCO CLARK​
                         </button>
                     </h2>
@@ -213,7 +358,7 @@
                 </div>
                 <div class="accordion-item" style="border: 1px solid rgba(255,255,255,0.2); margin-bottom: 0.5rem; border-radius: 0.25rem; background-color: #0b357e;">
                     <h2 class="accordion-header">
-                        <button class="accordion-button collapsed text-white fw-bold footer-accordion-icon" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
+                        <button class="accordion-button footer-accordion-button collapsed text-white fw-bold footer-accordion-icon" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
                             Bataan Office​
                         </button>
                     </h2>
@@ -228,7 +373,7 @@
                 <div class="accordion-item" style="border: 1px solid rgba(255,255,255,0.2); margin-bottom: 0.5rem; border-radius: 0.25rem; background-color: #0b357e;">
 
                     <h2 class="accordion-header">
-                        <button class="accordion-button collapsed text-white fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
+                        <button class="accordion-button footer-accordion-button footer-accordion-button collapsed text-white fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
                             Nueva Ecija Office​
                         </button>
                     </h2>
@@ -242,7 +387,7 @@
                 </div>
                 <div class="accordion-item" style="border: 1px solid rgba(255,255,255,0.2); margin-bottom: 0.5rem; border-radius: 0.25rem; background-color: #0b357e;">
                     <h2 class="accordion-header">
-                        <button class="accordion-button collapsed text-white fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
+                        <button class="accordion-button footer-accordion-button collapsed text-white fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
                             Bulacan Office​
                         </button>
                     </h2>
@@ -254,7 +399,7 @@
                 </div>
                 <div class="accordion-item" style="border: 1px solid rgba(255,255,255,0.2); margin-bottom: 0.5rem; border-radius: 0.25rem; background-color: #0b357e;">
                     <h2 class="accordion-header">
-                        <button class="accordion-button collapsed text-white fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
+                        <button class="accordion-button footer-accordion-button collapsed text-white fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
                             Tarlac Office​
                         </button>
                     </h2>
@@ -266,7 +411,7 @@
                 </div>
                 <div class="accordion-item" style="border: 1px solid rgba(255,255,255,0.2); margin-bottom: 0.5rem; border-radius: 0.25rem; background-color: #0b357e;">
                     <h2 class="accordion-header">
-                        <button class="accordion-button collapsed text-white fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
+                        <button class="accordion-button footer-accordion-button collapsed text-white fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" style="background-color: #0b357e; font-size: 0.8rem;" aria-expanded="false">
                             Zambales Office​
                         </button>
                     </h2>
@@ -301,7 +446,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- Bootstrap Bundle (includes Popper) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script> -->
 
 <!-- AdminLTE -->
 <script src="{{ asset('js/adminlte.min.js') }}"></script>

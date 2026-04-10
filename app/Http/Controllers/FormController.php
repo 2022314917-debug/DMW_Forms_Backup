@@ -305,8 +305,12 @@ class FormController extends Controller
                 'forms.current_step' => 0
             ]);
 
+            session([
+                'general_form_data' => $request->all()
+            ]);
+
         //     // return redirect()->route('forms.processing')->with('success', 'Form submitted successfully! Your Request ID is: ' . $total);
-             return redirect('/forms/step/' . $steps[0]);
+            return redirect('/forms/step/' . $steps[0]);
 
         // } catch (\Exception $e) {
         //     DB::rollBack();
@@ -319,43 +323,61 @@ class FormController extends Controller
         // return redirect()->route('forms.processing')
         //     ->with('success', 'Form submitted successfully! Your Request ID is: ');
     }
-    
     public function showStep($step)
     {
         $steps = session('forms.steps', []);
+
+        // Ensure 'general' is first
+        $steps = array_diff($steps, ['general']);
+        array_unshift($steps, 'general');
+
+        // Ensure 'requirements' is last (auto include)
+        $steps = array_diff($steps, ['requirements']);
+        $steps[] = 'requirements';
+
+        session(['forms.steps' => $steps]);
 
         if (!in_array($step, $steps)) {
             return redirect()->route('forms.index')
                 ->with('error', 'Invalid step.');
         }
 
-        // Map form names to views
         $formViews = [
+            'general' => 'forms.general',
             'ofw_info_sheet_mwpd' => 'forms.processing',
             'aksyon' => 'forms.aksyon',
-            'mwpd_protection_form' => 'forms.mwpd_protection',
+            'ofw_info_sheet_mwpd_protection' => 'forms.ofwinfo_protection',
+            'sena' => 'forms.sena',
+            'requirements' => 'forms.requirements', // auto included
         ];
 
         if (!isset($formViews[$step])) {
             abort(404, 'Form view not found');
         }
 
-        return view($formViews[$step]);
+        $formData = session("forms.data", []);
+
+        return view($formViews[$step], compact('formData', 'step'));
     }
 
     public function storeStep(Request $request, $step)
     {
-        // save current step data
         session(["forms.data.$step" => $request->all()]);
-
+        
         $steps = session('forms.steps', []);
 
+        // Ensure 'general' is first
+        $steps = array_diff($steps, ['general']);
+        array_unshift($steps, 'general');
+
+        // Ensure 'requirements' is last (auto include)
+        $steps = array_diff($steps, ['requirements']);
+        $steps[] = 'requirements';
+
+        session(['forms.steps' => $steps]);
+
         $currentIndex = array_search($step, $steps);
-
         $nextIndex = $currentIndex + 1;
-
-        // DEBUG
-        // dd($step, $currentIndex, $steps);
 
         if (!isset($steps[$nextIndex])) {
             return redirect('/forms/preview');
@@ -396,6 +418,10 @@ class FormController extends Controller
         // session()->flush(); // Clear session data after processing
 
         return redirect()->route('forms.processing')->with('success', 'Your request has been submitted successfully.');
+    }
+
+    public function ofwinfo_protection(){
+        return view('forms.ofwinfo_protection');
     }
 
     public function senaForm(){
@@ -515,6 +541,10 @@ class FormController extends Controller
 
         return redirect()->route('forms.aksyon')->with('success', 'Your aksyon data has been submitted successfully.');
 
+    }
+
+    public function requirements(){
+        return view('forms.requirements');
     }
 }
 

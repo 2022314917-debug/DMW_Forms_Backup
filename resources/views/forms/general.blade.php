@@ -1,5 +1,7 @@
 @extends('layouts.app')
 @section('content')
+
+
   <style>
     body {
       background-color: #f4f4f4;
@@ -35,6 +37,7 @@
       font-weight: 500;
     }
 
+   
  
   </style>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -81,19 +84,20 @@
           <div class="row g-3 mb-3">
             <div class="col-md-3">
               <label class="form-label">Last Name</label>
-              <input type="text" class="form-control" name="party_lname" placeholder="Dela Cruz" value="{{ old('party_lname') }}" required>
+              <!-- <input type="text" class="form-control uppercase" name="party_lname" placeholder="Dela Cruz" value="{{ old('party_lname') }}" required> -->
+              <input type="text" class="form-control uppercase" name="party_lname" placeholder="Dela Cruz" value="{{ session('general_form_data.party_lname') }}" required>
             </div>
             <div class="col-md-3">
               <label class="form-label">First Name</label>
-              <input type="text" class="form-control" name="party_fname" placeholder="Juan" value="{{ old('party_fname') }}" required>
+              <input type="text" class="form-control uppercase" name="party_fname" placeholder="Juan" value="{{ session('general_form_data.party_fname') }}" required>
             </div>
             <div class="col-md-2">
               <label class="form-label">Name Ext.</label>
-              <input type="text" class="form-control" name="party_ename" placeholder="Jr/Sr/III" value="{{ old('party_ename') }}">
+              <input type="text" class="form-control uppercase" name="party_ename" placeholder="Jr/Sr/III" value="{{ session('general_form_data.party_ename') }}">
             </div>
             <div class="col-md-4">
               <label class="form-label">Middle Name</label>
-              <input type="text" class="form-control" name="party_mname" placeholder="Santos" value="{{ old('party_mname') }}">
+              <input type="text" class="form-control uppercase" name="party_mname" placeholder="Santos" value="{{ session('general_form_data.party_mname') }}">
             </div>
           </div>
 
@@ -101,21 +105,21 @@
 
             <div class="col-6 col-md-3">
               <label class="form-label">Birthday</label>
-              <input type="date" class="form-control" name="party_bday" value="{{ old('party_bday') }}" required>
+              <input type="date" class="form-control" name="party_bday" value="{{ session('general_form_data.party_bday') }}" required>
             </div>
 
             <div class="col-6 col-md-3">
               <label class="form-label">Sex</label>
               <select class="form-select" name="party_gender" required>
                 <option value="">Select</option>
-                <option value="Male" {{ old('party_gender') == 'Male' ? 'selected' : '' }}>Male</option>
-                <option value="Female" {{ old('party_gender') == 'Female' ? 'selected' : '' }}>Female</option>
+                <option value="Male" {{ session('general_form_data.party_gender') == 'Male' ? 'selected' : '' }}>Male</option>
+                <option value="Female" {{ session('general_form_data.party_gender') == 'Female' ? 'selected' : '' }}>Female</option>
               </select>
             </div>
 
             <div class="col-md-6">
               <label class="form-label">Relationship to OFW</label>
-              <input type="text" class="form-control" name="party_relationship" placeholder="ex. Brother" value="{{ old('party_relationship') }}" required>
+              <input type="text" class="form-control uppercase" name="party_relationship" placeholder="ex. Brother" value="{{ session('general_form_data.party_relationship') }}" required>
             </div>
 
           </div>
@@ -123,17 +127,17 @@
           <div class="row g-3 mb-3">
             <div class="col-md-6">
               <label class="form-label">Contact Number</label>
-              <input type="text" class="form-control" name="party_phone" placeholder="ex. 09123456768" value="{{ old('party_phone') }}" required>
+              <input type="text" class="form-control" name="party_phone" placeholder="ex. 09123456768" value="{{ session('general_form_data.party_phone') }}" required>
             </div>
             <div class="col-md-6">
               <label class="form-label">Email Address</label>
-              <input type="email" class="form-control" name="party_email" placeholder="ex. sample@email.com" value="{{ old('party_email') }}" required>
+              <input type="email" class="form-control" name="party_email" placeholder="ex. sample@email.com" value="{{ session('general_form_data.party_email') }}" required>
             </div>
           </div>
 
           <div class="mb-3">
             <label class="form-label">Address in the Philippines</label>
-            <input type="text" class="form-control mb-2" name="party_address_street" placeholder="Unit/Room/House Number/Street name" value="{{ old('party_address_street') }}" required>
+            <input type="text" class="form-control mb-2 uppercase" name="party_address_street" placeholder="Unit/Room/House Number/Street name" value="{{ session('general_form_data.party_address_street') }}" required>
             <div class="row g-3">
               <div class="col-6 col-md-3">
                 <select class="form-select" name="province" id="province" required>
@@ -154,8 +158,18 @@
                 <input type="hidden" name="barangay_name" id="barangay_name">
               </div>
               <div class="col-6 col-md-3">
-                <input type="text" class="form-control" name="zip_code" placeholder="ex. 2016" value="{{ old('zip_code') }}" 
-                              minlength="4" maxlength="4" pattern="\d{4}" inputmode="numeric" required>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    name="zip_code" 
+                    placeholder="ex. 2016" 
+                    value="{{ old('zip_code') }}" 
+                    maxlength="4"          
+                    pattern="\d{4}"         
+                    inputmode="numeric"     
+                    oninput="this.value = this.value.replace(/[^0-9]/g,'').slice(0,4);" 
+                    required
+                >
               </div>
             </div>
           </div>
@@ -167,19 +181,19 @@
           <div class="row g-3 mb-3">
             <div class="col-md-3">
               <label class="form-label">Last Name</label>
-              <input type="text" class="form-control" name="ofw_lname" placeholder="Dela Cruz" value="{{ old('ofw_lname') }}" required>
+              <input type="text" class="form-control uppercase" name="ofw_lname" placeholder="Dela Cruz" value="{{ old('ofw_lname') }}" required>
             </div>
             <div class="col-md-3">
               <label class="form-label">First Name</label>
-              <input type="text" class="form-control" name="ofw_fname" placeholder="Juan" value="{{ old('ofw_fname') }}" required>
+              <input type="text" class="form-control uppercase" name="ofw_fname" placeholder="Juan" value="{{ old('ofw_fname') }}" required>
             </div>
             <div class="col-md-2">
               <label class="form-label">Name Ext.</label>
-              <input type="text" class="form-control" name="ofw_ename" placeholder="Jr/Sr/III" value="{{ old('ofw_ename') }}">
+              <input type="text" class="form-control uppercase" name="ofw_ename" placeholder="Jr/Sr/III" value="{{ old('ofw_ename') }}">
             </div>
             <div class="col-md-4">
               <label class="form-label">Middle Name</label>
-              <input type="text" class="form-control" name="ofw_mname" placeholder="Santos" value="{{ old('ofw_mname') }}">
+              <input type="text" class="form-control uppercase" name="ofw_mname" placeholder="Santos" value="{{ old('ofw_mname') }}">
             </div>
           </div>
 
@@ -187,7 +201,7 @@
 
             <div class="col-md-4">
               <label class="form-label">Passport No.</label>
-              <input type="text" class="form-control" name="ofw_passport_no" placeholder="ex. 123456789" value="{{ old('ofw_passport_no') }}" required>
+              <input type="text" class="form-control uppercase" name="ofw_passport_no" placeholder="ex. 123456789" value="{{ old('ofw_passport_no') }}" required>
             </div>
 
             <div class="col-6 col-md-4">
@@ -208,11 +222,11 @@
           <div class="row g-3 mb-3">
             <div class="col-6 col-md-3">
               <label class="form-label">Agency</label>
-              <input type="text" class="form-control" name="ofw_agency" placeholder="ex. Agency Name" value="{{ old('ofw_agency') }}" required>
+              <input type="text" class="form-control uppercase" name="ofw_agency" placeholder="ex. Agency Name" value="{{ old('ofw_agency') }}" required>
             </div>
             <div class="col-6 col-md-3">
               <label class="form-label">Employer</label>
-              <input type="text" class="form-control" name="ofw_employer" placeholder="ex. Employer/Company Name" value="{{ old('ofw_employer') }}" required>
+              <input type="text" class="form-control uppercase" name="ofw_employer" placeholder="ex. Employer/Company Name" value="{{ old('ofw_employer') }}" required>
             </div>
             <div class="col-6 col-md-3">
               <label class="form-label">Bansa</label>
@@ -223,7 +237,7 @@
             </div>
             <div class="col-6 col-md-3">
               <label class="form-label">Trabaho</label>
-              <input type="text" class="form-control" name="ofw_job" placeholder="ex. Driver" value="{{ old('ofw_job') }}" required>
+              <input type="text" class="form-control uppercase" name="ofw_job" placeholder="ex. Driver" value="{{ old('ofw_job') }}" required>
             </div>
           </div>
       </div>
@@ -411,12 +425,42 @@
         <button type="submit" class="btn btn-success btn-lg fw-bold" style="background-color: #2d7a2d; border-color: #2d7a2d;">Next</button>
       </div>
     </form>
+
+    <!-- Validation Modal -->
+    <div class="modal fade" id="validationModal" tabindex="-1" aria-labelledby="validationModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header" style="background-color: #2F5BB7; color: white;">
+            <h5 class="modal-title text-uppercase" id="validationModalLabel">REQUIRED FIELD MISSING!</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <!-- Modal Body -->
+          <div class="modal-body">
+            Please select at least one concern under Nature of Request (Section C) to proceed.
+          </div>
+
+          <!-- Modal Footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" 
+                    style="background-color: #2F5BB7; border: none;">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> -->
 
   <script>
+
+    document.querySelectorAll('.uppercase').forEach(input => {
+        input.addEventListener('input', function() {
+            this.value = this.value.toUpperCase();
+        });
+    });
     window.toggleTextbox = function(textboxId, isChecked) {
         const textbox = document.getElementById(textboxId);
         if (isChecked) {
@@ -488,6 +532,7 @@
         window.toggleAssistanceOthers();
     }
 
+    
 
     document.addEventListener('DOMContentLoaded', function() {
         const provinceSelect = document.getElementById('province');
@@ -496,9 +541,9 @@
         const countrySelect = document.getElementById('country');
 
         function resetSelect(selectEl, text) {
-        selectEl.innerHTML = `<option selected disabled>${text}</option>`;
-        selectEl.disabled = true;
-      }
+          selectEl.innerHTML = `<option selected disabled>${text}</option>`;
+          selectEl.disabled = true;
+        }
 
       function populateSelect(selectEl, items, valueKey, labelKey) {
         const defaultText = selectEl === provinceSelect
@@ -629,63 +674,98 @@
         });
 
         provinceSelect.addEventListener('change', function() {
-        const provinceCode = this.value;
-        const provinceName = this.options[this.selectedIndex].text;
-        document.getElementById('province_name').value = provinceName;
-        
-        resetSelect(municipalitySelect, 'Loading municipalities...');
-        resetSelect(barangaySelect, 'Barangay');
+          const provinceCode = this.value;
+          const provinceName = this.options[this.selectedIndex].text;
+          document.getElementById('province_name').value = provinceName;
 
-        if (!provinceCode) {
-            resetSelect(municipalitySelect, 'City / Municipality');
-            return;
-        }
+          let selectedProvince = "{{ session('formData.province') }}";
+          
+          resetSelect(municipalitySelect, 'Loading municipalities...');
+          resetSelect(barangaySelect, 'Barangay');
 
-        fetch(`https://psgc.gitlab.io/api/provinces/${provinceCode}/cities-municipalities/`)
-            .then(response => response.json())
-            .then(data => {
-            if (!Array.isArray(data) || !data.length) {
-                throw new Error('No municipalities found');
-            }
-            populateSelect(municipalitySelect, data, 'code', 'name');
-            })
-            .catch(error => {
-            console.error('Error fetching municipalities:', error);
-            resetSelect(municipalitySelect, 'City / Municipality');
-            });
-        });
+          if (!provinceCode) {
+              resetSelect(municipalitySelect, 'City / Municipality');
+              return;
+          }
 
-        municipalitySelect.addEventListener('change', function() {
-        const cityCode = this.value;
-        const cityName = this.options[this.selectedIndex].text;
-        document.getElementById('municipality_name').value = cityName;
-        
-        resetSelect(barangaySelect, 'Loading barangays...');
+          if(selectedProvince){
+              document.getElementById('province').value = selectedProvince;
+          }
 
-        if (!cityCode) {
-            resetSelect(barangaySelect, 'Barangay');
-            return;
-        }
+          fetch(`https://psgc.gitlab.io/api/provinces/${provinceCode}/cities-municipalities/`)
+              .then(response => response.json())
+              .then(data => {
+              if (!Array.isArray(data) || !data.length) {
+                  throw new Error('No municipalities found');
+              }
+              populateSelect(municipalitySelect, data, 'code', 'name');
+              })
+              .catch(error => {
+              console.error('Error fetching municipalities:', error);
+              resetSelect(municipalitySelect, 'City / Municipality');
+              });
+          });
 
-        fetch(`https://psgc.gitlab.io/api/cities-municipalities/${cityCode}/barangays/`)
-            .then(response => response.json())
-            .then(data => {
-            if (!Array.isArray(data) || !data.length) {
-                throw new Error('No barangays found');
-            }
-            populateSelect(barangaySelect, data, 'code', 'name');
-            })
-            .catch(error => {
-            console.error('Error fetching barangays:', error);
-            resetSelect(barangaySelect, 'Barangay');
-            });
+          municipalitySelect.addEventListener('change', function() {
+          const cityCode = this.value;
+          const cityName = this.options[this.selectedIndex].text;
+          document.getElementById('municipality_name').value = cityName;
+          
+          resetSelect(barangaySelect, 'Loading barangays...');
+
+          if (!cityCode) {
+              resetSelect(barangaySelect, 'Barangay');
+              return;
+          }
+
+          fetch(`https://psgc.gitlab.io/api/cities-municipalities/${cityCode}/barangays/`)
+              .then(response => response.json())
+              .then(data => {
+              if (!Array.isArray(data) || !data.length) {
+                  throw new Error('No barangays found');
+              }
+              populateSelect(barangaySelect, data, 'code', 'name');
+              })
+              .catch(error => {
+              console.error('Error fetching barangays:', error);
+              resetSelect(barangaySelect, 'Barangay');
+              });
         });
 
         // Sync barangay name when selected
         barangaySelect.addEventListener('change', function() {
-        const barangayName = this.options[this.selectedIndex].text;
-        document.getElementById('barangay_name').value = barangayName;
+    const barangayCode = this.value;
+    const barangayName = this.options[this.selectedIndex].text;
+
+    document.getElementById('barangay_name').value = barangayName;
+
+    const zipInput = document.querySelector('input[name="zip_code"]');
+
+    if (zipMap[barangayCode]) {
+        zipInput.value = zipMap[barangayCode];
+    } else {
+        zipInput.value = ""; // fallback if unknown
+    }
+});
+
+        document.querySelector('form').addEventListener('submit', function(e) {
+            // Select all checkboxes inside Section C
+            const checkboxes = document.querySelectorAll('.form-section input[type="checkbox"]');
+            let isChecked = false;
+
+            checkboxes.forEach(cb => {
+                if (cb.checked) isChecked = true;
+            });
+
+            if (!isChecked) {
+                e.preventDefault(); // Prevent form submission
+
+                // Show the Bootstrap modal
+                const validationModal = new bootstrap.Modal(document.getElementById('validationModal'));
+                validationModal.show();
+            }
         });
+
     });
 
 
