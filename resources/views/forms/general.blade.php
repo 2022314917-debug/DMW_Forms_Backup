@@ -85,11 +85,11 @@
             <div class="col-md-3">
               <label class="form-label">Last Name</label>
               <!-- <input type="text" class="form-control uppercase" name="party_lname" placeholder="Dela Cruz" value="{{ old('party_lname') }}" required> -->
-              <input type="text" class="form-control uppercase" name="party_lname" placeholder="Dela Cruz" value="{{ session('general_form_data.party_lname') }}" required>
+              <input type="text" class="form-control uppercase" name="party_lname" placeholder="Dela Cruz" value="{{ session('general_form_data.party_lname') }}">
             </div>
             <div class="col-md-3">
               <label class="form-label">First Name</label>
-              <input type="text" class="form-control uppercase" name="party_fname" placeholder="Juan" value="{{ session('general_form_data.party_fname') }}" required>
+              <input type="text" class="form-control uppercase" name="party_fname" placeholder="Juan" value="{{ session('general_form_data.party_fname') }}">
             </div>
             <div class="col-md-2">
               <label class="form-label">Name Ext.</label>
@@ -105,13 +105,13 @@
 
             <div class="col-6 col-md-3">
               <label class="form-label">Birthday</label>
-              <input type="date" class="form-control" name="party_bday" value="{{ session('general_form_data.party_bday') }}" required>
+              <input type="date" class="form-control" name="party_bday" value="{{ session('general_form_data.party_bday') }}">
             </div>
 
             <div class="col-6 col-md-3">
               <label class="form-label">Sex</label>
-              <select class="form-select" name="party_gender" required>
-                <option value="">Select</option>
+              <select class="form-select" name="party_gender">
+                <option selected disabled>Select</option>
                 <option value="Male" {{ session('general_form_data.party_gender') == 'Male' ? 'selected' : '' }}>Male</option>
                 <option value="Female" {{ session('general_form_data.party_gender') == 'Female' ? 'selected' : '' }}>Female</option>
               </select>
@@ -119,7 +119,7 @@
 
             <div class="col-md-6">
               <label class="form-label">Relationship to OFW</label>
-              <input type="text" class="form-control uppercase" name="party_relationship" placeholder="ex. Brother" value="{{ session('general_form_data.party_relationship') }}" required>
+              <input type="text" class="form-control uppercase" name="party_relationship" placeholder="ex. Brother" value="{{ session('general_form_data.party_relationship') }}">
             </div>
 
           </div>
@@ -127,48 +127,48 @@
           <div class="row g-3 mb-3">
             <div class="col-md-6">
               <label class="form-label">Contact Number</label>
-              <input type="text" class="form-control" name="party_phone" placeholder="ex. 09123456768" value="{{ session('general_form_data.party_phone') }}" required>
+              <input type="text" class="form-control" name="party_phone" placeholder="ex. 09123456768" value="{{ session('general_form_data.party_phone') }}">
             </div>
             <div class="col-md-6">
               <label class="form-label">Email Address</label>
-              <input type="email" class="form-control" name="party_email" placeholder="ex. sample@email.com" value="{{ session('general_form_data.party_email') }}" required>
+              <input type="email" class="form-control" name="party_email" placeholder="ex. sample@email.com" value="{{ session('general_form_data.party_email') }}">
             </div>
           </div>
 
           <div class="mb-3">
             <label class="form-label">Address in the Philippines</label>
-            <input type="text" class="form-control mb-2 uppercase" name="party_address_street" placeholder="Unit/Room/House Number/Street name" value="{{ session('general_form_data.party_address_street') }}" required>
+            <input type="text" class="form-control mb-2 uppercase" name="party_address_street" placeholder="Unit/Room/House Number/Street name" value="{{ session('general_form_data.party_address_street') }}">
             <div class="row g-3">
               <div class="col-6 col-md-3">
-                <select class="form-select" name="province" id="province" required>
+                <select class="form-select" name="party_province" id="party_province">
                   <option value="">Province</option>
                 </select>
-                <input type="hidden" name="province_name" id="province_name">
+                <input type="hidden" name="party_province_name" id="party_province_name">
               </div>
               <div class="col-6 col-md-3">
-                <select class="form-select" name="municipality" id="municipality" disabled required>
+                <select class="form-select" name="party_municipality" id="party_municipality" disabled>
                   <option value="">City / Municipality</option>
                 </select>
-                <input type="hidden" name="municipality_name" id="municipality_name">
+                <input type="hidden" name="party_municipality_name" id="party_municipality_name">
               </div>
               <div class="col-6 col-md-3">
-                <select class="form-select" name="barangay" id="barangay" disabled required>
+                <select class="form-select" name="party_barangay" id="party_barangay" disabled>
                   <option value="">Barangay</option>
                 </select>
-                <input type="hidden" name="barangay_name" id="barangay_name">
+                <input type="hidden" name="party_barangay_name" id="party_barangay_name" value="{{ session('general_form_data.party_barangay_name') }}">
               </div>
               <div class="col-6 col-md-3">
                 <input 
                     type="text" 
                     class="form-control" 
-                    name="zip_code" 
+                    name="party_zip_code" 
                     placeholder="ex. 2016" 
-                    value="{{ old('zip_code') }}" 
+                    value="{{ session('general_form_data.party_zip_code') }}" 
                     maxlength="4"          
                     pattern="\d{4}"         
                     inputmode="numeric"     
                     oninput="this.value = this.value.replace(/[^0-9]/g,'').slice(0,4);" 
-                    required
+                    
                 >
               </div>
             </div>
@@ -181,69 +181,132 @@
           <div class="row g-3 mb-3">
             <div class="col-md-3">
               <label class="form-label">Last Name</label>
-              <input type="text" class="form-control uppercase" name="ofw_lname" placeholder="Dela Cruz" value="{{ old('ofw_lname') }}" required>
+              <input type="text" class="form-control uppercase" name="ofw_lname" placeholder="Dela Cruz" value="{{ session('general_form_data.ofw_lname') }}">
             </div>
             <div class="col-md-3">
               <label class="form-label">First Name</label>
-              <input type="text" class="form-control uppercase" name="ofw_fname" placeholder="Juan" value="{{ old('ofw_fname') }}" required>
+              <input type="text" class="form-control uppercase" name="ofw_fname" placeholder="Juan" value="{{ session('general_form_data.ofw_fname') }}">
             </div>
             <div class="col-md-2">
               <label class="form-label">Name Ext.</label>
-              <input type="text" class="form-control uppercase" name="ofw_ename" placeholder="Jr/Sr/III" value="{{ old('ofw_ename') }}">
+              <input type="text" class="form-control uppercase" name="ofw_ename" placeholder="Jr/Sr/III" value="{{ session('general_form_data.ofw_ename') }}">
             </div>
             <div class="col-md-4">
               <label class="form-label">Middle Name</label>
-              <input type="text" class="form-control uppercase" name="ofw_mname" placeholder="Santos" value="{{ old('ofw_mname') }}">
+              <input type="text" class="form-control uppercase" name="ofw_mname" placeholder="Santos" value="{{ session('general_form_data.ofw_mname') }}">
             </div>
           </div>
 
           <div class="row g-3 mb-3">
 
-            <div class="col-md-4">
+            <div class="col-12 col-md-4">
               <label class="form-label">Passport No.</label>
-              <input type="text" class="form-control uppercase" name="ofw_passport_no" placeholder="ex. 123456789" value="{{ old('ofw_passport_no') }}" required>
+              <input type="text" class="form-control uppercase" name="ofw_passport_no" placeholder="ex. 123456789" value="{{ session('general_form_data.ofw_passport_no') }}">
             </div>
 
             <div class="col-6 col-md-4">
               <label class="form-label">Sex</label>
-              <select class="form-select" name="ofw_gender" required>
-                <option value="">Select</option>
-                <option value="Male" {{ old('ofw_gender') == 'Male' ? 'selected' : '' }}>Male</option>
-                <option value="Female" {{ old('ofw_gender') == 'Female' ? 'selected' : '' }}>Female</option>
+              <select class="form-select" name="ofw_gender">
+                <option selected disabled>Select</option>
+                <option value="Male" {{ session('general_form_data.ofw_gender') == 'Male' ? 'selected' : '' }}>Male</option>
+                <option value="Female" {{ session('general_form_data.ofw_gender') == 'Female' ? 'selected' : '' }}>Female</option>
               </select>
             </div>
 
             <div class="col-6 col-md-4">
+                <label class="form-label">Civil Status</label>
+                <select class="form-select" name="ofw_civil_status">
+                    <option selected {{ session('general_form_data.ofw_civil_status') == 'Select' ? 'selected' : '' }} disabled>Select</option>
+                    <option value="Single" {{ session('general_form_data.ofw_civil_status') == 'Single' ? 'selected' : '' }}>Single</option>
+                    <option value="Married" {{ session('general_form_data.ofw_civil_status') == 'Married' ? 'selected' : '' }}>Married</option>
+                    <option value="Widowed" {{ session('general_form_data.ofw_civil_status') == 'Widowed' ? 'selected' : '' }}>Widowed</option>
+                </select>
+            </div>
+
+          </div>
+
+          <div class="row g-3 mb-3">
+
+            <div class="col-12 col-md-4">
+              <label class="form-label">Email Address</label>
+              <input type="email" class="form-control" name="ofw_email" placeholder="ex. sample@email.com" value="{{ session('general_form_data.ofw_email') }}">
+            </div>
+
+            <div class="col-6 col-md-4">
+              <label class="form-label">Contact Number</label>
+              <input type="text" class="form-control" name="ofw_phone" placeholder="ex. 09123456768" value="{{ session('general_form_data.ofw_phone') }}">
+            </div>
+              
+            <div class="col-6 col-md-4">
               <label class="form-label">Date of Birth</label>
-              <input type="date" class="form-control" name="ofw_bday" value="{{ old('ofw_bday') }}" required>
+              <input type="date" class="form-control" name="ofw_bday" value="{{ session('general_form_data.ofw_bday') }}">
             </div>
           </div>
 
           <div class="row g-3 mb-3">
-            <div class="col-6 col-md-3">
+            <div class="col-12 col-md-3">
               <label class="form-label">Agency</label>
-              <input type="text" class="form-control uppercase" name="ofw_agency" placeholder="ex. Agency Name" value="{{ old('ofw_agency') }}" required>
+              <input type="text" class="form-control uppercase" name="ofw_agency" placeholder="ex. Agency Name" value="{{ session('general_form_data.ofw_agency') }}">
             </div>
-            <div class="col-6 col-md-3">
+            <div class="col-12 col-md-3">
               <label class="form-label">Employer</label>
-              <input type="text" class="form-control uppercase" name="ofw_employer" placeholder="ex. Employer/Company Name" value="{{ old('ofw_employer') }}" required>
+              <input type="text" class="form-control uppercase" name="ofw_employer" placeholder="ex. Employer/Company Name" value="{{ session('general_form_data.ofw_employer') }}">
             </div>
             <div class="col-6 col-md-3">
               <label class="form-label">Bansa</label>
-              <select class="form-select" name="ofw_country" id="country" required>
-                <option value="">Select</option>
+              <select class="form-select" name="ofw_country" id="ofw_country">
+                <option selected disabled>Select</option>
               </select>
-              <input type="hidden" name="ofw_country_name" id="country_name">
+              <input type="hidden" name="ofw_country_name" id="ofw_country_name">
             </div>
             <div class="col-6 col-md-3">
               <label class="form-label">Trabaho</label>
-              <input type="text" class="form-control uppercase" name="ofw_job" placeholder="ex. Driver" value="{{ old('ofw_job') }}" required>
+              <input type="text" class="form-control uppercase" name="ofw_job" placeholder="ex. Driver" value="{{ session('general_form_data.ofw_job') }}">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Address in the Philippines</label>
+            <input type="text" class="form-control mb-2 uppercase" name="ofw_address_street" placeholder="Unit/Room/House Number/Street name" value="{{ session('general_form_data.party_address_street') }}">
+            <div class="row g-3">
+              <div class="col-6 col-md-3">
+                <select class="form-select" name="ofw_province" id="ofw_province">
+                  <option value="">Province</option>
+                </select>
+                <input type="hidden" name="ofw_province_name" id="ofw_province_name">
+              </div>
+              <div class="col-6 col-md-3">
+                <select class="form-select" name="ofw_municipality" id="ofw_municipality" disabled>
+                  <option value="">City / Municipality</option>
+                </select>
+                <input type="hidden" name="ofw_municipality_name" id="ofw_municipality_name">
+              </div>
+              <div class="col-6 col-md-3">
+                <select class="form-select" name="ofw_barangay" id="ofw_barangay" disabled>
+                  <option value="">Barangay</option>
+                </select>
+                <input type="hidden" name="ofw_barangay_name" id="ofw_barangay_name" value="{{ session('general_form_data.ofw_barangay_name') }}">
+              </div>
+              <div class="col-6 col-md-3">
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    name="ofw_zip_code" 
+                    placeholder="ex. 2016" 
+                    value="{{ session('general_form_data.ofw_zip_code') }}" 
+                    maxlength="4"          
+                    pattern="\d{4}"         
+                    inputmode="numeric"     
+                    oninput="this.value = this.value.replace(/[^0-9]/g,'').slice(0,4);" 
+
+                >
+              </div>
             </div>
           </div>
       </div>
 
       <!-- Section C -->
-      <div class="form-section">
+      <div class="form-section form-section-c">
         <h5>C. URI NG TULONG (Nature Of Request)</h5>
         <p style="font-size: 0.9rem; margin-bottom: 1rem;">
           <strong>Halagi o Naturang ng Concern:</strong> Piliin ang lahat ng bagay na sumusunod halaki handi siguruduhin sa uring <em>Concern, Pakialam ng aming PAOs information na nakahintay sa Applicant sa lahat ng impormasyon Dept. Applicant sa nakahihintay tumutulong upang makabuo at dibhiyon pura at pa maiggi oras.</em>
@@ -254,12 +317,12 @@
             
             <div class="mb-2">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="ofw_info_sheet_mwpd" name="mwpd[]" value="ofw_info_sheet_mwpd">
+                <input class="form-check-input" type="checkbox" id="ofw_info_sheet_mwpd" name="mwpd[]" value="ofw_info_sheet_mwpd" {{ in_array('ofw_info_sheet_mwpd', session('general_form_data.mwpd', [])) ? 'checked' : '' }}>
                 <label class="form-check-label" for="ofw_info_sheet_mwpd">OFW Records/OFW Information Sheet</label>
               </div>
             </div>
 
-            <div class="mb-2">
+            <!-- <div class="mb-2">
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="oec_processing" name="mwpd[]" value="oec_processing" disabled>
                 <label class="form-check-label" for="oec_processing">Direct-Hire OEC processing concerns</label>
@@ -306,14 +369,14 @@
                 <label class="form-check-label" for="other_concerns_mwpd">Other Concerns</label>
               </div>
               <input type="text" class="form-control" id="other_concerns_mwpd_text" name="other_concerns_mwpd_text" placeholder="Specify other concerns" style="margin-top: 0.25rem; padding-left: 1.5rem;" readonly>
-            </div>
+            </div> -->
           </div>
 
           <!-- WELFARE AND REINTEGRATION SERVICES DIVISION -->
           <div style="border: 1px solid #b0c4de; border-radius: 0.25rem; padding: 0.75rem; margin-bottom: 1rem; background-color: #e8f1fb;">
             <h6 style="font-weight: bold; margin-bottom: 0.75rem; text-decoration: underline;">WELFARE AND REINTEGRATION SERVICES DIVISION</h6>
             
-            <div class="mb-2">
+            <!-- <div class="mb-2">
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="reint_serv" name="wrsd[]" value="reint_serv" onchange="toggleTextbox('reint_serv_text', this.checked)" disabled>
                 <label class="form-check-label" for="reint_serv">Reintegration Services:</label>
@@ -351,22 +414,22 @@
                 <input class="form-check-input" type="checkbox" id="repatriation" name="wrsd[]" value="repatriation" disabled>
                 <label class="form-check-label" for="repatriation">Repatriation</label>
               </div>
-            </div>
+            </div> -->
 
             <div class="mb-2">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="aksyon" name="wrsd[]" value="aksyon">
+                <input class="form-check-input" type="checkbox" id="aksyon" name="wrsd[]" value="aksyon" {{ in_array('aksyon', session('general_form_data.wrsd', [])) ? 'checked' : '' }}>
                 <label class="form-check-label" for="aksyon">Financial Assistance through AKSYON fund</label>
               </div>
             </div>
 
-            <div class="mb-2">
+            <!-- <div class="mb-2">
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="other_concerns_wrsd" name="wrsd[]" value="others" onchange="toggleTextbox('other_concerns_wrsd_text', this.checked)" disabled>
                 <label class="form-check-label" for="other_concerns_wrsd">Others</label>
               </div>
               <input type="text" class="form-control" id="other_concerns_wrsd_text" name="other_concerns_wrsd_text" placeholder="Specify other concerns" style="margin-top: 0.25rem; padding-left: 1.5rem;" readonly>
-            </div>
+            </div> -->
           </div>
 
           <!-- MIGRANT WORKERS PROTECTION DIVISION -->
@@ -375,19 +438,19 @@
             
             <div class="mb-2">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="ofw_info_sheet_mwpd_protection" name="mwpd_protection[]" value="ofw_info_sheet_mwpd_protection">
+                <input class="form-check-input" type="checkbox" id="ofw_info_sheet_mwpd_protection" name="mwpd_protection[]" value="ofw_info_sheet_mwpd_protection" {{ in_array('ofw_info_sheet_mwpd_protection', session('general_form_data.mwpd_protection', [])) ? 'checked' : '' }}>
                 <label class="form-check-label" for="ofw_info_sheet_mwpd_protection">Request for OFW Information Sheet for legal purposes</label>
               </div>
             </div>
 
             <div class="mb-2">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="sena" name="mwpd_protection[]" value="sena">
+                <input class="form-check-input" type="checkbox" id="sena" name="mwpd_protection[]" value="sena" {{ in_array('sena', session('general_form_data.mwpd_protection', [])) ? 'checked' : '' }}>
                 <label class="form-check-label" for="sena">Request for Assistance for SEnA/Conciliation</label>
               </div>
             </div>
 
-            <div class="mb-2">
+            <!-- <div class="mb-2">
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="legal_assistance" name="mwpd_protection[]" value="legal_assistance" disabled>
                 <label class="form-check-label" for="legal_assistance">Request for legal assistance/counseling</label>
@@ -415,7 +478,7 @@
               </div>
               <input type="text" class="form-control" id="other_concerns_mwpd_protection_text" name="other_concerns_mwpd_protection_text" placeholder="Specify other concerns" style="margin-top: 0.25rem; padding-left: 1.5rem;" readonly>
             </div>
-          </div>
+          </div> -->
 
 
         
@@ -535,106 +598,155 @@
     
 
     document.addEventListener('DOMContentLoaded', function() {
-        const provinceSelect = document.getElementById('province');
-        const municipalitySelect = document.getElementById('municipality');
-        const barangaySelect = document.getElementById('barangay');
-        const countrySelect = document.getElementById('country');
+        const partyProvinceSelect = document.getElementById('party_province');
+        const partyMunicipalitySelect = document.getElementById('party_municipality');
+        const partyBarangaySelect = document.getElementById('party_barangay');
+
+        const countrySelect = document.getElementById('ofw_country');
+
+        const oldProvince = "{{ session('general_form_data.party_province') }}";
+        const oldMunicipality = "{{ session('general_form_data.party_municipality') }}";
+        const oldBarangay = "{{ session('general_form_data.party_barangay') }}";
+        const oldCountry = "{{ session('general_form_data.ofw_country') }}";
 
         function resetSelect(selectEl, text) {
-          selectEl.innerHTML = `<option selected disabled>${text}</option>`;
-          selectEl.disabled = true;
+            selectEl.innerHTML = '';
+            
+            const option = document.createElement('option');
+            option.value = '';
+            option.textContent = text;
+            option.selected = true;
+            
+            selectEl.appendChild(option);
+            selectEl.disabled = true;
         }
 
       function populateSelect(selectEl, items, valueKey, labelKey) {
-        const defaultText = selectEl === provinceSelect
-            ? 'Province'
-            : selectEl === municipalitySelect
-            ? 'City / Municipality'
-            : selectEl === barangaySelect
-            ? 'Barangay'
-            : 'Select';
+          const defaultText = selectEl === partyProvinceSelect
+              ? 'Province'
+              : selectEl === partyMunicipalitySelect
+              ? 'City / Municipality'
+              : selectEl === partyBarangaySelect
+              ? 'Barangay'
+              : 'Select';
 
-        resetSelect(selectEl, defaultText);
-        items.forEach(item => {
-          const option = document.createElement('option');
-          option.value = item[valueKey];
-          option.textContent = item[labelKey];
-          selectEl.appendChild(option);
-        });
-        selectEl.disabled = false;
-        }
+          resetSelect(selectEl, defaultText);
+          items.forEach(item => {
+            const option = document.createElement('option');
+            option.value = item[valueKey];
+            option.textContent = item[labelKey];
+            selectEl.appendChild(option);
+          });
+          selectEl.disabled = false;
 
-        resetSelect(provinceSelect, 'Loading provinces...');
-        resetSelect(municipalitySelect, 'City / Municipality');
-        resetSelect(barangaySelect, 'Barangay');
-        resetSelect(countrySelect, 'Loading countries...');
+          if(selectEl === partyProvinceSelect && oldProvince){
+              selectEl.value = oldProvince;
+              selectEl.dispatchEvent(new Event('change'));
+          }
 
-        // Load country list from first.org (free, no payment, good CORS)
-    //   console.log('Loading countries from first.org API...');
-        fetch('https://api.first.org/data/v1/countries?limit=250')
-        .then(response => {
-            if (!response.ok) {
-            throw new Error(`Country API status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (!data || !data.data) {
-            throw new Error('No countries found');
-            }
+          if(selectEl === partyMunicipalitySelect && oldMunicipality){
+              selectEl.value = oldMunicipality;
+              selectEl.dispatchEvent(new Event('change'));
+          }
 
-            const countries = Object.entries(data.data)
-            .map(([code, value]) => {
-                let name = (value.country || '').trim();
+          if(selectEl === partyBarangaySelect && oldBarangay){
+              selectEl.value = oldBarangay;
+          }
 
-                // Normalize to remove parentheses/annotations and reduce to base country name
-                // Examples: "Congo (the Democratic Republic of the)" => "Congo"
-                //           "the Bahamas" => "Bahamas"
-                //           "(French Southern Territories)" => "French Southern Territories"
-                name = name.replace(/\s*\(.*?\)/g, '').trim();
-                name = name.replace(/^the\s+/i, '').trim();
-                name = name.replace(/\s{2,}/g, ' ').trim();
+          // ===================== OFW AUTO RESTORE =====================
+          if (selectEl === ofwProvinceSelect && oldOfwProvince) {
+              selectEl.value = oldOfwProvince;
+              selectEl.dispatchEvent(new Event('change'));
+          }
 
-                // If parentheses stripped to nothing, fallback to values from name fields
-                if (!name && value.name && typeof value.name === 'object') {
-                name = (value.name.common || value.name.official || '').trim();
-                }
+          if (selectEl === ofwMunicipalitySelect && oldOfwMunicipality) {
+              selectEl.value = oldOfwMunicipality;
+              selectEl.dispatchEvent(new Event('change'));
+          }
 
-                return { code: code.toUpperCase(), name };
-            })
-            .filter(c => c.code && c.name)
-            .reduce((acc, item) => {
-                // dedupe by normalized name
-                const found = acc.find(i => i.name.toLowerCase() === item.name.toLowerCase());
-                if (!found) acc.push(item);
-                return acc;
-            }, [])
-            .sort((a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' }));
+          if (selectEl === ofwBarangaySelect && oldOfwBarangay) {
+              selectEl.value = oldOfwBarangay;
+          }
+          if(selectEl === countrySelect && oldCountry){
+              selectEl.value = oldCountry;
 
-            if (!countries.length) {
-            throw new Error('No selectable countries found after mapping');
-            }
+              // also update hidden country name
+              const countryName = selectEl.options[selectEl.selectedIndex]?.text || '';
+              document.getElementById('ofw_country_name').value = countryName;
+          }
+      }
 
-        //   console.log(`Loaded ${countries.length} countries`);
-            populateSelect(countrySelect, countries, 'code', 'name');
-        })
-        .catch(error => {
-            console.error('Error fetching countries:', error);
-            const fallbackCountries = [
-            { code: 'PH', name: 'Philippines' },
-            { code: 'US', name: 'United States' },
-            { code: 'CA', name: 'Canada' },
-            { code: 'GB', name: 'United Kingdom' },
-            { code: 'AU', name: 'Australia' }
-            ];
-            console.warn('Using fallback country list');
-            populateSelect(countrySelect, fallbackCountries, 'code', 'name');
-        });
+          resetSelect(partyProvinceSelect, 'Loading provinces...');
+          resetSelect(partyMunicipalitySelect, 'City / Municipality');
+          resetSelect(partyBarangaySelect, 'Barangay');
+          resetSelect(countrySelect, 'Loading countries...');
 
-        // Sync country name when selected
-        countrySelect.addEventListener('change', function() {
-        const countryName = this.options[this.selectedIndex].text;
-        document.getElementById('country_name').value = countryName;
+          // Load country list from first.org (free, no payment, good CORS)
+      //   console.log('Loading countries from first.org API...');
+          fetch('https://api.first.org/data/v1/countries?limit=250')
+          .then(response => {
+              if (!response.ok) {
+              throw new Error(`Country API status: ${response.status}`);
+              }
+              return response.json();
+          })
+          .then(data => {
+              if (!data || !data.data) {
+              throw new Error('No countries found');
+              }
+
+              const countries = Object.entries(data.data)
+              .map(([code, value]) => {
+                  let name = (value.country || '').trim();
+
+                  // Normalize to remove parentheses/annotations and reduce to base country name
+                  // Examples: "Congo (the Democratic Republic of the)" => "Congo"
+                  //           "the Bahamas" => "Bahamas"
+                  //           "(French Southern Territories)" => "French Southern Territories"
+                  name = name.replace(/\s*\(.*?\)/g, '').trim();
+                  name = name.replace(/^the\s+/i, '').trim();
+                  name = name.replace(/\s{2,}/g, ' ').trim();
+
+                  // If parentheses stripped to nothing, fallback to values from name fields
+                  if (!name && value.name && typeof value.name === 'object') {
+                  name = (value.name.common || value.name.official || '').trim();
+                  }
+
+                  return { code: code.toUpperCase(), name };
+              })
+              .filter(c => c.code && c.name)
+              .reduce((acc, item) => {
+                  // dedupe by normalized name
+                  const found = acc.find(i => i.name.toLowerCase() === item.name.toLowerCase());
+                  if (!found) acc.push(item);
+                  return acc;
+              }, [])
+              .sort((a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' }));
+
+              if (!countries.length) {
+              throw new Error('No selectable countries found after mapping');
+              }
+
+          //   console.log(`Loaded ${countries.length} countries`);
+              populateSelect(countrySelect, countries, 'code', 'name');
+          })
+          .catch(error => {
+              console.error('Error fetching countries:', error);
+              const fallbackCountries = [
+              { code: 'PH', name: 'Philippines' },
+              { code: 'US', name: 'United States' },
+              { code: 'CA', name: 'Canada' },
+              { code: 'GB', name: 'United Kingdom' },
+              { code: 'AU', name: 'Australia' }
+              ];
+              console.warn('Using fallback country list');
+              populateSelect(countrySelect, fallbackCountries, 'code', 'name');
+          });
+
+          // Sync country name when selected
+          countrySelect.addEventListener('change', function() {
+          const countryName = this.options[this.selectedIndex].text;
+          document.getElementById('ofw_country_name').value = countryName;
         });
 
         const staticRegion3Provinces = [
@@ -662,34 +774,29 @@
 
             if (!region3Provinces.length) {
             console.warn('PSGC returned no Region 3 provinces, using static fallback');
-            populateSelect(provinceSelect, staticRegion3Provinces, 'code', 'name');
+            populateSelect(partyProvinceSelect, staticRegion3Provinces, 'code', 'name');
             return;
             }
 
-            populateSelect(provinceSelect, region3Provinces, 'code', 'name');
+            populateSelect(partyProvinceSelect, region3Provinces, 'code', 'name');
         })
         .catch(error => {
             console.error('Error fetching provinces:', error);
-            populateSelect(provinceSelect, staticRegion3Provinces, 'code', 'name');
+            populateSelect(partyProvinceSelect, staticRegion3Provinces, 'code', 'name');
         });
 
-        provinceSelect.addEventListener('change', function() {
+        partyProvinceSelect.addEventListener('change', function() {
           const provinceCode = this.value;
           const provinceName = this.options[this.selectedIndex].text;
-          document.getElementById('province_name').value = provinceName;
+          document.getElementById('party_province_name').value = provinceName;
 
-          let selectedProvince = "{{ session('formData.province') }}";
           
-          resetSelect(municipalitySelect, 'Loading municipalities...');
-          resetSelect(barangaySelect, 'Barangay');
+          resetSelect(partyMunicipalitySelect, 'Loading municipalities...');
+          resetSelect(partyBarangaySelect, 'Barangay');
 
           if (!provinceCode) {
-              resetSelect(municipalitySelect, 'City / Municipality');
+              resetSelect(partyMunicipalitySelect, 'City / Municipality');
               return;
-          }
-
-          if(selectedProvince){
-              document.getElementById('province').value = selectedProvince;
           }
 
           fetch(`https://psgc.gitlab.io/api/provinces/${provinceCode}/cities-municipalities/`)
@@ -698,23 +805,23 @@
               if (!Array.isArray(data) || !data.length) {
                   throw new Error('No municipalities found');
               }
-              populateSelect(municipalitySelect, data, 'code', 'name');
+              populateSelect(partyMunicipalitySelect, data, 'code', 'name');
               })
               .catch(error => {
               console.error('Error fetching municipalities:', error);
-              resetSelect(municipalitySelect, 'City / Municipality');
+              resetSelect(partyMunicipalitySelect, 'City / Municipality');
               });
           });
 
-          municipalitySelect.addEventListener('change', function() {
+          partyMunicipalitySelect.addEventListener('change', function() {
           const cityCode = this.value;
           const cityName = this.options[this.selectedIndex].text;
-          document.getElementById('municipality_name').value = cityName;
+          document.getElementById('party_municipality_name').value = cityName;
           
-          resetSelect(barangaySelect, 'Loading barangays...');
+          resetSelect(partyBarangaySelect, 'Loading barangays...');
 
           if (!cityCode) {
-              resetSelect(barangaySelect, 'Barangay');
+              resetSelect(partyBarangaySelect, 'Barangay');
               return;
           }
 
@@ -724,35 +831,140 @@
               if (!Array.isArray(data) || !data.length) {
                   throw new Error('No barangays found');
               }
-              populateSelect(barangaySelect, data, 'code', 'name');
+              populateSelect(partyBarangaySelect, data, 'code', 'name');
               })
               .catch(error => {
               console.error('Error fetching barangays:', error);
-              resetSelect(barangaySelect, 'Barangay');
+              resetSelect(partyBarangaySelect, 'Barangay');
               });
         });
 
         // Sync barangay name when selected
-        barangaySelect.addEventListener('change', function() {
-    const barangayCode = this.value;
-    const barangayName = this.options[this.selectedIndex].text;
+        partyBarangaySelect.addEventListener('change', function() {
+            const barangayCode = this.value;
+            const barangayName = this.options[this.selectedIndex].text;
 
-    document.getElementById('barangay_name').value = barangayName;
+            document.getElementById('party_barangay_name').value = barangayName;
 
-    const zipInput = document.querySelector('input[name="zip_code"]');
 
-    if (zipMap[barangayCode]) {
-        zipInput.value = zipMap[barangayCode];
-    } else {
-        zipInput.value = ""; // fallback if unknown
-    }
-});
+        });
+
+        const ofwProvinceSelect = document.getElementById('ofw_province');
+        const ofwMunicipalitySelect = document.getElementById('ofw_municipality');
+        const ofwBarangaySelect = document.getElementById('ofw_barangay');
+   
+
+        // Old values (for session restore)
+        const oldOfwProvince = "{{ session('general_form_data.ofw_province') }}";
+        const oldOfwMunicipality = "{{ session('general_form_data.ofw_municipality') }}";
+        const oldOfwBarangay = "{{ session('general_form_data.ofw_barangay') }}";
+
+        // Reset & populate already exist in your code, reuse them
+
+        // ===================== LOAD PROVINCES =====================
+        const staticRegion3ProvincesOFW = [
+            { code: '030800000', name: 'Bataan' },
+            { code: '031400000', name: 'Bulacan' },
+            { code: '034900000', name: 'Nueva Ecija' },
+            { code: '035400000', name: 'Pampanga' },
+            { code: '036900000', name: 'Tarlac' },
+            { code: '037100000', name: 'Zambales' },
+            { code: '037700000', name: 'Aurora' }
+        ];
+
+        fetch('https://psgc.gitlab.io/api/provinces/')
+            .then(res => res.json())
+            .then(data => {
+                const provinceData = Array.isArray(data)
+                    ? data
+                    : (Array.isArray(data.value) ? data.value : []);
+
+                const region3 = provinceData.filter(p =>
+                    p?.regionCode &&
+                    (p.regionCode === '030000000' || String(p.regionCode).startsWith('030'))
+                );
+
+                if (!region3.length) {
+                    populateSelect(ofwProvinceSelect, staticRegion3ProvincesOFW, 'code', 'name');
+                    return;
+                }
+
+                populateSelect(ofwProvinceSelect, region3, 'code', 'name');
+            })
+            .catch(err => {
+                console.error('OFW province error:', err);
+                populateSelect(ofwProvinceSelect, staticRegion3ProvincesOFW, 'code', 'name');
+            });
+
+        // ===================== PROVINCE CHANGE =====================
+        ofwProvinceSelect.addEventListener('change', function () {
+            const provinceCode = this.value;
+            const provinceName = this.options[this.selectedIndex].text;
+
+            document.getElementById('ofw_province_name').value = provinceName;
+
+            resetSelect(ofwMunicipalitySelect, 'Loading municipalities...');
+            resetSelect(ofwBarangaySelect, 'Barangay');
+
+            if (!provinceCode) {
+                resetSelect(ofwMunicipalitySelect, 'City / Municipality');
+                return;
+            }
+
+            fetch(`https://psgc.gitlab.io/api/provinces/${provinceCode}/cities-municipalities/`)
+                .then(res => res.json())
+                .then(data => {
+                    if (!Array.isArray(data) || !data.length) {
+                        throw new Error('No municipalities found');
+                    }
+                    populateSelect(ofwMunicipalitySelect, data, 'code', 'name');
+                })
+                .catch(err => {
+                    console.error('OFW municipality error:', err);
+                    resetSelect(ofwMunicipalitySelect, 'City / Municipality');
+                });
+        });
+
+        // ===================== MUNICIPALITY CHANGE =====================
+        ofwMunicipalitySelect.addEventListener('change', function () {
+            const cityCode = this.value;
+            const cityName = this.options[this.selectedIndex].text;
+
+            document.getElementById('ofw_municipality_name').value = cityName;
+
+            resetSelect(ofwBarangaySelect, 'Loading barangays...');
+
+            if (!cityCode) {
+                resetSelect(ofwBarangaySelect, 'Barangay');
+                return;
+            }
+
+            fetch(`https://psgc.gitlab.io/api/cities-municipalities/${cityCode}/barangays/`)
+                .then(res => res.json())
+                .then(data => {
+                    if (!Array.isArray(data) || !data.length) {
+                        throw new Error('No barangays found');
+                    }
+                    populateSelect(ofwBarangaySelect, data, 'code', 'name');
+                })
+                .catch(err => {
+                    console.error('OFW barangay error:', err);
+                    resetSelect(ofwBarangaySelect, 'Barangay');
+                });
+        });
+
+        // ===================== BARANGAY CHANGE =====================
+        ofwBarangaySelect.addEventListener('change', function () {
+            const barangayName = this.options[this.selectedIndex].text;
+            document.getElementById('ofw_barangay_name').value = barangayName;
+        });
+      
+
 
         document.querySelector('form').addEventListener('submit', function(e) {
-            // Select all checkboxes inside Section C
-            const checkboxes = document.querySelectorAll('.form-section input[type="checkbox"]');
             let isChecked = false;
-
+            // Select all checkboxes inside Section C
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
             checkboxes.forEach(cb => {
                 if (cb.checked) isChecked = true;
             });
@@ -767,10 +979,6 @@
         });
 
     });
-
-
-
-
 
 
   </script>

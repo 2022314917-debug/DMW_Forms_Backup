@@ -41,7 +41,7 @@
             @csrf
 
             <div class="sena-section">
-                <h5>Name of Requesting Party (Pangalan)</h5>
+                <h5>Name of OFW (Pangalan)</h5>
                 <div class="row g-3">
                     <div class="col-sm-6 col-md-3">
                         <label class="form-label">Last Name</label>
@@ -65,42 +65,45 @@
                     <label class="fw-bold">Complete Address</label>
                     <div class="">
                         <label class="form-label">House Number / Street</label>
-                        <input type="text" name="address" class="form-control" placeholder="Unit/Room/House Number/Street name">
+                        <input type="text" name="address" class="form-control disabled" value="{{ session('general_form_data.ofw_address_street') }}">
                     </div>
 
                     <div class="row mt-2">
                         <div class="col-6 col-md-3">
                             <label class="form-label">Province</label>
-                            <select id="province" name="province" class="form-select">
+                            <!-- <select id="province" name="province" class="form-select">
                                 <option selected disabled>Select</option>
-                            </select>
+                            </select> -->
+                            <input type="text" class="form-control disabled" name="ofw_province_name" id="ofw_province" value="{{ session('general_form_data.ofw_province') }}">
                         </div>
                         <div class="col-6 col-md-3">
                             <label class="form-label">City/Municipality</label>
-                            <select id="municipality" name="municipality" class="form-select" disabled>
+                            <!-- <select id="municipality" name="municipality" class="form-select" disabled>
                                 <option selected disabled>Select</option>
-                            </select>
+                            </select> -->
+                            <input type="text" class="form-control disabled" name="ofw_municipality_name" id="ofw_municipality" value="{{ session('general_form_data.ofw_municipality_name') }}">
                         </div>
                         <div class="col-6 col-md-3">
                             <label class="form-label">Barangay</label>
-                            <select id="barangay" name="barangay" class="form-select" disabled>
+                            <!-- <select id="barangay" name="barangay" class="form-select" disabled>
                                 <option selected disabled>Select</option>
-                            </select>
+                            </select> -->
+                            <input type="text" class="form-control disabled" name="ofw_barangay" id="ofw_barangay" value="{{ session('general_form_data.ofw_barangay_name') }}">
                         </div>
                         <div class="col-6 col-md-3">
                             <label class="form-label">Zip Code</label>
-                            <input type="text" name="zip_code" class="form-control" placeholder="ex. 2016">
+                            <input type="text" name="zip_code" class="form-control disabled" value="{{ session('general_form_data.ofw_zip_code') }}">
                         </div>
                     </div>
 
                     <div class="row g-3 mt-2">
                         <div class="col-md-6">
                             <label class="form-label">Contact Number</label>
-                            <input type="text" name="contact_number" class="form-control" placeholder="ex. 09123456768" value="{{ session('general_form_data.ofw_phone') }}">
+                            <input type="text" name="ofw_phone" class="form-control disabled" placeholder="ex. 09123456768" value="{{ session('general_form_data.ofw_phone') }}">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Email Address</label>
-                            <input type="email" name="email" class="form-control" placeholder="ex. sample@email.com" value="{{ session('general_form_data.ofw_email') }}">
+                            <input type="email" name="ofw_email" class="form-control disabled" placeholder="ex. sample@email.com" value="{{ session('general_form_data.ofw_email') }}">
                         </div>
                     </div>
                 </div>
@@ -115,9 +118,9 @@
                     <div class="col-6 col-md-4">
                         <label class="form-label">Deployment Status</label>
                         <select class="form-select" name="deployment_status">
-                            <option selected disabled>Select status</option>
-                            <option value="deployed">Deployed</option>
-                            <option value="not_deployed">Not Deployed</option>
+                            <option selected disabled {{ !session('forms.data.sena.deployment_status') ? 'selected' : '' }}>Select status</option>
+                            <option value="deployed" {{ session('forms.data.sena.deployment_status') === 'deployed' ? 'selected' : '' }}>Deployed</option>
+                            <option value="not_deployed" {{ session('forms.data.sena.deployment_status') === 'not_deployed' ? 'selected' : '' }}>Not Deployed</option>
                         </select>
                     </div>
 
@@ -135,7 +138,19 @@
                     <!-- Age -->
                     <div class="col-12 col-md-4">
                         <label class="form-label">Age</label>
-                        <input type="number" name="age" id="age" class="form-control" placeholder="Age">
+                        <!-- <input type="number" name="age" id="age" class="form-control" placeholder="Age"> -->
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            name="ofw_age" 
+                            placeholder="ex. 20" 
+                            value="{{ session('forms.data.sena.ofw_age') }}" 
+                            maxlength="2"          
+                            pattern="\d{2}"         
+                            inputmode="numeric"     
+                            oninput="this.value = this.value.replace(/[^0-9]/g,'').slice(0,2);" 
+
+                        >
                     </div>
 
                 </div>
@@ -147,71 +162,71 @@
                     <div class="checkbox-grid" style="grid-template-columns: repeat(2, 1fr);">
                         
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" value="Household Service">
+                            <input class="form-check-input" type="radio" name="nature_of_work" value="Household Service" {{ session('forms.data.sena.nature_of_work') == 'Household Service' ? 'checked' : '' }}>
                             <span class="form-check-label">Household Service</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" value="Seafarer">
+                            <input class="form-check-input" type="radio" name="nature_of_work" value="Seafarer" {{ session('forms.data.sena.nature_of_work') == 'Seafarer' ? 'checked' : '' }}>
                             <span class="form-check-label">Seafarer</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" value="Medical Professional">
+                            <input class="form-check-input" type="radio" name="nature_of_work" value="Medical Professional" {{ session('forms.data.sena.nature_of_work') == 'Medical Professional' ? 'checked' : '' }}>
                             <span class="form-check-label">Medical Professional</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" value="Offshore Worker">
+                            <input class="form-check-input" type="radio" name="nature_of_work" value="Offshore Worker" {{ session('forms.data.sena.nature_of_work') == 'Offshore Worker' ? 'checked' : '' }}>
                             <span class="form-check-label">Offshore Worker</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" value="Engineering Professional">
+                            <input class="form-check-input" type="radio" name="nature_of_work" value="Engineering Professional" {{ session('forms.data.sena.nature_of_work') == 'Engineering Professional' ? 'checked' : '' }}>
                             <span class="form-check-label">Engineering Professional</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" value="Construction Laborer">
+                            <input class="form-check-input" type="radio" name="nature_of_work" value="Construction Laborer" {{ session('forms.data.sena.nature_of_work') == 'Construction Laborer' ? 'checked' : '' }}>
                             <span class="form-check-label">Construction Laborer</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" value="Caregiver">
+                            <input class="form-check-input" type="radio" name="nature_of_work" value="Caregiver" {{ session('forms.data.sena.nature_of_work') == 'Caregiver' ? 'checked' : '' }}>
                             <span class="form-check-label">Caregiver</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" value="Plumber/Fitter">
+                            <input class="form-check-input" type="radio" name="nature_of_work" value="Plumber/Fitter" {{ session('forms.data.sena.nature_of_work') == 'Plumber/Fitter' ? 'checked' : '' }}>
                             <span class="form-check-label">Plumber/Fitter</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" value="Manufacturing Laborer">
+                            <input class="form-check-input" type="radio" name="nature_of_work" value="Manufacturing Laborer" {{ session('forms.data.sena.nature_of_work') == 'Manufacturing Laborer' ? 'checked' : '' }}>
                             <span class="form-check-label">Manufacturing Laborer</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" value="Welder/Cutter">
+                            <input class="form-check-input" type="radio" name="nature_of_work" value="Welder/Cutter" {{ session('forms.data.sena.nature_of_work') == 'Welder/Cutter' ? 'checked' : '' }}>
                             <span class="form-check-label">Welder/Cutter</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" value="Hotel Staff">
+                            <input class="form-check-input" type="radio" name="nature_of_work" value="Hotel Staff" {{ session('forms.data.sena.nature_of_work') == 'Hotel Staff' ? 'checked' : '' }}>
                             <span class="form-check-label">Hotel Staff</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" value="Cleaner/Helper">
+                            <input class="form-check-input" type="radio" name="nature_of_work" value="Cleaner/Helper" {{ session('forms.data.sena.nature_of_work') == 'Cleaner/Helper' ? 'checked' : '' }}>
                             <span class="form-check-label">Cleaner/Helper</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" value="Entertainer">
+                            <input class="form-check-input" type="radio" name="nature_of_work" value="Entertainer" {{ session('forms.data.sena.nature_of_work') == 'Entertainer' ? 'checked' : '' }}>
                             <span class="form-check-label">Entertainer</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" id="nature_other" name="nature_of_work[]" value="Others">
+                            <input class="form-check-input" type="radio" id="nature_other" name="nature_of_work" value="Others" {{ session('forms.data.sena.nature_of_work') == 'Others' ? 'checked' : '' }}>
                             <span class="form-check-label"><strong>Others, specify:</strong></span>
                         </label>
                         
                     </div>
                     <div style="grid-column: 2 / span 1; margin-top: 0.3rem;">
-                        <input type="text" name="nature_of_work_others" class="form-control" placeholder="Specify other nature of work" id="nature_other_text" disabled>
+                        <input type="text" name="nature_of_work_others" class="form-control" placeholder="Specify other nature of work" id="nature_other_text" disabled value="{{ session('forms.data.sena.nature_of_work') == 'Others' ? session('forms.data.sena.nature_of_work_others') : '' }}">
                     </div>
                 </div>
                 
@@ -224,7 +239,7 @@
                 <div class="row g-3 mb-3">
                     <div class="col-12 col-md-4">
                         <label class="form-label"><span class="d-none d-lg-inline">Jobsite/</span>Country of Deployment</label>
-                        <input type="text" name="jobsite_country" class="form-control" placeholder="ex. Dubai, UAE">
+                        <input type="text" name="ofw_country_name" class="form-control disabled" value="{{ session('general_form_data.ofw_country_name') }}">
                     </div>
 
                     <div class="col-6 col-md-4">
@@ -275,31 +290,6 @@
                     <label class="form-label mb-1">Agency Address</label>
                     <input type="text" name="agency_address" class="form-control" placeholder="Address (Opisina)">
                 </div>
-                <div class="row g-3 mb-3">
-                    <div class="col-sm-6 col-md-3">
-                        <label class="form-label mb-1">Province</label>
-                        <select id="agency_province" name="agency_province" class="form-select">
-                            <option selected disabled>Province</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-6 col-md-3">
-                        <label class="form-label mb-1">City/Municipality</label>
-                        <select id="agency_municipality" name="agency_municipality" class="form-select" disabled>
-                            <option selected disabled>City/Municipality</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-6 col-md-3">
-                        <label class="form-label mb-1">Barangay</label>
-                        <select id="agency_barangay" name="agency_barangay" class="form-select" disabled>
-                            <option selected disabled>Barangay</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-6 col-md-3">
-                        <label class="form-label mb-1">Zip Code</label>
-                        <input type="text" name="agency_zip_code" class="form-control" placeholder="ex. 2016">
-                    </div>
-                </div>
-
                 
 
                 <div class="row g-3 mb-3">
@@ -335,11 +325,6 @@
                     <input type="text" name="foreign_agency_address" class="form-control" placeholder="Address (Opisina)">
                 </div>
 
-
-                <div class="mb-3">
-                    <label class="form-label mb-1">Contact Person Name</label>
-                    <input type="text" name="agency_contact_person" class="form-control" placeholder="Contact Person (Taong Kakauapin)">
-                </div>
 
                 <div class="row g-3 mb-3">
 
@@ -513,12 +498,13 @@
             </div>
 
             <div class="d-flex justify-content-between mt-4">
-                <a href="{{ $previousStep ? url('/forms/step/' . $previousStep) : '#' }}"
-                class="btn btn-back {{ $previousStep ? '' : 'disabled' }}">
-                    ← BACK
-                </a>
+                <button type="submit" name="action" value="back"
+                    class="btn btn-back {{ $previousStep ? '' : 'disabled' }}">
+                        ← BACK
+                </button>
 
-                <button type="submit" class="btn btn-next">
+                <button type="submit" name="action" value="next"
+                        class="btn btn-next">
                     NEXT →
                 </button>
             </div>
@@ -526,151 +512,54 @@
     </div>
 
     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> -->
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const provinceSelect = document.getElementById('province');
-            const municipalitySelect = document.getElementById('municipality');
-            const barangaySelect = document.getElementById('barangay');
-            const agencyProvinceSelect = document.getElementById('agency_province');
-            const agencyMunicipalitySelect = document.getElementById('agency_municipality');
-            const agencyBarangaySelect = document.getElementById('agency_barangay');
 
-            function resetSelect(selectEl, text) {
-                selectEl.innerHTML = `<option selected disabled>${text}</option>`;
-                selectEl.disabled = true;
+        const natureRadios = document.querySelectorAll('input[name="nature_of_work"]');
+        const natureOther = document.getElementById('nature_other');
+        const natureOtherText = document.getElementById('nature_other_text');
+
+        function toggleOther() {
+            if (natureOther.checked) {
+                natureOtherText.disabled = false;
+            } else {
+                natureOtherText.disabled = true;
+                natureOtherText.value = '';
             }
+        }
 
-            function sortItems(items, labelKey) {
-                return [...items].sort((a, b) => {
-                    const aVal = String(a[labelKey] || '').toLowerCase();
-                    const bVal = String(b[labelKey] || '').toLowerCase();
-                    return aVal.localeCompare(bVal, undefined, { sensitivity: 'base' });
-                });
-            }
-
-            function populateSelect(selectEl, items, valueKey, labelKey, defaultText) {
-                const sorted = sortItems(items, labelKey);
-                resetSelect(selectEl, defaultText);
-                sorted.forEach(item => {
-                    const option = document.createElement('option');
-                    option.value = item[valueKey];
-                    option.textContent = item[labelKey];
-                    selectEl.appendChild(option);
-                });
-                selectEl.disabled = false;
-            }
-
-            function setupProvinceToCityToBarangay(provinceEl, municipalityEl, barangayEl) {
-                provinceEl.addEventListener('change', function() {
-                    const provinceCode = this.value;
-                    resetSelect(municipalityEl, 'Loading municipalities...');
-                    resetSelect(barangayEl, 'Barangay');
-                    if (!provinceCode) return;
-                    fetch(`https://psgc.gitlab.io/api/provinces/${provinceCode}/cities-municipalities/`)
-                        .then(r => r.json())
-                        .then(data => {
-                            if (Array.isArray(data) && data.length) {
-                                populateSelect(municipalityEl, data, 'code', 'name', 'City / Municipality');
-                            } else {
-                                resetSelect(municipalityEl, 'City / Municipality');
-                            }
-                        })
-                        .catch(() => resetSelect(municipalityEl, 'City / Municipality'));
-                });
-
-                municipalityEl.addEventListener('change', function() {
-                    const cityCode = this.value;
-                    resetSelect(barangayEl, 'Loading barangays...');
-                    if (!cityCode) return;
-                    fetch(`https://psgc.gitlab.io/api/cities-municipalities/${cityCode}/barangays/`)
-                        .then(r => r.json())
-                        .then(data => {
-                            if (Array.isArray(data) && data.length) {
-                                populateSelect(barangayEl, data, 'code', 'name', 'Barangay');
-                            } else {
-                                resetSelect(barangayEl, 'Barangay');
-                            }
-                        })
-                        .catch(() => resetSelect(barangayEl, 'Barangay'));
-                });
-            }
-
-            const staticRegion3Provinces = [
-                { code: '030800000', name: 'Bataan' },
-                { code: '031400000', name: 'Bulacan' },
-                { code: '034900000', name: 'Nueva Ecija' },
-                { code: '035400000', name: 'Pampanga' },
-                { code: '036900000', name: 'Tarlac' },
-                { code: '037100000', name: 'Zambales' },
-                { code: '037700000', name: 'Aurora' }
-            ];
-
-            resetSelect(provinceSelect, 'Loading provinces...');
-            resetSelect(municipalitySelect, 'City / Municipality');
-            resetSelect(barangaySelect, 'Barangay');
-            resetSelect(agencyProvinceSelect, 'Loading provinces...');
-            resetSelect(agencyMunicipalitySelect, 'City / Municipality');
-            resetSelect(agencyBarangaySelect, 'Barangay');
-
-            // Register cascading listeners for both sets
-            setupProvinceToCityToBarangay(provinceSelect, municipalitySelect, barangaySelect);
-            setupProvinceToCityToBarangay(agencyProvinceSelect, agencyMunicipalitySelect, agencyBarangaySelect);
-
-            fetch('https://psgc.gitlab.io/api/provinces/')
-                .then(resp => resp.json())
-                .then(data => {
-                    const provinceData = Array.isArray(data) ? data : Array.isArray(data.value) ? data.value : [];
-                    const region3 = provinceData.filter(p => p && (p.regionCode === '030000000' || String(p.regionCode).startsWith('030')));
-                    const provincesToUse = region3.length ? region3 : staticRegion3Provinces;
-                    populateSelect(provinceSelect, provincesToUse, 'code', 'name', 'Province');
-                    populateSelect(agencyProvinceSelect, provinceData, 'code', 'name', 'Province');
-                })
-                .catch(() => {
-                    populateSelect(provinceSelect, staticRegion3Provinces, 'code', 'name', 'Province');
-                    populateSelect(agencyProvinceSelect, staticRegion3Provinces, 'code', 'name', 'Province');
-                });
-
-            
-            const natureRadios = document.querySelectorAll('input[name="nature_of_work[]"]');
-            const natureOther = document.getElementById('nature_other');
-            const natureOtherText = document.getElementById('nature_other_text');
-
-            natureRadios.forEach(radio => {
-                radio.addEventListener('change', function () {
-                    if (natureOther.checked) {
-                        natureOtherText.disabled = false;
-                        natureOtherText.focus();
-                    } else {
-                        natureOtherText.disabled = true;
-                        natureOtherText.value = '';
-                    }
-                });
-            });
+        // Run on change
+        natureRadios.forEach(radio => {
+            radio.addEventListener('change', toggleOther);
         });
 
-        document.addEventListener("DOMContentLoaded", function () {
+        // Run on page load (IMPORTANT)
+        toggleOther();
+    });
 
-            // Get birthday from Laravel session
-            let bday = "{{ session('general_form_data.party_bday') }}";
+        // document.addEventListener("DOMContentLoaded", function () {
 
-            if (bday) {
-                let birthDate = new Date(bday);
-                let today = new Date();
+        //     // Get birthday from Laravel session
+        //     let bday = "{{ session('general_form_data.party_bday') }}";
 
-                let age = today.getFullYear() - birthDate.getFullYear();
-                let monthDiff = today.getMonth() - birthDate.getMonth();
+        //     if (bday) {
+        //         let birthDate = new Date(bday);
+        //         let today = new Date();
 
-                // adjust if birthday not yet reached this year
-                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-                    age--;
-                }
+        //         let age = today.getFullYear() - birthDate.getFullYear();
+        //         let monthDiff = today.getMonth() - birthDate.getMonth();
 
-                document.getElementById("age").value = age;
-                console.log(bday);
-            }
+        //         // adjust if birthday not yet reached this year
+        //         if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+        //             age--;
+        //         }
 
-        });
+        //         document.getElementById("age").value = age;
+        //         console.log(bday);
+        //     }
+
+        // });
     </script>
 @endsection

@@ -12,4 +12,9 @@ class Request_Form extends Model
         'division_id',
         'form_name'
     ];
+
+    public function fields()
+    {
+        return $this->hasMany(Request_Form_Field::class, 'request_form_id', 'id');
+    }
 }

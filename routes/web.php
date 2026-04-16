@@ -13,6 +13,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('users', [\App\Http\Controllers\UserController::class, 'index'])->name('users.index');
 //  GENERAL FORM ROUTES
 Route::get('forms', [\App\Http\Controllers\FormController::class, 'index'])->name('forms.index');
+Route::get('forms/dataprivacy', [\App\Http\Controllers\FormController::class, 'dataprivacy'])->name('forms.dataprivacy');
 Route::get('forms/general', [\App\Http\Controllers\FormController::class, 'generalForm'])->name('forms.general');
 Route::post('forms/general', [\App\Http\Controllers\FormController::class, 'storeGeneralForm'])->name('forms.general.store');
 
@@ -45,6 +46,9 @@ Route::get('/forms/requirements', [\App\Http\Controllers\FormController::class, 
 Route::get('/forms/step/{step}', [\App\Http\Controllers\FormController::class, 'showStep']);
 Route::post('/forms/step/{step}', [\App\Http\Controllers\FormController::class, 'storeStep']);
 
+Route::post('/forms/submit', [\App\Http\Controllers\FormController::class, 'submitAllForms'])->name('forms.submit.all');
+
+Route::get('forms/success', [\App\Http\Controllers\FormController::class, 'submissionSuccess'])->name('forms.success');
 
 Route::middleware('auth')->group(function () {
     Route::view('about', 'about')->name('about');
@@ -55,6 +59,22 @@ Route::middleware('auth')->group(function () {
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
     
+    Route::get('forms-submitted', [\App\Http\Controllers\SubmittedFormController::class, 'index'])
+        ->name('forms-submitted.index');
 
+    Route::get('forms-submitted/general', [\App\Http\Controllers\SubmittedFormController::class, 'generalFormSubmitted'])
+        ->name('forms-submitted.general');
+
+    // -------------------------------------------------------
+    // DYNAMIC ROUTES AFTER
+    // -------------------------------------------------------
+    Route::get('forms-submitted/request/{id}', [\App\Http\Controllers\SubmittedFormController::class, 'show'])
+        ->name('forms-submitted.show');
+
+    Route::get('forms-submitted/{requestId}/form/{formId}', [\App\Http\Controllers\SubmittedFormController::class, 'openForm'])
+        ->name('forms-submitted.open-form');
+
+    Route::get('forms-submitted/general', [\App\Http\Controllers\SubmittedFormController::class, 'generalFormSubmitted'])->name('forms-submitted.general');
+    Route::post('forms-submitted/general', [\App\Http\Controllers\SubmittedFormController::class, 'storeGeneralForm'])->name('forms-submitted.general.store');
 
 });

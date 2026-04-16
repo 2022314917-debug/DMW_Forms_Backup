@@ -23,7 +23,7 @@ class Request_Party extends Model
 
     public function request()
     {
-        return $this->belongsTo(Request::class);
+        return $this->belongsTo(Request_Number::class, 'request_id', 'id');
     }
 
     public function address()

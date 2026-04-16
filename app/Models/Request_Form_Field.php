@@ -16,4 +16,9 @@ class Request_Form_Field extends Model
         'field_type',
         'option_group'
     ];
+
+    public function form()
+    {
+        return $this->belongsTo(Request_Form::class, 'request_form_id', 'id');
+    }
 }

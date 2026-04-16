@@ -15,13 +15,20 @@ use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\ProcessingRequest;
-
+use App\Models\Request_Ofw_Address;
+use App\Models\Request_Status_History;
 
 class FormController extends Controller
 {
     public function index()
     {
+        session()->flush();
         return view('forms.index');
+    }
+
+    public function dataprivacy()
+    {
+        return view('forms.dataprivacy');
     }
 
     public function generalForm(){
@@ -362,21 +369,50 @@ class FormController extends Controller
 
     public function storeStep(Request $request, $step)
     {
-        session(["forms.data.$step" => $request->all()]);
-        
         $steps = session('forms.steps', []);
 
-        // Ensure 'general' is first
+        // ensure order
         $steps = array_diff($steps, ['general']);
         array_unshift($steps, 'general');
 
-        // Ensure 'requirements' is last (auto include)
         $steps = array_diff($steps, ['requirements']);
         $steps[] = 'requirements';
 
         session(['forms.steps' => $steps]);
 
         $currentIndex = array_search($step, $steps);
+
+        // SAVE FORM DATA FIRST
+        session([
+            "forms.data.$step" => $request->except('_token')
+        ]);
+
+        $action = $request->input('action');
+
+        // -------------------------
+        // BACK BUTTON
+        // -------------------------
+        if ($action === 'back') {
+
+            $prevIndex = $currentIndex - 1;
+
+            if (isset($steps[$prevIndex])) {
+                return redirect('/forms/step/' . $steps[$prevIndex]);
+            }
+
+            return redirect('/forms');
+        }
+
+        // -------------------------
+        // FINAL SUBMIT BUTTON
+        // -------------------------
+        if ($action === 'submit') {
+            return redirect()->route('forms.submit.all');
+        }
+
+        // -------------------------
+        // DEFAULT: NEXT STEP
+        // -------------------------
         $nextIndex = $currentIndex + 1;
 
         if (!isset($steps[$nextIndex])) {
@@ -390,35 +426,7 @@ class FormController extends Controller
         return view('forms.processing');
     }
 
-    public function storeProcessing(Request $request){
-        // $data = $request->validate([
-        //     'ofw_family_name' => 'nullable|string|max:255',
-        //     'ofw_first_name' => 'nullable|string|max:255',
-        //     'ofw_middle_name' => 'nullable|string|max:255',
-        //     'jobsite' => 'nullable|string|max:255',
-        //     'record_year' => 'nullable|string|max:20',
-        //     'purpose' => 'nullable|string|max:255',
-        //     'agency_name' => 'nullable|string|max:255',
-        //     'req_family_name' => 'nullable|string|max:255',
-        //     'req_first_name' => 'nullable|string|max:255',
-        //     'req_middle_name' => 'nullable|string|max:255',
-        //     'relationship_ofw' => 'nullable|string|max:255',
-        //     'contact_number' => 'nullable|string|max:50',
-        //     'phil_address' => 'nullable|string|max:1024',
-        //     'province' => 'nullable|string|max:100',
-        //     'municipality' => 'nullable|string|max:100',
-        //     'barangay' => 'nullable|string|max:100',
-        //     'zipcode' => 'nullable|string|max:20',
-        //     'telephone_number' => 'nullable|string|max:50',
-        //     'email_address' => 'nullable|email|max:255',
-        // ]);
-
-        // \App\Models\ProcessingRequest::create($data);
-
-        // session()->flush(); // Clear session data after processing
-
-        return redirect()->route('forms.processing')->with('success', 'Your request has been submitted successfully.');
-    }
+  
 
     public function ofwinfo_protection(){
         return view('forms.ofwinfo_protection');
@@ -428,123 +436,176 @@ class FormController extends Controller
         return view('forms.sena');
     }
 
-    public function storeSena(Request $request)
-    {
-        $data = $request->validate([
-            'last_name' => 'nullable|string|max:255',
-            'first_name' => 'nullable|string|max:255',
-            'middle_name' => 'nullable|string|max:255',
-            'name_ext' => 'nullable|string|max:50',
-            'province' => 'nullable|string|max:100',
-            'municipality' => 'nullable|string|max:100',
-            'barangay' => 'nullable|string|max:100',
-            'zip_code' => 'nullable|string|max:20',
-            'contact_number' => 'nullable|string|max:50',
-            'email' => 'nullable|email|max:255',
-            'facebook' => 'nullable|string|max:255',
-            'address' => 'nullable|string|max:1024',
-            'deployment_status' => 'nullable|string|in:deployed,not_deployed',
-            'gender' => 'nullable|string|in:Male,Female',
-            'age' => 'nullable|integer|min:0|max:130',
-            'nature_of_work' => 'nullable|array',
-            'nature_of_work.*' => 'string|max:255',
-            'nature_of_work_others' => 'nullable|string|max:255',
-            'jobsite_country' => 'nullable|string|max:255',
-            'contract_start' => 'nullable|date',
-            'contract_end' => 'nullable|date',
-            'contract_length' => 'nullable|string|max:255',
-            'position' => 'nullable|string|max:255',
-            'monthly_salary' => 'nullable|string|max:255',
-            'action_employer' => 'nullable|string|max:1024',
-            'action_mwo' => 'nullable|string|max:1024',
-            'agency_name_ph' => 'nullable|string|max:255',
-            'agency_address' => 'nullable|string|max:1024',
-            'agency_province' => 'nullable|string|max:100',
-            'agency_municipality' => 'nullable|string|max:100',
-            'agency_barangay' => 'nullable|string|max:100',
-            'agency_zip_code' => 'nullable|string|max:20',
-            'agency_contact_person' => 'nullable|string|max:255',
-            'agency_contact_number' => 'nullable|string|max:50',
-            'agency_email' => 'nullable|email|max:255',
-            'agency_facebook' => 'nullable|string|max:255',
-            'agency_position' => 'nullable|string|max:255',
-            'agency_business_nature' => 'nullable|string|max:255',
-            'complaint_date' => 'nullable|date',
-            'complaint_office' => 'nullable|string|max:255',
-            'complaint_nature' => 'nullable|string|max:255',
-            'contract_violations' => 'nullable|array',
-            'contract_violations.*' => 'string|max:255',
-            'contract_violations_others' => 'nullable|string|max:255',
-            'other_money_claims' => 'nullable|array',
-            'other_money_claims.*' => 'string|max:255',
-            'delayed_payment' => 'nullable|string|max:1024',
-            'non_monetary_issues' => 'nullable|array',
-            'non_monetary_issues.*' => 'string|max:255',
-            'other_issues' => 'nullable|string|max:1024',
-        ]);
-
-        // Map to a storage model. Use ProcessingRequest as basic temporary storage for now.
-        ProcessingRequest::create([
-            'req_family_name' => $data['last_name'] ?? null,
-            'req_first_name' => $data['first_name'] ?? null,
-            'req_middle_name' => $data['middle_name'] ?? null,
-            'relationship_ofw' => $data['name_ext'] ?? null,
-            'jobsite' => $data['jobsite_country'] ?? null,
-            'contact_number' => $data['contact_number'] ?? null,
-            'phil_address' => $data['address'] ?? null,
-            'province' => $data['province'] ?? null,
-            'municipality' => $data['municipality'] ?? null,
-            'barangay' => $data['barangay'] ?? null,
-            'zipcode' => $data['zip_code'] ?? null,
-            'email_address' => $data['email'] ?? null,
-        ]);
-
-        return redirect()->route('forms.sena')->with('success', 'Your SENA request has been submitted successfully.');
-    }
+    
 
     public function aksyonForm()
     {
         return view('forms.aksyon');
     }
 
-    public function storeAksyon(Request $request)
-    {
-        $data = $request->validate([
-            'agency_name' => 'nullable|string|max:255',
-            'agency_address' => 'nullable|string|max:1024',
-            'province' => 'nullable|string|max:100',
-            'municipality' => 'nullable|string|max:100',
-            'barangay' => 'nullable|string|max:100',
-            'zipcode' => 'nullable|string|max:20',
-            'contact_person' => 'nullable|string|max:255',
-            'contact_number' => 'nullable|string|max:50',
-            'email' => 'nullable|email|max:255',
-            'facebook' => 'nullable|string|max:255',
-            'position' => 'nullable|string|max:255',
-            'nature_of_business' => 'nullable|string|max:255',
-            'complaint_date' => 'nullable|date',
-            'complaint_office' => 'nullable|string|max:255',
-            'complaint_nature' => 'nullable|string|max:255',
-        ]);
 
-        // Optional: store or use processing model for now
-        ProcessingRequest::create([
-            'agency_name' => $data['agency_name'] ?? null,
-            'phil_address' => $data['agency_address'] ?? null,
-            'province' => $data['province'] ?? null,
-            'municipality' => $data['municipality'] ?? null,
-            'barangay' => $data['barangay'] ?? null,
-            'zipcode' => $data['zipcode'] ?? null,
-            'contact_number' => $data['contact_number'] ?? null,
-            'email_address' => $data['email'] ?? null,
-        ]);
-
-        return redirect()->route('forms.aksyon')->with('success', 'Your aksyon data has been submitted successfully.');
-
-    }
+   
 
     public function requirements(){
         return view('forms.requirements');
+    }
+
+    public function generalFormSubmitted(){
+        return view('forms-submitted.general');
+    }
+
+    public function submitAllForms(Request $request)
+    {
+        $generalFormData = session('general_form_data', []);
+        $steps = session('forms.steps', []);
+        $formsData = session('forms.data', []);
+
+        DB::beginTransaction();
+
+        try{
+            $requestNumber = Request_Number::create([
+                'status' => 'Pending'
+            ]);
+
+            $requestOFW = Request_OFW::create([
+                'request_id' => $requestNumber->id,
+                'ofw_lname' => $generalFormData['ofw_lname'] ?? null,
+                'ofw_fname' => $generalFormData['ofw_fname'] ?? null,
+                'ofw_ename' => $generalFormData['ofw_ename'] ?? null,
+                'ofw_mname' => $generalFormData['ofw_mname'] ?? null,
+                'ofw_passport_no' => $generalFormData['ofw_passport_no'] ?? null,
+                'ofw_gender' => $generalFormData['ofw_gender'] ?? null,
+                'ofw_civil_status' => $generalFormData['ofw_civil_status'] ?? null,
+                'ofw_email' => $generalFormData['ofw_email'] ?? null,
+                'ofw_phone' => $generalFormData['ofw_phone'] ?? null,
+                'ofw_bday' => $generalFormData['ofw_bday'] ?? null,
+                'ofw_country' => $generalFormData['ofw_country_name'] ?? null,
+                'ofw_job' => $generalFormData['ofw_job'] ?? null,
+                'ofw_employer' => $generalFormData['ofw_employer'] ?? null,
+                'ofw_agency' => $generalFormData['ofw_agency'] ?? null,
+            ]);
+
+            Request_Ofw_Address::create([
+                'request_id' => $requestNumber->id,
+                'request_ofw_id' => $requestOFW->id,
+                'house_no' => $generalFormData['ofw_address_street'] ?? null,
+                'province' => $generalFormData['ofw_province_name'] ?? null,
+                'municipality' => $generalFormData['ofw_municipality_name'] ?? null,
+                'brgy' => $generalFormData['ofw_barangay_name'] ?? null,
+                'zip_code' => $generalFormData['ofw_zip_code'] ?? null,
+            ]);
+
+            $requestParty = Request_Party::create([
+                'request_id' => $requestNumber->id,
+                'party_lname' => $generalFormData['party_lname'] ?? null,
+                'party_fname' => $generalFormData['party_fname'] ?? null,
+                'party_ename' => $generalFormData['party_ename'] ?? null,
+                'party_mname' => $generalFormData['party_mname'] ?? null,
+                'party_email' => $generalFormData['party_email'] ?? null,
+                'party_phone' => $generalFormData['party_phone'] ?? null,
+                'party_bday' => $generalFormData['party_bday'] ?? null,
+                'party_gender' => $generalFormData['party_gender'] ?? null,
+                'party_relationship' => $generalFormData['party_relationship'] ?? null,
+            ]);
+
+            Request_Party_Address::create([
+                'request_id' => $requestNumber->id,
+                'request_party_id' => $requestParty->id,
+                'house_no' => $generalFormData['party_address_street'] ?? null,
+                'province' => $generalFormData['party_province_name'] ?? null,
+                'municipality' => $generalFormData['party_municipality_name'] ?? null,
+                'brgy' => $generalFormData['party_barangay_name'] ?? null,
+                'zip_code' => $generalFormData['party_zip_code'] ?? null,
+            ]);
+
+            // handle checkbox arrays stored in general_form_data
+            $checkboxGroups = ['mwpd', 'wrsd', 'mwpd_protection'];
+
+            $fieldMap = Request_Form_Field::pluck('id', 'field_name')->toArray();
+
+            foreach ($checkboxGroups as $group) {
+                if (!empty($generalFormData[$group]) && is_array($generalFormData[$group])) {
+                    foreach ($generalFormData[$group] as $value) {
+
+                        $fieldId = $fieldMap[$value] ?? null;
+
+                        if (!$fieldId) {
+                            Log::warning("Missing checkbox field mapping: " . $value);
+                            continue;
+                        }
+
+                        $entry = Request_Form_Entries::create([
+                            'request_id' => $requestNumber->id,
+                            'request_form_field_id' => $fieldId,
+                            'value' => 'checked'
+                        ]);
+
+                        Request_Form_Field_Values::create([
+                            'request_form_entry_id' => $entry->id,
+                            'request_form_field_id' => $fieldId,
+                            'value' => 'checked'
+                        ]);
+                    }
+                }
+            }
+
+            foreach($formsData as $step => $fields){
+
+                
+                foreach ($fields as $fieldKey => $value) {
+                    $fieldMap = Request_Form_Field::pluck('id', 'field_name')->toArray();
+
+                    $fieldId = $fieldMap[$fieldKey] ?? null;
+
+                    if (!$fieldId) {
+                        Log::warning("Missing field mapping: " . $fieldKey);
+                        continue;
+                    }
+
+                    $entry = Request_Form_Entries::create([
+                        'request_id' => $requestNumber->id,
+                        'request_form_field_id' => $fieldId,
+                        'value' => is_array($value) ? json_encode($value) : $value
+                    ]);
+
+                    Request_Form_Field_Values::create([
+                        'request_form_entry_id' => $entry->id,
+                        'request_form_field_id' => $fieldId,
+                        'value' => is_array($value) ? json_encode($value) : $value
+                    ]);
+                }
+
+                
+            }
+
+            Request_Status_History::create([
+                'request_id' => $requestNumber->id,
+                'status' => 'Pending',
+                'remarks' => 'Initial submission'
+            ]);
+
+            DB::commit();
+
+            session()->flush();
+
+            return redirect()->route('forms.success')->with('success', 'Forms submitted successfully! Your Request ID is: ' . $requestNumber->id);
+                
+
+        }catch(\Exception $e){
+            DB::rollBack();
+
+            Log::error('Error submitting all forms: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return redirect()->route('forms.index')
+                ->with('error', 'Error submitting forms: ' . $e->getMessage());
+        }
+    }
+
+    public function submissionSuccess()
+    {
+        return view('forms.success');
     }
 }
 

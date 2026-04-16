@@ -118,7 +118,7 @@
         <p class="mb-0">Halimbawa: Passport - Juan Dela Cruz</p>
     </div>
 
-    <form id="file-form" method="POST" enctype="multipart/form-data">
+    <form id="file-form" method="POST" action="{{ route('forms.submit.all') }}" enctype="multipart/form-data">
         @csrf
 
         <div class="card shadow-sm p-3 mb-5" style="background-color: #DEE9FF;">
@@ -291,13 +291,14 @@
         </div>
 
         <div class="d-flex justify-content-between mt-4">
-            <a href="{{ $previousStep ? url('/forms/step/' . $previousStep) : '#' }}"
-            class="btn btn-back {{ $previousStep ? '' : 'disabled' }}">
-                ← BACK
-            </a>
+            @if($previousStep)
+                <a href="/forms/step/{{ $previousStep }}" class="btn btn-back">← BACK</a>
+            @else
+                <span class="btn btn-back disabled">← BACK</span>
+            @endif
 
-            <button type="submit" class="btn btn-next">
-                NEXT →
+            <button type="submit" name="action" value="submit" class="btn btn-next">
+                SUBMIT →
             </button>
         </div>
 

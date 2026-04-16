@@ -96,30 +96,7 @@
       margin-left: 0;
     }
 
-    .pagination .completed .page-link {
-        background-color: #198754;
-        color: white;
-        border-color: #198754;
-    }
-
-    .pagination .active .page-link {
-        background-color: #0d6efd;
-        border-color: #0d6efd;
-    }
-
-    .page-item.completed .page-link {
-        /* background-color: #6c757d;
-        color: white; */
-        background-color: white;
-        border-color: #DEE2E6;
-        color: #0d6efd;
-
-    }
-
-    .page-item.active .page-link {
-        background-color: #0d6efd; /* blue for current step */
-        color: white;
-    }
+    
 
     @media (max-width: 992px) and (min-width: 768px) {
       .row.text-center .col-md-3 {
@@ -190,112 +167,116 @@
       </small>
     </div>
 
-    <form method="POST" action="">
+    <form method="POST" action="{{ url('/forms/step/ofw_info_sheet_mwpd') }}">
       @csrf
-      <div class="form-section">
-        <h5>FULL NAME (Pangalan ng OFW)</h5>
-        <div class="row g-3 mb-3">
-          <div class="col-md-4">
-            <label class="form-label">Surname</label>
-            <input type="text" class="form-control disabled" name="ofw_lname" placeholder="Dela Cruz" id="ofw_lname" value="{{ session('general_form_data.ofw_lname') }}">
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">First Name</label>
-            <input type="text" class="form-control disabled" name="ofw_fname" placeholder="Juan" id="ofw_fname" value="{{ session('general_form_data.ofw_fname') }}">
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Middle Name</label>
-            <input type="text" class="form-control disabled" name="ofw_mname" placeholder="Santos" id="ofw_mname" value="{{ session('general_form_data.ofw_mname') }}">
-          </div>
+
+      <div>
+          <div class="form-section">
+            <h5>FULL NAME (Pangalan ng OFW)</h5>
+            <div class="row g-3 mb-3">
+              <div class="col-md-4">
+                <label class="form-label">Surname</label>
+                <input type="text" class="form-control disabled" name="ofw_lname" placeholder="Dela Cruz" id="ofw_lname" value="{{ $ofw->ofw_lname }}">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">First Name</label>
+                <input type="text" class="form-control disabled" name="ofw_fname" placeholder="Juan" id="ofw_fname" value="{{ $ofw->ofw_fname }}">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Middle Name</label>
+                <input type="text" class="form-control disabled" name="ofw_mname" placeholder="Santos" id="ofw_mname" value="{{ $ofw->ofw_mname }}">
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-4">
+                <label class="form-label">Jobsite (Bansang Pinagtatrabahuhan)</label>
+                <input type="text" class="form-control disabled" name="ofw_country_name" id="jobsite" value="{{ $ofw->ofw_country }}">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Record Needed - Year (Kailangang Record - Taon)</label>
+                <input type="text" class="form-control" name="record_needed_mwpd_protection" placeholder="ex. 2024" id="record_needed_mwpd_protection" value="{{ $entries['record_needed_mwpd_protection'] ?? '' }}">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label">Purpose (Saan gagamitin ang kinakuhang record)</label>
+                <input type="text" class="form-control" name="record_purpose_mwpd_protection" placeholder="ex. Employment Verification" id="record_purpose_mwpd_protection" value="{{ $entries['record_purpose_mwpd_protection'] ?? '' }}">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Name of Agency</label>
+              <input type="text" class="form-control disabled" name="ofw_agency" placeholder="ex. ABC Agency" id="ofw_agency" value="{{ $ofw->ofw_agency }}">
+            </div>
         </div>
-
-        <div class="row g-3 mb-3">
-          <div class="col-md-4">
-            <label class="form-label">Jobsite (Bansang Pinagtatrabahuhan)</label>
-            <input type="text" class="form-control disabled" name="ofw_country_name" id="ofw_country_name" value="{{ session('general_form_data.ofw_country_name') }}">
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Record Needed - Year (Kailangang Record - Taon)</label>
-            <input type="text" class="form-control" name="record_needed_mwpd_protection" placeholder="ex. 2024" id="record_needed_mwpd_protection" value="{{ session('forms.data.ofw_info_sheet_mwpd_protection.record_needed_mwpd_protection') }}">
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Purpose (Saan gagamitin ang kinakuhang record)</label>
-            <input type="text" class="form-control" name="record_purpose_mwpd_protection" placeholder="ex. Employment Verification" id="record_purpose_mwpd_protection" value="{{ session('forms.data.ofw_info_sheet_mwpd_protection.record_purpose_mwpd_protection') }}">
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Name of Agency</label>
-          <input type="text" class="form-control disabled" name="ofw_agency" placeholder="ex. ABC Agency" id="ofw_agency" value="{{ session('general_form_data.ofw_agency') }}">
-        </div>
-      </div>
-
-      <div class="form-section">
-        <h5>FOR THE REQUESTING PARTY (Ang Kumukuha ng Record ay hindi mismong OFW)</h5>
-          <div class="row g-3 mb-3">
-            <div class="col-md-4">
-              <label class="form-label">Surname</label>
-              <input type="text" class="form-control disabled" name="req_family_name" placeholder="Dela Cruz" id="req_family_name" value="{{ session('general_form_data.party_lname') }}">
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">First Name</label>
-              <input type="text" class="form-control disabled" name="req_first_name" placeholder="Juan" id="req_first_name" value="{{ session('general_form_data.party_fname') }}">
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Middle Name</label>
-              <input type="text" class="form-control disabled" name="req_middle_name" placeholder="Santos" id="req_middle_name" value="{{ session('general_form_data.party_mname') }}">
-            </div>
-          </div>
-
-          <div class="row g-3 mb-3">
-            <div class="col-md-6">
-              <label class="form-label">Relationship to OFW</label>
-              <input type="text" class="form-control disabled" name="relationship_ofw" placeholder="ex. Brother" id="relationship_ofw" value="{{ session('general_form_data.party_relationship') }}">
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Contact Number</label>
-              <input type="text" class="form-control disabled" name="contact_number" placeholder="ex. 09123456789" id="contact_number" value="{{ session('general_form_data.party_phone') }}">
-            </div>
-          </div>
-
-          <div class="mb-3 mt-4">
-            <label class="form-label"> <strong>Complete Address in the Philippines</strong> </label> 
-            <div class="m-0 p-0">
-              <label class="form-label">House Number/Street name</label>
-              <input type="text" class="form-control disabled" name="address_street" placeholder="Unit/Room/House Number/Street name" id="address_street" value="{{ session('general_form_data.party_address_street') }}">
-            </div>
-            
-
-            <div class="row g-3">
-              <div class="col-md-3">
-                <label class="form-label">Province</label>
-                <input type="text" class="form-control disabled" name="party_province_name" id="party_province_name" value="{{ session('general_form_data.party_province_name') }}">
+        <div class="form-section">
+          <h5>FOR THE REQUESTING PARTY (Ang Kumukuha ng Record ay hindi mismong OFW)</h5>
+            <div class="row g-3 mb-3">
+              <div class="col-md-4">
+                <label class="form-label">Surname</label>
+                <input type="text" class="form-control disabled" name="req_family_name" placeholder="Dela Cruz" id="req_family_name" value="{{ $party->party_lname }}">
               </div>
-              <div class="col-md-3">
-                <label class="form-label">City/Municipality</label>
-                <input type="text" class="form-control disabled" name="party_municipality_name" id="party_municipality_name" value="{{ session('general_form_data.party_municipality_name') }}">
+              <div class="col-md-4">
+                <label class="form-label">First Name</label>
+                <input type="text" class="form-control disabled" name="req_first_name" placeholder="Juan" id="req_first_name" value="{{ $party->party_fname }}">
               </div>
-              <div class="col-md-3">
-                <label class="form-label">Barangay</label>
-                <input type="text" class="form-control disabled" name="party_barangay_name" id="party_barangay_name" value="{{ session('general_form_data.party_barangay_name') }}">
-              </div>
-              <div class="col-md-3">
-                <label class="form-label">Zip Code</label>
-                <input type="text" class="form-control disabled" name="zipcode" placeholder="ex. 2016" id="zipcode" value="{{ session('general_form_data.party_zip_code') }}">
+              <div class="col-md-4">
+                <label class="form-label">Middle Name</label>
+                <input type="text" class="form-control disabled" name="req_middle_name" placeholder="Santos" id="req_middle_name" value="{{ $party->party_mname }}">
               </div>
             </div>
 
-            <div class="row g-3 mt-2">
+            <div class="row g-3 mb-3">
               <div class="col-md-6">
-                <label class="form-label">Telephone Number</label>
-                <input type="text" class="form-control" name="telephone_mwpd_protection" placeholder="ex. (045) 123-4567" id="telephone_mwpd_protection" value="{{ session('forms.data.ofw_info_sheet_mwpd_protection.telephone_mwpd_protection') }}">
+                <label class="form-label">Relationship to OFW</label>
+                <input type="text" class="form-control disabled" name="relationship_ofw" placeholder="ex. Brother" id="relationship_ofw" value="{{ $party->party_relationship }}">
               </div>
               <div class="col-md-6">
-                <label class="form-label">Email Address</label>
-                <input type="email" class="form-control disabled" name="email_address" placeholder="ex. sample@email.com" id="email_address" value="{{ session('general_form_data.party_email') }}">
+                <label class="form-label">Contact Number</label>
+                <input type="text" class="form-control disabled" name="contact_number" placeholder="ex. 09123456789" id="contact_number" value="{{ $party->party_phone }}">
               </div>
             </div>
-          </div>
+
+            <div class="mb-3 mt-4">
+              <label class="form-label"> <strong>Complete Address in the Philippines</strong> </label> 
+              <div class="m-0 p-0">
+                <label class="form-label">House Number/Street name</label>
+                <input type="text" class="form-control mb-2 disabled" name="phil_address" placeholder="Unit/Room/House Number/Street name" id="phil_address" value="{{ $party_address->house_no }}">
+              </div>
+              
+
+              <div class="row g-3">
+                <div class="col-md-3">
+                  <label class="form-label">Province</label>
+                  <input type="text" class="form-control disabled" name="party_province_name" id="party_province_name" value="{{ $party_address->province }}">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">City/Municipality</label>
+                  <input type="text" class="form-control disabled" name="party_municipality_name" id="party_municipality_name" value="{{ $party_address->municipality }}">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Barangay</label>
+                  <input type="text" class="form-control disabled" name="party_barangay_name" id="party_barangay_name" value="{{ $party_address->brgy }}">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Zip Code</label>
+                  <input type="text" class="form-control disabled" name="zipcode" placeholder="ex. 2016" id="zipcode" value="{{ $party_address->zip_code }}">
+                </div>
+              </div>
+
+              <div class="row g-3 mt-2">
+                <div class="col-md-6">
+                  <label class="form-label">Telephone Number</label>
+                  <input type="text" class="form-control" name="telephone_mwpd_protection" placeholder="ex. (045) 123-4567" id="telephone_mwpd_protection" value="{{ $entries['telephone_mwpd_protection'] ?? '' }}">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Email Address</label>
+                  <input type="email" class="form-control disabled" name="email_address" placeholder="ex. sample@email.com" id="email_address" value="{{ $party->party_email }}">
+                </div>
+              </div>
+            </div>
+        </div>
+
+
       </div>
 
       <div class="form-section" style="background-color: rgba(219, 232, 255, 0.95);">
@@ -477,50 +458,17 @@
         </div>
       </div>
 
-        @php
-            $steps = session('forms.steps', []);
-            $currentStep = request()->segment(3); // /forms/step/{step}
-            $currentIndex = array_search($currentStep, $steps);
-            $previousStep = ($currentIndex !== false && $currentIndex > 0) ? $steps[$currentIndex - 1] : null;
-            $nextStep = ($currentIndex !== false && $currentIndex < count($steps) - 1) ? $steps[$currentIndex + 1] : null;
-        @endphp
-
-        <div class="step-wrapper">
-            <ul class="steps">
-                @foreach($steps as $index => $step)
-                    <li class="step 
-                        {{ $step == $currentStep ? 'active' : '' }}
-                        {{ array_search($step,$steps) < array_search($currentStep,$steps) ? 'completed' : '' }}">
-                        <span>{{ $index + 1 }}</span>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-
-        <div class="d-flex justify-content-between mt-4">
-            <!-- <a href="{{ $previousStep ? url('/forms/step/' . $previousStep) : '#' }}"
-              class="btn btn-back {{ $previousStep ? '' : 'disabled' }}">
-                ← BACK
-            </a>
-
-            <button type="submit" class="btn btn-next">
-                NEXT →
-            </button> -->
-
-            <button type="submit" name="action" value="back"
-                class="btn btn-back {{ $previousStep ? '' : 'disabled' }}">
-                    ← BACK
-            </button>
-
-            <button type="submit" name="action" value="next"
-                    class="btn btn-next">
-                NEXT →
-            </button>
-        </div>
+  
+      
     </form>
+    
+
+    
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+
+
   <script>
     
   </script>
