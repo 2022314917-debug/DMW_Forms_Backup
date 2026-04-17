@@ -117,10 +117,10 @@
                     <!-- Deployment Status -->
                     <div class="col-6 col-md-4">
                         <label class="form-label">Deployment Status</label>
-                        <select class="form-select" name="deployment_status">
-                            <option selected disabled {{ !session('forms.data.sena.deployment_status') ? 'selected' : '' }}>Select status</option>
-                            <option value="deployed" {{ session('forms.data.sena.deployment_status') === 'deployed' ? 'selected' : '' }}>Deployed</option>
-                            <option value="not_deployed" {{ session('forms.data.sena.deployment_status') === 'not_deployed' ? 'selected' : '' }}>Not Deployed</option>
+                        <select class="form-select" name="ofw_deployment_status_deployed_mwpd_protection">
+                            <option selected disabled {{ !session('forms.data.sena.ofw_deployment_status_deployed_mwpd_protection') ? 'selected' : '' }}>Select status</option>
+                            <option value="deployed" {{ session('forms.data.sena.ofw_deployment_status_deployed_mwpd_protection') === 'deployed' ? 'selected' : '' }}>Deployed</option>
+                            <option value="not_deployed" {{ session('forms.data.sena.ofw_deployment_status_deployed_mwpd_protection') === 'not_deployed' ? 'selected' : '' }}>Not Deployed</option>
                         </select>
                     </div>
 
@@ -142,9 +142,9 @@
                         <input 
                             type="text" 
                             class="form-control" 
-                            name="ofw_age" 
+                            name="ofw_age_mwpd_protection" 
                             placeholder="ex. 20" 
-                            value="{{ session('forms.data.sena.ofw_age') }}" 
+                            value="{{ session('forms.data.sena.ofw_age_mwpd_protection') }}" 
                             maxlength="2"          
                             pattern="\d{2}"         
                             inputmode="numeric"     
@@ -162,65 +162,65 @@
                     <div class="checkbox-grid" style="grid-template-columns: repeat(2, 1fr);">
                         
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work" value="Household Service" {{ session('forms.data.sena.nature_of_work') == 'Household Service' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" value="Household Service" {{ session('forms.data.sena.ofw_nature_of_work_mwpd_protection') == 'Household Service' ? 'checked' : '' }}>
                             <span class="form-check-label">Household Service</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work" value="Seafarer" {{ session('forms.data.sena.nature_of_work') == 'Seafarer' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" value="Seafarer" {{ session('forms.data.sena.ofw_nature_of_work_mwpd_protection') == 'Seafarer' ? 'checked' : '' }}>
                             <span class="form-check-label">Seafarer</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work" value="Medical Professional" {{ session('forms.data.sena.nature_of_work') == 'Medical Professional' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" value="Medical Professional" {{ session('forms.data.sena.ofw_nature_of_work_mwpd_protection') == 'Medical Professional' ? 'checked' : '' }}>
                             <span class="form-check-label">Medical Professional</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work" value="Offshore Worker" {{ session('forms.data.sena.nature_of_work') == 'Offshore Worker' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" value="Offshore Worker" {{ session('forms.data.sena.ofw_nature_of_work_mwpd_protection') == 'Offshore Worker' ? 'checked' : '' }}>
                             <span class="form-check-label">Offshore Worker</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work" value="Engineering Professional" {{ session('forms.data.sena.nature_of_work') == 'Engineering Professional' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" value="Engineering Professional" {{ session('forms.data.sena.ofw_nature_of_work_mwpd_protection') == 'Engineering Professional' ? 'checked' : '' }}>
                             <span class="form-check-label">Engineering Professional</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work" value="Construction Laborer" {{ session('forms.data.sena.nature_of_work') == 'Construction Laborer' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" value="Construction Laborer" {{ session('forms.data.sena.ofw_nature_of_work_mwpd_protection') == 'Construction Laborer' ? 'checked' : '' }}>
                             <span class="form-check-label">Construction Laborer</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work" value="Caregiver" {{ session('forms.data.sena.nature_of_work') == 'Caregiver' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" value="Caregiver" {{ session('forms.data.sena.ofw_nature_of_work_mwpd_protection') == 'Caregiver' ? 'checked' : '' }}>
                             <span class="form-check-label">Caregiver</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work" value="Plumber/Fitter" {{ session('forms.data.sena.nature_of_work') == 'Plumber/Fitter' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" value="Plumber/Fitter" {{ session('forms.data.sena.ofw_nature_of_work_mwpd_protection') == 'Plumber/Fitter' ? 'checked' : '' }}>
                             <span class="form-check-label">Plumber/Fitter</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work" value="Manufacturing Laborer" {{ session('forms.data.sena.nature_of_work') == 'Manufacturing Laborer' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" value="Manufacturing Laborer" {{ session('forms.data.sena.ofw_nature_of_work_mwpd_protection') == 'Manufacturing Laborer' ? 'checked' : '' }}>
                             <span class="form-check-label">Manufacturing Laborer</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work" value="Welder/Cutter" {{ session('forms.data.sena.nature_of_work') == 'Welder/Cutter' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" value="Welder/Cutter" {{ session('forms.data.sena.ofw_nature_of_work_mwpd_protection') == 'Welder/Cutter' ? 'checked' : '' }}>
                             <span class="form-check-label">Welder/Cutter</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work" value="Hotel Staff" {{ session('forms.data.sena.nature_of_work') == 'Hotel Staff' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" value="Hotel Staff" {{ session('forms.data.sena.ofw_nature_of_work_mwpd_protection') == 'Hotel Staff' ? 'checked' : '' }}>
                             <span class="form-check-label">Hotel Staff</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work" value="Cleaner/Helper" {{ session('forms.data.sena.nature_of_work') == 'Cleaner/Helper' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" value="Cleaner/Helper" {{ session('forms.data.sena.ofw_nature_of_work_mwpd_protection') == 'Cleaner/Helper' ? 'checked' : '' }}>
                             <span class="form-check-label">Cleaner/Helper</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work" value="Entertainer" {{ session('forms.data.sena.nature_of_work') == 'Entertainer' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" value="Entertainer" {{ session('forms.data.sena.ofw_nature_of_work_mwpd_protection') == 'Entertainer' ? 'checked' : '' }}>
                             <span class="form-check-label">Entertainer</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" id="nature_other" name="nature_of_work" value="Others" {{ session('forms.data.sena.nature_of_work') == 'Others' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" id="nature_other" name="ofw_nature_of_work_mwpd_protection" value="Others" {{ session('forms.data.sena.ofw_nature_of_work_mwpd_protection') == 'Others' ? 'checked' : '' }}>
                             <span class="form-check-label"><strong>Others, specify:</strong></span>
                         </label>
                         

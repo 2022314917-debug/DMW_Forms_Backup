@@ -2,6 +2,26 @@
 
 @section('content')
 
+<style>
+    .btn-view{
+        background:#4e73df;
+    }
+
+    .btn-view:hover{
+        background:#3f60c4;
+    }
+
+    .btn-edit{
+        background: #F4A62A;
+        color: #fff;
+    }
+
+    .btn-edit:hover{
+        background: rgb(207, 157, 5);
+        color: #fff;
+    }
+</style>
+
 <div class="container mt-4">
 
     {{-- PAGE TITLE --}}
@@ -82,14 +102,21 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $formName }}</td>
                             <td>{{ $request->created_at->format('M d, Y h:i A') }}</td>
-                            <td>
+                            <td class="d-flex px-3 gap-2">
                                 <a href="{{ route('forms-submitted.open-form', [
                                     'requestId' => $request->id,
                                     'formId'    => $formId,
-                                ]) }}" class="btn btn-primary btn-sm">
+                                ]) }}" class="btn btn-primary btn-view btn-sm px-3">
                                     View
                                 </a>
+                                <a href="{{ route('forms-submitted.general-edit', [
+                                    'requestId' => $request->id,
+                                    'formId'    => $formId,
+                                    ]) }}" class="btn btn-warning btn-edit btn-sm px-3">
+                                    Edit
+                                </a>
                             </td>
+
                         </tr>
                     @endforeach
                 </tbody>

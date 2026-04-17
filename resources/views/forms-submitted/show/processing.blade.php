@@ -157,6 +157,13 @@
       </div>
     @endif
 
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h4 class="mb-0">Edit Request #{{ $request->id }}</h4>
+        <a href="{{ route('forms-submitted.show', $request->id) }}" class="btn btn-secondary btn-sm">
+            &larr; Back to Request
+        </a>
+    </div>
+
     <div class="form-header text-center">
       <h4 class="fw-bold">REQUEST FOR VERIFICATION/CERTIFICATION OF OFW RECORDS</h4>
       <p>
@@ -167,7 +174,7 @@
       </small>
     </div>
 
-    <form method="POST" action="{{ url('/forms/step/ofw_info_sheet_mwpd') }}">
+    <form method="POST" action="">
       @csrf
 
       <div>
@@ -195,11 +202,11 @@
               </div>
               <div class="col-md-4">
                 <label class="form-label">Record Needed - Year (Kailangang Record - Taon)</label>
-                <input type="text" class="form-control" name="record_needed_mwpd_processing" placeholder="ex. 2024" id="records_needed" value="{{ $entries['record_needed_mwpd_processing'] ?? '' }}">
+                <input type="text" class="form-control disabled" name="record_needed_mwpd_processing" placeholder="ex. 2024" id="records_needed" value="{{ $entries['record_needed_mwpd_processing'] ?? '' }}">
               </div>
               <div class="col-md-4">
                 <label class="form-label">Purpose (Saan gagamitin ang kinakuhang record)</label>
-                <input type="text" class="form-control" name="record_purpose_mwpd_processing" placeholder="ex. Employment Verification" id="record_purpose" value="{{ $entries['record_purpose_mwpd_processing'] ?? '' }}">
+                <input type="text" class="form-control disabled" name="record_purpose_mwpd_processing" placeholder="ex. Employment Verification" id="record_purpose" value="{{ $entries['record_purpose_mwpd_processing'] ?? '' }}">
               </div>
             </div>
 
@@ -266,7 +273,7 @@
               <div class="row g-3 mt-2">
                 <div class="col-md-6">
                   <label class="form-label">Telephone Number</label>
-                  <input type="text" class="form-control" name="telephone_mwpd_processing" placeholder="ex. (045) 123-4567" id="telephone_number" value="{{ $entries['telephone_mwpd_processing'] ?? '' }}">
+                  <input type="text" class="form-control disabled" name="telephone_mwpd_processing" placeholder="ex. (045) 123-4567" id="telephone_number" value="{{ $entries['telephone_mwpd_processing'] ?? '' }}">
                 </div>
                 <div class="col-md-6">
                   <label class="form-label">Email Address</label>
@@ -275,30 +282,6 @@
               </div>
             </div>
         </div>
-      </div>
-
-      @php
-          $steps = session('forms.steps', []);
-          $currentStep = request()->segment(3); // /forms/step/{step}
-          $currentIndex = array_search($currentStep, $steps);
-          $previousStep = ($currentIndex !== false && $currentIndex > 0) ? $steps[$currentIndex - 1] : null;
-          $nextStep = ($currentIndex !== false && $currentIndex < count($steps) - 1) ? $steps[$currentIndex + 1] : null;
-      @endphp
-
-      <div class="step-wrapper">
-          <ul class="steps">
-              @foreach($steps as $index => $step)
-                  <li class="step 
-                      {{ $step == $currentStep ? 'active' : '' }}
-                      {{ array_search($step,$steps) < array_search($currentStep,$steps) ? 'completed' : '' }}">
-                      <span>{{ $index + 1 }}</span>
-                  </li>
-              @endforeach
-          </ul>
-      </div>
-
-      <div class="d-flex justify-content-between mt-4">
-          
       </div>
       
     </form>

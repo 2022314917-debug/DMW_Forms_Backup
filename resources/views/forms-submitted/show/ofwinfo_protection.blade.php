@@ -184,7 +184,7 @@
               </div>
               <div class="col-md-4">
                 <label class="form-label">Middle Name</label>
-                <input type="text" class="form-control disabled" name="ofw_mname" placeholder="Santos" id="ofw_mname" value="{{ $ofw->ofw_mname }}">
+                <input type="text" class="form-control disabled" name="ofw_mname" id="ofw_mname" value="{{ $ofw->ofw_mname }}">
               </div>
             </div>
 
@@ -195,11 +195,11 @@
               </div>
               <div class="col-md-4">
                 <label class="form-label">Record Needed - Year (Kailangang Record - Taon)</label>
-                <input type="text" class="form-control" name="record_needed_mwpd_protection" placeholder="ex. 2024" id="record_needed_mwpd_protection" value="{{ $entries['record_needed_mwpd_protection'] ?? '' }}">
+                <input type="text" class="form-control disabled" name="record_needed_mwpd_protection" placeholder="ex. 2024" id="record_needed_mwpd_protection" value="{{ $entries['record_needed_mwpd_protection'] ?? '' }}">
               </div>
               <div class="col-md-4">
                 <label class="form-label">Purpose (Saan gagamitin ang kinakuhang record)</label>
-                <input type="text" class="form-control" name="record_purpose_mwpd_protection" placeholder="ex. Employment Verification" id="record_purpose_mwpd_protection" value="{{ $entries['record_purpose_mwpd_protection'] ?? '' }}">
+                <input type="text" class="form-control disabled" name="record_purpose_mwpd_protection" placeholder="ex. Employment Verification" id="record_purpose_mwpd_protection" value="{{ $entries['record_purpose_mwpd_protection'] ?? '' }}">
               </div>
             </div>
 
@@ -266,7 +266,7 @@
               <div class="row g-3 mt-2">
                 <div class="col-md-6">
                   <label class="form-label">Telephone Number</label>
-                  <input type="text" class="form-control" name="telephone_mwpd_protection" placeholder="ex. (045) 123-4567" id="telephone_mwpd_protection" value="{{ $entries['telephone_mwpd_protection'] ?? '' }}">
+                  <input type="text" class="form-control disabled" name="telephone_mwpd_protection" placeholder="ex. (045) 123-4567" id="telephone_mwpd_protection" value="{{ $entries['telephone_mwpd_protection'] ?? '' }}">
                 </div>
                 <div class="col-md-6">
                   <label class="form-label">Email Address</label>
@@ -280,7 +280,7 @@
       </div>
 
       <div class="form-section" style="background-color: rgba(219, 232, 255, 0.95);">
-        <h5 class="text-center fw-bold">Do not fill out this portion: FOR POEA PERSONNEL ONLY</h5>
+        <h5 class="text-center fw-bold">Do not fill out this portion: FOR DMW PERSONNEL ONLY</h5>
 
         <div class="row g-3 mb-3">
           <div class="col-md-4">

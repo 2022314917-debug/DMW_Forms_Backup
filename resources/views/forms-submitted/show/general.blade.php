@@ -41,6 +41,12 @@
  
   <div class="container my-5">
 
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h4 class="mb-0">Edit Request #{{ $request->id }}</h4>
+        <a href="{{ route('forms-submitted.show', $request->id) }}" class="btn btn-secondary btn-sm">
+            &larr; Back to Request
+        </a>
+    </div>
 
     <!-- Header -->
     <div class="form-header text-center">
@@ -53,26 +59,6 @@
       </small>
     </div>
 
-    <!-- Display Success Message -->
-    @if($message = Session::get('success'))
-      <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ $message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    @endif
-
-    <!-- Display Error Messages -->
-    @if($errors->any())
-      <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Please fix the following errors:</strong>
-        <ul class="mb-0 mt-2">
-          @foreach($errors->all() as $error)
-            <li>{{ $error }}</li>
-          @endforeach
-        </ul>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    @endif
 
     <!-- Section A -->
     <div class="form-section">
@@ -81,19 +67,19 @@
         <div class="row g-3 mb-3">
           <div class="col-md-3">
             <label class="form-label">Last Name</label>
-            <input type="text" class="form-control" name="party_lname" value="{{ $party->party_lname }}" required>
+            <input type="text" class="form-control disabled" name="party_lname" value="{{ $party->party_lname }}" required>
           </div>
           <div class="col-md-3">
             <label class="form-label">First Name</label>
-            <input type="text" class="form-control" name="party_fname" value="{{ $party->party_fname }}" required>
+            <input type="text" class="form-control disabled" name="party_fname" value="{{ $party->party_fname }}" required>
           </div>
           <div class="col-md-2">
             <label class="form-label">Name Ext.</label>
-            <input type="text" class="form-control" name="party_ename" value="{{ $party->party_ename }}">
+            <input type="text" class="form-control disabled" name="party_ename" value="{{ $party->party_ename }}">
           </div>
           <div class="col-md-4">
             <label class="form-label">Middle Name</label>
-            <input type="text" class="form-control" name="party_mname" value="{{ $party->party_mname }}">
+            <input type="text" class="form-control disabled" name="party_mname" value="{{ $party->party_mname }}">
           </div>
         </div>
 
@@ -101,21 +87,17 @@
 
           <div class="col-6 col-md-3">
             <label class="form-label">Birthday</label>
-            <input type="date" class="form-control" name="party_bday" value="{{ $party->party_bday }}" required>
+            <input type="date" class="form-control disabled" name="party_bday" value="{{ $party->party_bday }}" required>
           </div>
 
           <div class="col-6 col-md-3">
             <label class="form-label">Sex</label>
-            <select class="form-select" name="party_gender" required>
-              <option value="">Select</option>
-              <option value="Male" {{ $party->party_gender == 'Male' ? 'selected' : '' }}>Male</option>
-              <option value="Female" {{ $party->party_gender == 'Female' ? 'selected' : '' }}>Female</option>
-            </select>
+            <input type="text" class="form-control disabled" value="{{ $party->party_gender }}">
           </div>
 
           <div class="col-md-6">
             <label class="form-label">Relationship to OFW</label>
-            <input type="text" class="form-control" name="party_relationship" value="{{ $party->party_relationship }}" required>
+            <input type="text" class="form-control disabled" name="party_relationship" value="{{ $party->party_relationship }}" required>
           </div>
 
         </div>
@@ -123,38 +105,29 @@
         <div class="row g-3 mb-3">
           <div class="col-md-6">
             <label class="form-label">Contact Number</label>
-            <input type="text" class="form-control" name="party_phone" value="{{ $party->party_phone }}" required>
+            <input type="text" class="form-control disabled" name="party_phone" value="{{ $party->party_phone }}" required>
           </div>
           <div class="col-md-6">
             <label class="form-label">Email Address</label>
-            <input type="email" class="form-control" name="party_email" value="{{ $party->party_email }}" required>
+            <input type="email" class="form-control disabled" name="party_email" value="{{ $party->party_email }}" required>
           </div>
         </div>
 
         <div class="mb-3">
           <label class="form-label">Address in the Philippines</label>
-          <input type="text" class="form-control mb-2" name="party_house_no" value="{{ $party_address->house_no }}" required>
+          <input type="text" class="form-control mb-2 disabled" name="party_house_no" value="{{ $party_address->house_no }}" required>
           <div class="row g-3">
             <div class="col-6 col-md-3">
-              <select class="form-select" name="province" id="province" required>
-                <option value="{{ $party_address->province }}">{{ $party_address->province }}</option>
-              </select>
-              <input type="hidden" name="province_name" id="province_name">
+              <input type="text" class="form-control disabled" name="province_name" id="province_name" value="{{ $party_address->province }}">
             </div>
             <div class="col-6 col-md-3">
-              <select class="form-select" name="municipality" id="municipality" required>
-                <option value="{{ $party_address->municipality }}">{{ $party_address->municipality }}</option>
-              </select>
-              <input type="hidden" name="municipality_name" id="municipality_name">
+              <input type="text" class="form-control disabled" name="municipality_name" id="municipality_name" value="{{ $party_address->municipality }}">
             </div>
             <div class="col-6 col-md-3">
-              <select class="form-select" name="barangay" id="barangay" required>
-                <option value="{{ $party_address->brgy }}">{{ $party_address->brgy }}</option>
-              </select>
-              <input type="hidden" name="barangay_name" id="barangay_name">
+              <input type="text" class="form-control disabled" name="barangay_name" id="barangay_name" value="{{ $party_address->brgy }}">
             </div>
             <div class="col-6 col-md-3">
-              <input type="text" class="form-control" name="zip_code" value="{{ $party_address->zip_code }}" 
+              <input type="text" class="form-control disabled" name="zip_code" value="{{ $party_address->zip_code }}" 
                             minlength="4" maxlength="4" pattern="\d{4}" inputmode="numeric" required>
             </div>
           </div>
@@ -167,68 +140,39 @@
         <div class="row g-3 mb-3">
           <div class="col-md-3">
             <label class="form-label">Last Name</label>
-            <input type="text" class="form-control" name="ofw_lname" value="{{ $ofw->ofw_lname }}" required>
+            <input type="text" class="form-control disabled" name="ofw_lname" value="{{ $ofw->ofw_lname }}" required>
           </div>
           <div class="col-md-3">
             <label class="form-label">First Name</label>
-            <input type="text" class="form-control" name="ofw_fname" value="{{ $ofw->ofw_fname }}" required>
+            <input type="text" class="form-control disabled" name="ofw_fname" value="{{ $ofw->ofw_fname }}" required>
           </div>
           <div class="col-md-2">
             <label class="form-label">Name Ext.</label>
-            <input type="text" class="form-control" name="ofw_ename" value="{{ $ofw->ofw_ename }}">
+            <input type="text" class="form-control disabled" name="ofw_ename" value="{{ $ofw->ofw_ename }}">
           </div>
           <div class="col-md-4">
             <label class="form-label">Middle Name</label>
-            <input type="text" class="form-control" name="ofw_mname" value="{{ $ofw->ofw_mname }}">
+            <input type="text" class="form-control disabled" name="ofw_mname" value="{{ $ofw->ofw_mname }}">
           </div>
         </div>
 
-        <!-- <div class="row g-3 mb-3">
 
-          <div class="col-md-4">
-            <label class="form-label">Passport No.</label>
-            <input type="text" class="form-control" name="ofw_passport_no" value="{{ $ofw->ofw_passport_no }}" required>
-          </div>
-
-          <div class="col-6 col-md-4">
-            <label class="form-label">Sex</label>
-            <select class="form-select" name="ofw_gender" required>
-              <option value="">Select</option>
-              <option value="Male" {{ $ofw->ofw_gender == 'Male' ? 'selected' : '' }}>Male</option>
-              <option value="Female" {{ $ofw->ofw_gender == 'Female' ? 'selected' : '' }}>Female</option>
-            </select>
-          </div>
-
-          <div class="col-6 col-md-4">
-            <label class="form-label">Date of Birth</label>
-            <input type="date" class="form-control" name="ofw_bday" value="{{ $ofw->ofw_bday }}" required>
-          </div>
-        </div> -->
 
         <div class="row g-3 mb-3">
 
           <div class="col-12 col-md-4">
             <label class="form-label">Passport No.</label>
-            <input type="text" class="form-control uppercase" name="ofw_passport_no" placeholder="ex. 123456789" value="{{ $ofw->ofw_passport_no }}">
+            <input type="text" class="form-control disabled" name="ofw_passport_no" placeholder="ex. 123456789" value="{{ $ofw->ofw_passport_no }}">
           </div>
 
           <div class="col-6 col-md-4">
             <label class="form-label">Sex</label>
-            <select class="form-select" name="ofw_gender">
-              <option value="">Select</option>
-              <option value="Male" {{ $ofw->ofw_gender == 'Male' ? 'selected' : '' }}>Male</option>
-              <option value="Female" {{ $ofw->ofw_gender == 'Female' ? 'selected' : '' }}>Female</option>
-            </select>
+            <input type="text" class="form-control disabled" value="{{ $ofw->ofw_gender}}">
           </div>
 
           <div class="col-6 col-md-4">
               <label class="form-label">Civil Status</label>
-              <select class="form-select" name="ofw_civil_status">
-                  <option value="Select" {{ $ofw->ofw_civil_status == 'Select' ? 'selected' : '' }} disabled>Select</option>
-                  <option value="Single" {{ $ofw->ofw_civil_status == 'Single' ? 'selected' : '' }}>Single</option>
-                  <option value="Married" {{ $ofw->ofw_civil_status == 'Married' ? 'selected' : '' }}>Married</option>
-                  <option value="Widowed" {{ $ofw->ofw_civil_status == 'Widowed' ? 'selected' : '' }}>Widowed</option>
-              </select>
+              <input type="text" class="form-control disabled" value="{{ $ofw->ofw_civil_status }}">
           </div>
 
         </div>
@@ -237,80 +181,58 @@
 
           <div class="col-12 col-md-4">
             <label class="form-label">Email Address</label>
-            <input type="email" class="form-control" name="ofw_email" placeholder="ex. sample@email.com" value="{{ $ofw->ofw_email }}">
+            <input type="email" class="form-control disabled" name="ofw_email" placeholder="ex. sample@email.com" value="{{ $ofw->ofw_email }}">
           </div>
 
           <div class="col-6 col-md-4">
             <label class="form-label">Contact Number</label>
-            <input type="text" class="form-control" name="ofw_phone" placeholder="ex. 09123456768" value="{{ $ofw->ofw_phone }}">
+            <input type="text" class="form-control disabled" name="ofw_phone" placeholder="ex. 09123456768" value="{{ $ofw->ofw_phone }}">
           </div>
             
           <div class="col-6 col-md-4">
             <label class="form-label">Date of Birth</label>
-            <input type="date" class="form-control" name="ofw_bday" value="{{ $ofw->ofw_bday }}">
+            <input type="date" class="form-control disabled" name="ofw_bday" value="{{ $ofw->ofw_bday }}">
           </div>
         </div>
 
         <div class="row g-3 mb-3">
           <div class="col-6 col-md-3">
             <label class="form-label">Agency</label>
-            <input type="text" class="form-control" name="ofw_agency" value="{{ $ofw->ofw_agency }}" required>
+            <input type="text" class="form-control disabled" name="ofw_agency " value="{{ $ofw->ofw_agency }}" required>
           </div>
           <div class="col-6 col-md-3">
             <label class="form-label">Employer</label>
-            <input type="text" class="form-control" name="ofw_employer" value="{{ $ofw->ofw_employer }}" required>
+            <input type="text" class="form-control disabled" name="ofw_employer" value="{{ $ofw->ofw_employer }}" required>
           </div>
           <div class="col-6 col-md-3">
             <label class="form-label">Bansa</label>
-            <select class="form-select" name="ofw_country" id="country" required>
-              <option value="{{ $ofw->ofw_country }}">{{ $ofw->ofw_country }}</option>
-            </select>
-            <input type="hidden" name="ofw_country_name" id="country_name">
+            <input type="hidden" class="form-control disabled" name="ofw_country_name" id="country_name" value="{{ $ofw->ofw_country }}">
           </div>
           <div class="col-6 col-md-3">
             <label class="form-label">Trabaho</label>
-            <input type="text" class="form-control" name="ofw_job" value="{{ $ofw->ofw_job }}" required>
+            <input type="text" class="form-control disabled" name="ofw_job" value="{{ $ofw->ofw_job }}" required>
           </div>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Address in the Philippines</label>
-            <input type="text" class="form-control mb-2 uppercase" name="ofw_address_street" placeholder="Unit/Room/House Number/Street name" value="{{ $ofw_address->house_no }}">
-            <div class="row g-3">
-              <div class="col-6 col-md-3">
-                <select class="form-select" name="ofw_province" id="ofw_province">
-                  <option value="{{ $ofw_address->province }}">{{ $ofw_address->province }}</option>
-                </select>
-                <input type="hidden" name="ofw_province_name" id="ofw_province_name">
-              </div>
-              <div class="col-6 col-md-3">
-                <select class="form-select" name="ofw_municipality" id="ofw_municipality" disabled>
-                  <option value="{{ $ofw_address->municipality }}">{{ $ofw_address->municipality }}</option>
-                </select>
-                <input type="hidden" name="ofw_municipality_name" id="ofw_municipality_name">
-              </div>
-              <div class="col-6 col-md-3">
-                <select class="form-select" name="ofw_barangay" id="ofw_barangay" disabled>
-                  <option value="{{ $ofw_address->brgy }}">{{ $ofw_address->brgy }}</option>
-                </select>
-                <input type="hidden" name="ofw_barangay_name" id="ofw_barangay_name" value="{{ $ofw->ofw_barangay_name }}">
-              </div>
-              <div class="col-6 col-md-3">
-                <input 
-                    type="text" 
-                    class="form-control" 
-                    name="ofw_zip_code" 
-                    placeholder="ex. 2016" 
-                    value="{{ $ofw_address->zip_code }}" 
-                    maxlength="4"          
-                    pattern="\d{4}"         
-                    inputmode="numeric"     
-                    oninput="this.value = this.value.replace(/[^0-9]/g,'').slice(0,4);" 
-
-                >
-              </div>
+          <label class="form-label">Address in the Philippines</label>
+          <input type="text" class="form-control mb-2 disabled" name="ofw_house_no" value="{{ $ofw_address->house_no }}" required>
+          <div class="row g-3">
+            <div class="col-6 col-md-3">
+              <input type="text" class="form-control disabled" name="province_name" id="province_name" value="{{ $ofw_address->province }}">
+            </div>
+            <div class="col-6 col-md-3">
+              <input type="text" class="form-control disabled" name="municipality_name" id="municipality_name" value="{{ $ofw_address->municipality }}">
+            </div>
+            <div class="col-6 col-md-3">
+              <input type="text" class="form-control disabled" name="barangay_name" id="barangay_name" value="{{ $ofw_address->brgy }}">
+            </div>
+            <div class="col-6 col-md-3">
+              <input type="text" class="form-control disabled" name="zip_code" value="{{ $ofw_address->zip_code }}" 
+                            minlength="4" maxlength="4" pattern="\d{4}" inputmode="numeric" required>
             </div>
           </div>
+        </div>
     </div>
 
     <!-- Section C -->

@@ -444,25 +444,25 @@
                 data-bs-parent="#requestAccordion">
                 <div class="accordion-body aksyon-accordion-body aksyon-section-content">
                     <div class="form-check mb-3">
-                        <input class="form-check-input" type="radio" name="nature_of_request_wrsd" id="medical_assistance_wrsd" value="medical_assistance_wrsd" {{ ($entries['nature_of_request_wrsd'] ?? '') == 'Medical Assistance' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="nature_of_request_wrsd" id="medical_assistance_wrsd" value="medical_assistance_wrsd" {{ ($entries['nature_of_request_wrsd'] ?? '') == 'medical_assistance_wrsd' ? 'checked' : '' }}>
                         <label class="form-check-label" for="medical_assistance_wrsd">
                             <strong>Medical Assistance</strong> - para sa pagtugon sa gastusing ng pagpapagamot at pagpapabuti ng kalusugan ng OFW na hindi sakop ng employer o health insurance.
                         </label>
                     </div>
                     <div class="form-check mb-3">
-                        <input class="form-check-input" type="radio" name="nature_of_request_wrsd" id="financial_assistance_wrsd" value="financial_assistance_wrsd" {{ ($entries['nature_of_request_wrsd'] ?? '') == 'Financial Assistance' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="nature_of_request_wrsd" id="financial_assistance_wrsd" value="financial_assistance_wrsd" {{ ($entries['nature_of_request_wrsd'] ?? '') == 'financial_assistance_wrsd' ? 'checked' : '' }}>
                         <label class="form-check-label" for="financial_assistance_wrsd">
                             <strong>Financial Assistance</strong> - para sa agarang tulong pinansyal sa OFW at kaniyang pamilya upang maibsan ang epekto ng krisis o pagkawala ng hanapbuhay.
                         </label>
                     </div>
                     <div class="form-check mb-3">
-                        <input class="form-check-input" type="radio" name="nature_of_request_wrsd" id="welfare_assistance_wrsd" value="welfare_assistance_wrsd" {{ ($entries['nature_of_request_wrsd'] ?? '') == 'Welfare Assistance' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="nature_of_request_wrsd" id="welfare_assistance_wrsd" value="welfare_assistance_wrsd" {{ ($entries['nature_of_request_wrsd'] ?? '') == 'welfare_assistance_wrsd' ? 'checked' : '' }}>
                         <label class="form-check-label" for="welfare_assistance_wrsd">
                             <strong>Welfare Assistance</strong> - para sa pagbibigay ng tulong pinansyal o medikal sa mga nakakatandang OFW na may edad 60 pataas na pauwi na sa Pilipinas.
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="nature_of_request_wrsd" id="repatriation_assistance_wrsd" value="repatriation_assistance_wrsd" {{ ($entries['nature_of_request_wrsd'] ?? '') == 'Repatriation Assistance' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="nature_of_request_wrsd" id="repatriation_assistance_wrsd" value="repatriation_assistance_wrsd" {{ ($entries['nature_of_request_wrsd'] ?? '') == 'repatriation_assistance_wrsd' ? 'checked' : '' }}>
                         <label class="form-check-label" for="repatriation_assistance_wrsd">
                             <strong>Repatriation Assistance</strong> - para sa pagbibigay ng tulong sa agarang pagpapauwi ng OFW sa Pilipinas mula sa ibang bansa, kabilang ang koordinasyon sa mga kaukulang ahensya at pagsagot sa kinakailangang gastusin sa repatriation sa panahon ng krisis, emergency, o iba pang hindi inaasahang sitwasyon.
                         </label>

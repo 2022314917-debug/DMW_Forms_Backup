@@ -59,20 +59,20 @@ Route::middleware('auth')->group(function () {
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
     
-    Route::get('forms-submitted', [\App\Http\Controllers\SubmittedFormController::class, 'index'])
-        ->name('forms-submitted.index');
+    Route::get('forms-submitted', [\App\Http\Controllers\SubmittedFormController::class, 'index'])->name('forms-submitted.index');
 
-    Route::get('forms-submitted/general', [\App\Http\Controllers\SubmittedFormController::class, 'generalFormSubmitted'])
-        ->name('forms-submitted.general');
+    Route::get('forms-submitted/general', [\App\Http\Controllers\SubmittedFormController::class, 'generalFormSubmitted'])->name('forms-submitted.general');
 
     // -------------------------------------------------------
     // DYNAMIC ROUTES AFTER
     // -------------------------------------------------------
-    Route::get('forms-submitted/request/{id}', [\App\Http\Controllers\SubmittedFormController::class, 'show'])
-        ->name('forms-submitted.show');
+    Route::get('forms-submitted/request/{id}', [\App\Http\Controllers\SubmittedFormController::class, 'show'])->name('forms-submitted.show');
+    Route::get('forms-submitted/{requestId}/form/{formId}', [\App\Http\Controllers\SubmittedFormController::class, 'openForm'])->name('forms-submitted.open-form');
 
-    Route::get('forms-submitted/{requestId}/form/{formId}', [\App\Http\Controllers\SubmittedFormController::class, 'openForm'])
-        ->name('forms-submitted.open-form');
+
+
+    Route::get('/forms-submitted/{requestId}/{formId}/edit',[\App\Http\Controllers\SubmittedFormController::class, 'editGeneral'])->name('forms-submitted.general-edit');
+    Route::put('/forms-submitted/{requestId}/{formId}',[\App\Http\Controllers\SubmittedFormController::class, 'saveEditGeneral'])->name('forms-submitted.save-edit-general');
 
     Route::get('forms-submitted/general', [\App\Http\Controllers\SubmittedFormController::class, 'generalFormSubmitted'])->name('forms-submitted.general');
     Route::post('forms-submitted/general', [\App\Http\Controllers\SubmittedFormController::class, 'storeGeneralForm'])->name('forms-submitted.general.store');
