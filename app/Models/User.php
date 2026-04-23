@@ -17,10 +17,25 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    protected $table = 'employees';
+    // protected $fillable = [
+    //     'name',
+    //     'email',
+    //     'password',
+    // ];
+
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'division_id',
+        'emp_lname',
+        'emp_fname',
+        'emp_ename',
+        'emp_mname',
+        'emp_gender',
+        'emp_bday',
+        'emp_email',
+        'emp_password',
+        'emp_contact_no',
+        'emp_position'
     ];
 
     /**
@@ -28,8 +43,13 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    // protected $hidden = [
+    //     'password',
+    //     'remember_token',
+    // ];
+
     protected $hidden = [
-        'password',
+        'emp_password',
         'remember_token',
     ];
 
@@ -45,4 +65,6 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    
 }

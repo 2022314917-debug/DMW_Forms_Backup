@@ -2,12 +2,36 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Auth::routes();
+
+// ========================================PRE LOG IN ROUTES=======================================
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'register'])->name('register.store');
+
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.store');
+//==================================================================================================
+
+Route::post('/logout', function (Request $request) {
+    Auth::logout();
+
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect('/login');
+})->name('logout');
+//======================================================================================================
+
+
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('users', [\App\Http\Controllers\UserController::class, 'index'])->name('users.index');
@@ -30,7 +54,7 @@ Route::get('forms/aksyon', [\App\Http\Controllers\FormController::class, 'aksyon
 Route::post('forms/aksyon/store', [\App\Http\Controllers\FormController::class, 'storeAksyonForm'])->name('forms.aksyon.store');
 
 // OFW INFO SHEET PROTECTION DIVISION ROUTES
-Route::get('forms/ofwinfo_protection', [\App\Http\Controllers\FormController::class, 'ofwinfo_protection'])->name('forms.ofwinfo_protection');
+Route::get('forms/ofw_info_sheet_mwpd_protection', [\App\Http\Controllers\FormController::class, 'ofw_info_sheet_mwpd_protection'])->name('forms.ofw_info_sheet_mwpd_protection');
 
 
 //SENA FORM ROUTES
@@ -71,8 +95,13 @@ Route::middleware('auth')->group(function () {
 
 
 
-    Route::get('/forms-submitted/{requestId}/{formId}/edit',[\App\Http\Controllers\SubmittedFormController::class, 'editGeneral'])->name('forms-submitted.general-edit');
+    Route::get('/forms-submitted/{requestId}/{formId}/editGeneral',[\App\Http\Controllers\SubmittedFormController::class, 'editGeneral'])->name('forms-submitted.edit.general');
     Route::put('/forms-submitted/{requestId}/{formId}',[\App\Http\Controllers\SubmittedFormController::class, 'saveEditGeneral'])->name('forms-submitted.save-edit-general');
+
+    Route::get('/forms-submitted/{requestId}/{formId}/editSENA',[\App\Http\Controllers\SubmittedFormController::class, 'editSENA'])->name('forms-submitted.edit.sena');
+    Route::put('/forms-submitted/{requestId}/{formId}',[\App\Http\Controllers\SubmittedFormController::class, 'saveEditSENA'])->name('forms-submitted.save-edit-sena');
+
+    Route::get('/forms-submitted/search', [\App\Http\Controllers\SubmittedFormController::class, 'search'])->name('forms-submitted.search');
 
     Route::get('forms-submitted/general', [\App\Http\Controllers\SubmittedFormController::class, 'generalFormSubmitted'])->name('forms-submitted.general');
     Route::post('forms-submitted/general', [\App\Http\Controllers\SubmittedFormController::class, 'storeGeneralForm'])->name('forms-submitted.general.store');

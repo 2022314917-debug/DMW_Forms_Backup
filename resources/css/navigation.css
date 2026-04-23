@@ -165,3 +165,63 @@
             /* padding-bottom: 600px; */
         }
     }
+
+
+
+    /* =========================================EMPLOYEE ACCESS NAVIGATION================================================ */
+
+    /* Sidebar (authenticated) */
+.sidebar {
+    background-color: #07296e;
+}
+
+.sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.85);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-left: 3px solid transparent;
+    border-radius: 0;
+    transition: border-color 0.15s, background 0.15s;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link:focus {
+    border-left-color: #00c0ef;
+    background: transparent;
+    color: #fff;
+}
+
+.sidebar .sub-nav .nav-link {
+    padding-left: 2.8rem;
+    font-size: 0.875rem;
+    border-left: 2px solid transparent;
+}
+
+.sidebar .sub-nav .nav-link:hover {
+    border-left-color: #00c0ef;
+}
+
+.sidebar .collapse-toggle .chevron {
+    margin-left: auto;
+    transition: transform 0.2s;
+}
+
+.sidebar .collapse-toggle[aria-expanded="true"] .chevron {
+    transform: rotate(180deg);
+}
+
+.sidebar .sidebar-divider {
+    border-top: 0.5px solid rgba(255, 255, 255, 0.1);
+    margin: 0.5rem 0;
+}
+
+.sidebar .nav-link span {
+    color: #fff;
+    font-size: 0.875rem;
+}
+
+.sidebar .sub-nav .nav-link span {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.8rem;
+}

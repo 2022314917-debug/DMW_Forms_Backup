@@ -38,115 +38,6 @@ class FormController extends Controller
 
     public function storeGeneralForm(HttpRequest $request)
     {
-        Log::info('Form submission received', ['data' => $request->except(['_token'])]);
-        
-        // // Validate the request
-        // $validated = $request->validate([
-        //     // Section A - Request Party
-        //     'party_lname' => 'required|string|max:255',
-        //     'party_fname' => 'required|string|max:255',
-        //     'party_ename' => 'nullable|string|max:255',
-        //     'party_mname' => 'nullable|string|max:255',
-        //     'party_bday' => 'required|date',
-        //     'party_gender' => 'required|string',
-        //     'party_relationship' => 'required|string|max:255',
-        //     'party_phone' => 'required|string|max:20',
-        //     'party_email' => 'required|email|max:255',
-        //     'party_address_street' => 'required|string|max:255',
-        //     'province' => 'required|string|max:255',
-        //     'province_name' => 'required|string|max:255',
-        //     'municipality' => 'required|string|max:255',
-        //     'municipality_name' => 'required|string|max:255',
-        //     'barangay' => 'required|string|max:255',
-        //     'barangay_name' => 'required|string|max:255',
-        //     'zip_code' => 'nullable|string|max:10',
-
-        //     // Section B - OFW Info
-        //     'ofw_lname' => 'required|string|max:255',
-        //     'ofw_fname' => 'nullable|string|max:255',
-        //     'ofw_ename' => 'nullable|string|max:255',
-        //     'ofw_mname' => 'nullable|string|max:255',
-        //     'ofw_bday' => 'required|date',
-        //     'ofw_gender' => 'required|string',
-        //     'ofw_passport_no' => 'required|string|max:255',
-        //     'ofw_agency' => 'required|string|max:255',
-        //     'ofw_employer' => 'required|string|max:255',
-        //     'ofw_country' => 'required|string|max:255',
-        //     'ofw_country_name' => 'required|string|max:255',
-        //     'ofw_job' => 'required|string|max:255',
-
-        //     // Section C - Nature of Request (Checkboxes)
-        //     'mwpd' => 'nullable|array',
-        //     'wrsd' => 'nullable|array',
-        //     'mwpd_protection' => 'nullable|array',
-        //     'g2g_country' => 'nullable|string',
-        //     'g2g_others_text' => 'nullable|string',
-        //     'reint_serv_text' => 'nullable|string',
-        //     'assistance_type' => 'nullable|string',
-        //     'assistance_others_text' => 'nullable|string',
-        //     'other_concerns_mwpd_text' => 'nullable|string',
-        //     'other_concerns_wrsd_text' => 'nullable|string',
-        //     'other_concerns_mwpd_protection_text' => 'nullable|string',
-        // ]);
-
-        
-
-        // Log::info('Form validation passed');
-
-        // try {
-        //     DB::beginTransaction();
-        //     Log::info('Database transaction started');
-
-        //     // Create Request record
-        //     /** @var \App\Models\Request_Number $newRequest */
-        //     $newRequest = Request_Number::create([
-        //         'status' => 'pending'
-        //     ]);
-        //     Log::info('Request created with ID: ' . $newRequest->id);
-
-        //     // Create Request_Party record
-        //     Request_Party::create([
-        //         'request_id' => $newRequest->id,
-        //         'party_lname' => $validated['party_lname'],
-        //         'party_fname' => $validated['party_fname'],
-        //         'party_ename' => $validated['party_ename'] ?? null,
-        //         'party_mname' => $validated['party_mname'] ?? null,
-        //         'party_email' => $validated['party_email'],
-        //         'party_phone' => $validated['party_phone'],
-        //         'party_bday' => $validated['party_bday'],
-        //         'party_gender' => $validated['party_gender'],
-        //         'party_relationship' => $validated['party_relationship'],
-        //     ]);
-        //     Log::info('Request_Party record created');
-
-        //     // Create Request_Party_Address record
-        //     $requestParty = Request_Party::where('request_id', $newRequest->id)->first();
-        //     Request_Party_Address::create([
-        //         'request_id' => $newRequest->id,
-        //         'request_party_id' => $requestParty->id,
-        //         'province' => $validated['province_name'],
-        //         'municipality' => $validated['municipality_name'],
-        //         'brgy' => $validated['barangay_name'],
-        //         'house_no' => $validated['party_address_street'],
-        //         'zip_code' => $validated['zip_code'] ?? null,
-        //     ]);
-
-        //     // Create Request_OFW record
-        //     Request_OFW::create([
-        //         'request_id' => $newRequest->id,
-        //         'ofw_lname' => $validated['ofw_lname'],
-        //         'ofw_fname' => $validated['ofw_fname'],
-        //         'ofw_ename' => $validated['ofw_ename'] ?? null,
-        //         'ofw_mname' => $validated['ofw_mname'] ?? null,
-        //         'ofw_passport_no' => $validated['ofw_passport_no'],
-        //         'ofw_country' => $validated['ofw_country_name'],
-        //         'ofw_job' => $validated['ofw_job'],
-        //         'ofw_employer' => $validated['ofw_employer'],
-        //         'ofw_agency' => $validated['ofw_agency'],
-        //         'bday' => $validated['ofw_bday'],
-        //         'gender' => $validated['ofw_gender'],
-        //     ]);
-        //     Log::info('Request_OFW record created');
 
         //     // Create Request_Form record (linking request to the "OFFICIAL DMW-RO3 RFA FORM")
         //     $requestForm = Request_Form::where('form_name', 'OFFICIAL DMW-RO3 RFA FORM')->first();
@@ -287,8 +178,6 @@ class FormController extends Controller
         //         }
         //     }
 
-        //     DB::commit();
-        //     Log::info('Database transaction committed successfully');
 
             $mwpd = $request->input('mwpd', []);
             $wrsd = $request->input('wrsd', []);
@@ -316,19 +205,11 @@ class FormController extends Controller
                 'general_form_data' => $request->all()
             ]);
 
+
         //     // return redirect()->route('forms.processing')->with('success', 'Form submitted successfully! Your Request ID is: ' . $total);
             return redirect('/forms/step/' . $steps[0]);
 
-        // } catch (\Exception $e) {
-        //     DB::rollBack();
-        //     Log::error('Form submission error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
-        //     return redirect()->back()->with('error', 'Error submitting form: ' . $e->getMessage())->withInput();
-        // }
-        // session([
-        //     'general_form_data' => $request->all()
-        // ]);
-        // return redirect()->route('forms.processing')
-        //     ->with('success', 'Form submitted successfully! Your Request ID is: ');
+
     }
     public function showStep($step)
     {
@@ -353,7 +234,7 @@ class FormController extends Controller
             'general' => 'forms.general',
             'ofw_info_sheet_mwpd' => 'forms.processing',
             'aksyon' => 'forms.aksyon',
-            'ofw_info_sheet_mwpd_protection' => 'forms.ofwinfo_protection',
+            'ofw_info_sheet_mwpd_protection' => 'forms.ofw_info_sheet_mwpd_protection',
             'sena' => 'forms.sena',
             'requirements' => 'forms.requirements', // auto included
         ];
@@ -428,8 +309,8 @@ class FormController extends Controller
 
   
 
-    public function ofwinfo_protection(){
-        return view('forms.ofwinfo_protection');
+    public function ofw_info_sheet_mwpd_protection(){
+        return view('forms.ofw_info_sheet_mwpd_protection');
     }
 
     public function senaForm(){
@@ -462,141 +343,162 @@ class FormController extends Controller
 
         DB::beginTransaction();
 
-        try{
+        try {
             $requestNumber = Request_Number::create([
                 'status' => 'Pending'
             ]);
 
             $requestOFW = Request_OFW::create([
                 'request_id' => $requestNumber->id,
-                'ofw_lname' => $generalFormData['ofw_lname'] ?? null,
-                'ofw_fname' => $generalFormData['ofw_fname'] ?? null,
-                'ofw_ename' => $generalFormData['ofw_ename'] ?? null,
-                'ofw_mname' => $generalFormData['ofw_mname'] ?? null,
+                'ofw_lname'    => $generalFormData['ofw_lname'] ?? null,
+                'ofw_fname'    => $generalFormData['ofw_fname'] ?? null,
+                'ofw_ename'    => $generalFormData['ofw_ename'] ?? null,
+                'ofw_mname'    => $generalFormData['ofw_mname'] ?? null,
                 'ofw_passport_no' => $generalFormData['ofw_passport_no'] ?? null,
-                'ofw_gender' => $generalFormData['ofw_gender'] ?? null,
+                'ofw_gender'   => $generalFormData['ofw_gender'] ?? null,
                 'ofw_civil_status' => $generalFormData['ofw_civil_status'] ?? null,
-                'ofw_email' => $generalFormData['ofw_email'] ?? null,
-                'ofw_phone' => $generalFormData['ofw_phone'] ?? null,
-                'ofw_bday' => $generalFormData['ofw_bday'] ?? null,
-                'ofw_country' => $generalFormData['ofw_country_name'] ?? null,
-                'ofw_job' => $generalFormData['ofw_job'] ?? null,
+                'ofw_email'    => $generalFormData['ofw_email'] ?? null,
+                'ofw_phone'    => $generalFormData['ofw_phone'] ?? null,
+                'ofw_bday'     => $generalFormData['ofw_bday'] ?? null,
+                'ofw_country'  => $generalFormData['ofw_country_name'] ?? null,
+                'ofw_job'      => $generalFormData['ofw_job'] ?? null,
                 'ofw_employer' => $generalFormData['ofw_employer'] ?? null,
-                'ofw_agency' => $generalFormData['ofw_agency'] ?? null,
+                'ofw_agency'   => $generalFormData['ofw_agency'] ?? null,
             ]);
 
             Request_Ofw_Address::create([
-                'request_id' => $requestNumber->id,
-                'request_ofw_id' => $requestOFW->id,
-                'house_no' => $generalFormData['ofw_address_street'] ?? null,
-                'province' => $generalFormData['ofw_province_name'] ?? null,
-                'municipality' => $generalFormData['ofw_municipality_name'] ?? null,
-                'brgy' => $generalFormData['ofw_barangay_name'] ?? null,
-                'zip_code' => $generalFormData['ofw_zip_code'] ?? null,
+                'request_id'      => $requestNumber->id,
+                'request_ofw_id'  => $requestOFW->id,
+                'house_no'        => $generalFormData['ofw_address_street'] ?? null,
+                'province'        => $generalFormData['ofw_province_name'] ?? null,
+                'municipality'    => $generalFormData['ofw_municipality_name'] ?? null,
+                'brgy'            => $generalFormData['ofw_barangay_name'] ?? null,
+                'zip_code'        => $generalFormData['ofw_zip_code'] ?? null,
             ]);
 
             $requestParty = Request_Party::create([
-                'request_id' => $requestNumber->id,
-                'party_lname' => $generalFormData['party_lname'] ?? null,
-                'party_fname' => $generalFormData['party_fname'] ?? null,
-                'party_ename' => $generalFormData['party_ename'] ?? null,
-                'party_mname' => $generalFormData['party_mname'] ?? null,
-                'party_email' => $generalFormData['party_email'] ?? null,
-                'party_phone' => $generalFormData['party_phone'] ?? null,
-                'party_bday' => $generalFormData['party_bday'] ?? null,
-                'party_gender' => $generalFormData['party_gender'] ?? null,
-                'party_relationship' => $generalFormData['party_relationship'] ?? null,
+                'request_id'          => $requestNumber->id,
+                'party_lname'         => $generalFormData['party_lname'] ?? null,
+                'party_fname'         => $generalFormData['party_fname'] ?? null,
+                'party_ename'         => $generalFormData['party_ename'] ?? null,
+                'party_mname'         => $generalFormData['party_mname'] ?? null,
+                'party_email'         => $generalFormData['party_email'] ?? null,
+                'party_phone'         => $generalFormData['party_phone'] ?? null,
+                'party_bday'          => $generalFormData['party_bday'] ?? null,
+                'party_gender'        => $generalFormData['party_gender'] ?? null,
+                'party_relationship'  => $generalFormData['party_relationship'] ?? null,
             ]);
 
             Request_Party_Address::create([
-                'request_id' => $requestNumber->id,
+                'request_id'       => $requestNumber->id,
                 'request_party_id' => $requestParty->id,
-                'house_no' => $generalFormData['party_address_street'] ?? null,
-                'province' => $generalFormData['party_province_name'] ?? null,
-                'municipality' => $generalFormData['party_municipality_name'] ?? null,
-                'brgy' => $generalFormData['party_barangay_name'] ?? null,
-                'zip_code' => $generalFormData['party_zip_code'] ?? null,
+                'house_no'         => $generalFormData['party_address_street'] ?? null,
+                'province'         => $generalFormData['party_province_name'] ?? null,
+                'municipality'     => $generalFormData['party_municipality_name'] ?? null,
+                'brgy'             => $generalFormData['party_barangay_name'] ?? null,
+                'zip_code'         => $generalFormData['party_zip_code'] ?? null,
             ]);
 
-            // handle checkbox arrays stored in general_form_data
+            // Pre-load field map: ['field_name' => ['id' => x, 'form_id' => y]]
+            $fieldMap = Request_Form_Field::with('form')
+                ->get()
+                ->keyBy('field_name')
+                ->map(fn($f) => ['id' => $f->id, 'form_id' => $f->request_form_id]);
+
+            // Handle checkbox arrays stored in general_form_data
             $checkboxGroups = ['mwpd', 'wrsd', 'mwpd_protection'];
 
-            $fieldMap = Request_Form_Field::pluck('id', 'field_name')->toArray();
-
+            // Group checkboxes by their form_id first
+            $checkboxesByForm = [];
             foreach ($checkboxGroups as $group) {
                 if (!empty($generalFormData[$group]) && is_array($generalFormData[$group])) {
                     foreach ($generalFormData[$group] as $value) {
+                        $fieldData = $fieldMap[$value] ?? null;
 
-                        $fieldId = $fieldMap[$value] ?? null;
-
-                        if (!$fieldId) {
+                        if (!$fieldData) {
                             Log::warning("Missing checkbox field mapping: " . $value);
                             continue;
                         }
 
-                        $entry = Request_Form_Entries::create([
-                            'request_id' => $requestNumber->id,
-                            'request_form_field_id' => $fieldId,
-                            'value' => 'checked'
-                        ]);
-
-                        Request_Form_Field_Values::create([
-                            'request_form_entry_id' => $entry->id,
-                            'request_form_field_id' => $fieldId,
-                            'value' => 'checked'
-                        ]);
+                        $checkboxesByForm[$fieldData['form_id']][] = [
+                            'field_id' => $fieldData['id'],
+                            'value'    => 'checked',
+                        ];
                     }
                 }
             }
 
-            foreach($formsData as $step => $fields){
+            // Create 1 entry per form for checkboxes
+            foreach ($checkboxesByForm as $formId => $checkboxFields) {
+                $entry = Request_Form_Entries::create([
+                    'request_id'      => $requestNumber->id,
+                    'request_form_id' => $formId,
+                    'status'          => 'Pending',
+                ]);
 
-                
+                foreach ($checkboxFields as $field) {
+                    Request_Form_Field_Values::create([
+                        'request_form_entry_id' => $entry->id,
+                        'request_form_field_id' => $field['field_id'],
+                        'value'                 => $field['value'],
+                    ]);
+                }
+            }
+
+            // Handle formsData — group fields by form_id, 1 entry per form
+            foreach ($formsData as $step => $fields) {
+                $fieldsByForm = [];
+
                 foreach ($fields as $fieldKey => $value) {
-                    $fieldMap = Request_Form_Field::pluck('id', 'field_name')->toArray();
+                    $fieldData = $fieldMap[$fieldKey] ?? null;
 
-                    $fieldId = $fieldMap[$fieldKey] ?? null;
-
-                    if (!$fieldId) {
+                    if (!$fieldData) {
                         Log::warning("Missing field mapping: " . $fieldKey);
                         continue;
                     }
 
-                    $entry = Request_Form_Entries::create([
-                        'request_id' => $requestNumber->id,
-                        'request_form_field_id' => $fieldId,
-                        'value' => is_array($value) ? json_encode($value) : $value
-                    ]);
-
-                    Request_Form_Field_Values::create([
-                        'request_form_entry_id' => $entry->id,
-                        'request_form_field_id' => $fieldId,
-                        'value' => is_array($value) ? json_encode($value) : $value
-                    ]);
+                    $fieldsByForm[$fieldData['form_id']][] = [
+                        'field_id' => $fieldData['id'],
+                        'value'    => is_array($value) ? json_encode($value) : $value,
+                    ];
                 }
 
-                
+                foreach ($fieldsByForm as $formId => $formFields) {
+                    $entry = Request_Form_Entries::create([
+                        'request_id'      => $requestNumber->id,
+                        'request_form_id' => $formId,
+                        'status'          => 'Pending',
+                    ]);
+
+                    foreach ($formFields as $field) {
+                        Request_Form_Field_Values::create([
+                            'request_form_entry_id' => $entry->id,
+                            'request_form_field_id' => $field['field_id'],
+                            'value'                 => $field['value'],
+                        ]);
+                    }
+                }
             }
 
-            Request_Status_History::create([
-                'request_id' => $requestNumber->id,
-                'status' => 'Pending',
-                'remarks' => 'Initial submission'
-            ]);
+            // Request_Status_History::create([
+            //     'request_id' => $requestNumber->id,
+            //     'status'     => 'Pending',
+            //     'remarks'    => 'Initial submission',
+            // ]);
 
             DB::commit();
 
             session()->flush();
 
-            return redirect()->route('forms.success')->with('success', 'Forms submitted successfully! Your Request ID is: ' . $requestNumber->id);
-                
+            return redirect()->route('forms.success')
+                ->with('success', 'Forms submitted successfully! Your Request ID is: ' . $requestNumber->id);
 
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             DB::rollBack();
-
             Log::error('Error submitting all forms: ' . $e->getMessage(), [
                 'trace' => $e->getTraceAsString()
             ]);
+
 
             return redirect()->route('forms.index')
                 ->with('error', 'Error submitting forms: ' . $e->getMessage());

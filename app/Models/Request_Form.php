@@ -17,4 +17,10 @@ class Request_Form extends Model
     {
         return $this->hasMany(Request_Form_Field::class, 'request_form_id', 'id');
     }
+
+    // Add this relationship
+    public function division()
+    {
+        return $this->belongsTo(Division::class, 'division_id', 'id');
+    }
 }

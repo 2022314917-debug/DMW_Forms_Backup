@@ -16,10 +16,10 @@ return new class extends Migration
             $table->foreignId('request_id')
                 ->constrained('request')
                 ->cascadeOnDelete();
-            $table->foreignId('request_form_field_id')
-                ->constrained('request_form_field')
+            $table->foreignId('request_form_id')
+                ->constrained('request_form')
                 ->cascadeOnDelete();
-            $table->string('value');
+            $table->string('status')->default('Pending');
             $table->timestamps();
         });
     }

@@ -98,12 +98,21 @@ class SubmittedFormController extends Controller
         $request = Request_Number::with([
             'requestOfw',
             'requestParty',
-            'requestFormEntries.field.form',
+            'requestOfwAddress',
+            'requestPartyAddress',
+            'requestFormEntries.form.division', // added .division here
             'statusHistory',
         ])->findOrFail($id);
 
         $forms = $request->requestFormEntries
-            ->groupBy(fn($e) => $e->field->request_form_id);
+            ->groupBy('request_form_id')
+            ->map(fn($entries) => [
+                'form'        => $entries->first()->form,
+                'division_id' => $entries->first()->form->division_id,
+                'division_name'    => $entries->first()->form->division_name,
+                'status'      => $entries->first()->status,
+            ]);
+            
 
         return view('forms-submitted.show', compact('request', 'forms'));
     }
@@ -119,7 +128,7 @@ class SubmittedFormController extends Controller
             'requestOfw',
             'requestParty',
             'requestPartyAddress',
-            'requestFormEntries.field.form',
+            'requestFormEntries',
         ])->findOrFail($requestId);
 
         $form    = Request_Form::findOrFail($formId);
@@ -129,44 +138,45 @@ class SubmittedFormController extends Controller
         $party_address = $request->requestPartyAddress;
 
 
-        $entries = $request->requestFormEntries
-            ->filter(fn($e) => $e->field->request_form_id == $formId)
-            ->values();
+        // Get the entry IDs for this form
+        $entryIds = $request->requestFormEntries->pluck('id');
 
-        // Keyed by field_name so Blade can do $sectionC['party_lname'] etc.
-        $sectionC = $entries->keyBy(fn($e) => $e->field->field_name);
+        // Get all field values from request_form_field_values directly
+        $allFieldValues = Request_Form_Field_Values::with('field')
+            ->whereIn('request_form_entry_id', $entryIds)
+            ->get();
 
-        $entries = $request->requestFormEntries->mapWithKeys(function ($entry) {
-            return [$entry->field->field_name => $entry->value];
+        // Keyed by field_name => value, e.g. $entries['party_lname']
+        $entries = $allFieldValues->mapWithKeys(function ($fv) {
+            return [$fv->field->field_name => $fv->value];
         });
 
-        return match ($form->form_name) {
-            'OFFICIAL DMW-RO3 RFA FORM' =>
+        // Keyed by field_name => full fieldValue model, e.g. $sectionC['party_lname']->value
+        $sectionC = $allFieldValues->keyBy(fn($fv) => $fv->field->field_name);
+
+        return match ($form->id) {
+            100 =>
                 view('forms-submitted.show.general', compact(
                     'request', 'entries', 'form',
                     'ofw', 'party', 'ofw_address', 'party_address' ,'sectionC'
                 )),
-
-            'REQUEST FOR ASSISTANCE (RFA) FORM' =>
-                view('forms-submitted.show.aksyon', compact(
-                    'request', 'entries', 'form',
-                    'ofw', 'party', 'ofw_address', 'party_address' ,'sectionC'
-                )),
-
-            'REQUEST FOR VERIFICATION / CERTIFICATION OF OFW RECORDS (PROCESSING)' =>
+            101 =>
                 view('forms-submitted.show.processing', compact(
                     'request', 'entries', 'form',
                     'ofw', 'party', 'ofw_address', 'party_address' ,'sectionC'
                 )),
-
-            'SINGLE-ENTRY APPROACH (SENA)' =>
-                view('forms-submitted.show.sena', compact(
+            102 =>
+                view('forms-submitted.show.aksyon', compact(
                     'request', 'entries', 'form',
                     'ofw', 'party', 'ofw_address', 'party_address' ,'sectionC'
                 )),
-
-            'REQUEST FOR VERIFICATION / CERTIFICATION OF OFW RECORDS (PROTECTION)' =>
-                view('forms-submitted.show.ofwinfo_protection', compact(
+            103 =>
+                view('forms-submitted.show.ofw_info_sheet_mwpd_protection', compact(
+                    'request', 'entries', 'form',
+                    'ofw', 'party', 'ofw_address', 'party_address' ,'sectionC'
+                )),
+            104 =>
+                view('forms-submitted.show.sena', compact(
                     'request', 'entries', 'form',
                     'ofw', 'party', 'ofw_address', 'party_address' ,'sectionC'
                 )),
@@ -181,27 +191,35 @@ class SubmittedFormController extends Controller
             'requestParty',
             'requestPartyAddress',
             'requestOfwAddress',
-            'requestFormEntries.field.form',
+            'requestFormEntries' => function ($query) use ($formId) {
+                $query->where('request_form_id', $formId);
+            },
         ])->findOrFail($requestId);
 
-        $form  = Request_Form::findOrFail($formId);
-
-        $ofw   = $request->requestOfw;
-        $party = $request->requestParty;
+        $form          = Request_Form::findOrFail($formId);
+        $ofw           = $request->requestOfw;
+        $party         = $request->requestParty;
         $ofw_address   = $request->requestOfwAddress;
         $party_address = $request->requestPartyAddress;
 
-        $entries = $request->requestFormEntries
-            ->filter(fn($e) => $e->field->request_form_id == $formId);
+        // Get entry IDs for this form
+        $entryIds = $request->requestFormEntries->pluck('id');
 
-        $sectionC = $entries->keyBy(fn($e) => $e->field->field_name);
+        // Get all field values from request_form_field_values directly
+        $allFieldValues = Request_Form_Field_Values::with('field')
+            ->whereIn('request_form_entry_id', $entryIds)
+            ->get();
 
-        $entries = $entries->mapWithKeys(function ($entry) {
-            return [$entry->field->field_name => $entry->value];
+        // Keyed by field_name => value
+        $entries = $allFieldValues->mapWithKeys(function ($fv) {
+            return [$fv->field->field_name => $fv->value];
         });
 
-        return match ($form->form_name) {
-            'OFFICIAL DMW-RO3 RFA FORM' =>
+        // Keyed by field_name => full fieldValue model
+        $sectionC = $allFieldValues->keyBy(fn($fv) => $fv->field->field_name);
+
+        return match ($formId) {
+            '100' =>
                 view('forms-submitted.edit.general', compact(
                     'request', 'entries', 'form',
                     'ofw', 'party', 'ofw_address', 'party_address', 'sectionC'
@@ -210,7 +228,6 @@ class SubmittedFormController extends Controller
             default => abort(404, 'Edit view not found'),
         };
     }
-
     public function saveEditGeneral(Request $request, $requestId, $formId)
     {
         $requestNumber = Request_Number::findOrFail($requestId);
@@ -274,6 +291,146 @@ class SubmittedFormController extends Controller
             DB::rollBack();
             return back()->with('error', $e->getMessage());
         }
+    }
+
+    public function editSENA($requestId, $formId){
+        $request = Request_Number::with([
+            'requestOfw',
+            'requestParty',
+            'requestPartyAddress',
+            'requestOfwAddress',
+            'requestFormEntries' => function ($query) use ($formId) {
+                $query->where('request_form_id', $formId);
+            },
+        ])->findOrFail($requestId);
+
+        $form          = Request_Form::findOrFail($formId);
+        $ofw           = $request->requestOfw;
+        $party         = $request->requestParty;
+        $ofw_address   = $request->requestOfwAddress;
+        $party_address = $request->requestPartyAddress;
+
+        // Get entry IDs for this form
+        $entryIds = $request->requestFormEntries->pluck('id');
+
+        // Get all field values from request_form_field_values directly
+        $allFieldValues = Request_Form_Field_Values::with('field')
+            ->whereIn('request_form_entry_id', $entryIds)
+            ->get();
+
+        // Keyed by field_name => value
+        $entries = $allFieldValues->mapWithKeys(function ($fv) {
+            return [$fv->field->field_name => $fv->value];
+        });
+
+        // Keyed by field_name => full fieldValue model
+        $sectionC = $allFieldValues->keyBy(fn($fv) => $fv->field->field_name);
+
+        return match ($formId) {
+            '104' =>
+                view('forms-submitted.edit.sena', compact(
+                    'request', 'entries', 'form',
+                    'ofw', 'party', 'ofw_address', 'party_address', 'sectionC'
+                )),
+
+            default => abort(404, 'Edit view not found'),
+        };
+    }
+
+    public function saveEditSENA(Request $request, $requestId, $formId)
+    {
+        $requestModel = Request_Number::with([
+            'requestFormEntries' => function ($query) use ($formId) {
+                $query->where('request_form_id', $formId);
+            },
+        ])->findOrFail($requestId);
+
+        // Get entry IDs
+        $entryIds = $requestModel->requestFormEntries->pluck('id');
+
+        // Get all existing field values for this form
+        $fieldValues = Request_Form_Field_Values::with('field')
+            ->whereIn('request_form_entry_id', $entryIds)
+            ->get();
+
+        foreach ($fieldValues as $fv) {
+            $fieldName = $fv->field->field_name;
+
+            // Only update if present in request
+            if ($request->has($fieldName)) {
+
+                $value = $request->input($fieldName);
+
+                // Handle checkboxes (unchecked = null → store empty or 0)
+                if (is_null($value)) {
+                    $value = '';
+                }
+
+                // Save updated value
+                $fv->value = $value;
+                $fv->save();
+            } else {
+                // Optional: for unchecked checkboxes (not sent in request)
+                if (str_contains($fieldName, '_mwpd_protection')) {
+                    $fv->value = ''; // or null / 0 depending on your system
+                    $fv->save();
+                }
+            }
+        }
+
+        return redirect()
+            ->route('forms-submitted.show', $requestId)
+            ->with('success', 'SENA form updated successfully.');
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->get('q', '');
+
+        $results = Request_Number::with(['requestOfw', 'requestParty'])
+            ->where(function($q) use ($query) {
+                $q->where('id', 'like', "%{$query}%")
+                ->orWhere('status', 'like', "%{$query}%")
+                ->orWhereHas('requestOfw', function($q) use ($query) {
+                    $q->where('ofw_fname', 'like', "%{$query}%")
+                        ->orWhere('ofw_lname', 'like', "%{$query}%")
+                        ->orWhere('ofw_mname', 'like', "%{$query}%")
+                        ->orWhere('request_id', 'like', "%{$query}%");
+                })
+                ->orWhereHas('requestParty', function($q) use ($query) {
+                    $q->where('party_fname', 'like', "%{$query}%")
+                        ->orWhere('party_lname', 'like', "%{$query}%")
+                        ->orWhere('party_mname', 'like', "%{$query}%")
+                        ->orWhere('request_id', 'like', "%{$query}%");
+                });
+            })
+            ->latest()
+            ->get();
+
+        // Explicitly shape the response so JS keys are guaranteed
+        $data = $results->map(function($r) {
+            return [
+                'id'         => $r->id,
+                'status'     => $r->status,
+                'created_at' => $r->created_at,
+                'ofw'        => $r->requestOfw ? [
+                    'fname' => $r->requestOfw->ofw_fname,
+                    'mname' => $r->requestOfw->ofw_mname,
+                    'lname' => $r->requestOfw->ofw_lname,
+                    'ename' => $r->requestOfw->ofw_ename,
+                    'request_id' => $r->requestOfw->request_id,
+                ] : null,
+                'party'      => $r->requestParty ? [
+                    'fname' => $r->requestParty->party_fname,
+                    'mname' => $r->requestParty->party_mname,
+                    'lname' => $r->requestParty->party_lname,
+                    'ename' => $r->requestParty->party_ename,
+                    'request_id' => $r->requestParty->request_id,
+                ] : null,
+            ];
+        });
+
+        return response()->json($data);
     }
 
     /*

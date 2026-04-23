@@ -519,7 +519,7 @@
                         <p class="mb-3">Sa pamamagitan ng paglalagay ng inyong bank details, pinahihintulutan ninyo ang Department of Migrant Workers (DMW) na ipasok o i-credit ang aprubadong tulong pinansyal sa inyong inilagay na account.</p>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Bank Name</label>
-                            <input type="text" class="form-control" placeholder="ex. BDO, BPI, etc." name="bank_name_wrsd" value="{{ session('forms.data.aksyon.bank_name') }}">
+                            <input type="text" class="form-control" placeholder="ex. BDO, BPI, etc." name="bank_name_wrsd" value="{{ session('forms.data.aksyon.bank_name_wrsd') }}">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Bank Branch</label>

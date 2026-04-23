@@ -66,6 +66,18 @@
 
 
 <div class="container my-5">
+
+    <div class="position-relative d-flex align-items-center justify-content-center mb-3" style="min-height: 38px;">
+        <a href="{{ route('forms-submitted.show', $request->id) }}" 
+          class="btn btn-secondary btn-sm position-absolute start-0 d-flex align-items-center gap-1"
+          style="border-radius: 6px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+            </svg>
+            Back to Request
+        </a>
+        <h4 class="h2 mb-0 fw-bold">REQUEST #{{ $request->id }}</h4>
+    </div>
     <!-- Header Section -->
     <div class="form-header text-center">
         <h4>ONLINE REQUEST FOR ASSISTANCE</h4>
@@ -283,25 +295,25 @@
                     <div class="mb-3">
                         <label class="form-label fw-bold">Nakapag-avail ka na ba ng alinman sa mga sumusunod na programa o tulong?</label>
                         <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" name="ofw_hanapbuhay_program_wrsd" id="program_owwa" value="1" {{ $entries['ofw_hanapbuhay_program_wrsd'] ?? '' == '1' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="checkbox" name="ofw_hanapbuhay_program_wrsd" id="program_owwa" value="checked" {{ $entries['ofw_hanapbuhay_program_wrsd'] ?? '' == 'checked' ? 'checked' : '' }}>
                             <label class="form-check-label" for="program_owwa">
                                 Nakakapag-avail na ako ng OWWA Balik Pinas, Balik Hanapbuhay Program
                             </label>
                         </div>
                         <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" name="ofw_livelihood_program_wrsd" id="program_nrco" value="1" {{ $entries['ofw_livelihood_program_wrsd'] ?? '' == '1' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="checkbox" name="ofw_livelihood_program_wrsd" id="program_nrco" value="checked" {{ $entries['ofw_livelihood_program_wrsd'] ?? '' == 'checked' ? 'checked' : '' }}>
                             <label class="form-check-label" for="program_nrco">
                                 Nakakapag-avail na ako ng NRCO Livelihood Program para sa Reintegration ng mga OFW
                             </label>
                         </div>
                         <div class="form-check mb-2">
-                            <input class="form-check-input" type="checkbox" name="ofw_aksyon_fund_wrsd" id="program_aksyon" value="1" {{ $entries['ofw_aksyon_fund_wrsd'] ?? '' == '1' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="checkbox" name="ofw_aksyon_fund_wrsd" id="program_aksyon" value="checked" {{ $entries['ofw_aksyon_fund_wrsd'] ?? '' == 'checked' ? 'checked' : '' }}>
                             <label class="form-check-label" for="program_aksyon">
                                 Nakakapag-avail na ako ng AKSYON Fund sa Jobsite / Pagdating sa Pilipinas
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="ofw_no_program_wrsd" id="program_none" value="1" {{ $entries['ofw_no_program_wrsd'] ?? '' == '1' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="checkbox" name="ofw_no_program_wrsd" id="program_none" value="checked" {{ $entries['ofw_no_program_wrsd'] ?? '' == 'checked' ? 'checked' : '' }}>
                             <label class="form-check-label" for="program_none">
                                 Hindi pa.
                             </label>
@@ -444,25 +456,25 @@
                 data-bs-parent="#requestAccordion">
                 <div class="accordion-body aksyon-accordion-body aksyon-section-content">
                     <div class="form-check mb-3">
-                        <input class="form-check-input" type="radio" name="nature_of_request_wrsd" id="medical_assistance_wrsd" value="medical_assistance_wrsd" {{ ($entries['nature_of_request_wrsd'] ?? '') == 'medical_assistance_wrsd' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="medical_assistance_wrsd" id="medical_assistance_wrsd" value="checked" {{ ($entries['medical_assistance_wrsd'] ?? '') == 'checked' ? 'checked' : '' }}>
                         <label class="form-check-label" for="medical_assistance_wrsd">
                             <strong>Medical Assistance</strong> - para sa pagtugon sa gastusing ng pagpapagamot at pagpapabuti ng kalusugan ng OFW na hindi sakop ng employer o health insurance.
                         </label>
                     </div>
                     <div class="form-check mb-3">
-                        <input class="form-check-input" type="radio" name="nature_of_request_wrsd" id="financial_assistance_wrsd" value="financial_assistance_wrsd" {{ ($entries['nature_of_request_wrsd'] ?? '') == 'financial_assistance_wrsd' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="financial_assistance_wrsd" id="financial_assistance_wrsd" value="checked" {{ ($entries['financial_assistance_wrsd'] ?? '') == 'checked' ? 'checked' : '' }}>
                         <label class="form-check-label" for="financial_assistance_wrsd">
                             <strong>Financial Assistance</strong> - para sa agarang tulong pinansyal sa OFW at kaniyang pamilya upang maibsan ang epekto ng krisis o pagkawala ng hanapbuhay.
                         </label>
                     </div>
                     <div class="form-check mb-3">
-                        <input class="form-check-input" type="radio" name="nature_of_request_wrsd" id="welfare_assistance_wrsd" value="welfare_assistance_wrsd" {{ ($entries['nature_of_request_wrsd'] ?? '') == 'welfare_assistance_wrsd' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="welfare_assistance_wrsd" id="welfare_assistance_wrsd" value="checked" {{ ($entries['welfare_assistance_wrsd'] ?? '') == 'checked' ? 'checked' : '' }}>
                         <label class="form-check-label" for="welfare_assistance_wrsd">
                             <strong>Welfare Assistance</strong> - para sa pagbibigay ng tulong pinansyal o medikal sa mga nakakatandang OFW na may edad 60 pataas na pauwi na sa Pilipinas.
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="nature_of_request_wrsd" id="repatriation_assistance_wrsd" value="repatriation_assistance_wrsd" {{ ($entries['nature_of_request_wrsd'] ?? '') == 'repatriation_assistance_wrsd' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="repatriation_assistance_wrsd" id="repatriation_assistance_wrsd" value="checked" {{ ($entries['repatriation_assistance_wrsd'] ?? '') == 'checked' ? 'checked' : '' }}>
                         <label class="form-check-label" for="repatriation_assistance_wrsd">
                             <strong>Repatriation Assistance</strong> - para sa pagbibigay ng tulong sa agarang pagpapauwi ng OFW sa Pilipinas mula sa ibang bansa, kabilang ang koordinasyon sa mga kaukulang ahensya at pagsagot sa kinakailangang gastusin sa repatriation sa panahon ng krisis, emergency, o iba pang hindi inaasahang sitwasyon.
                         </label>

@@ -77,12 +77,16 @@
 
 <div class="container my-5">
 
-    {{-- PAGE TITLE --}}
-    <div class="d-flex align-items-center justify-content-between mb-3">
-        <h4 class="mb-0">Edit Request #{{ $request->id }}</h4>
-        <a href="{{ route('forms-submitted.show', $request->id) }}" class="btn btn-secondary btn-sm">
-            &larr; Back to Request
+    <div class="position-relative d-flex align-items-center justify-content-center mb-3" style="min-height: 38px;">
+        <a href="{{ route('forms-submitted.show', $request->id) }}" 
+          class="btn btn-secondary btn-sm position-absolute start-0 d-flex align-items-center gap-1"
+          style="border-radius: 6px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+            </svg>
+            Back to Request
         </a>
+        <h4 class="h2 mb-0 fw-bold">REQUEST #{{ $request->id }}</h4>
     </div>
 
     <!-- Header -->
@@ -374,7 +378,7 @@
                 <div class="mb-2">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="ofw_info_sheet_mwpd"
-                            name="mwpd[]" value="ofw_info_sheet_mwpd"
+                            name="mwpd[]" value="checked"
                             {{ isset($sectionC['ofw_info_sheet_mwpd']) ? 'checked' : '' }} disabled>
                         <label class="form-check-label" for="ofw_info_sheet_mwpd">
                             OFW Records/OFW Information Sheet
@@ -391,7 +395,7 @@
                 <div class="mb-2">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="aksyon"
-                            name="wrsd[]" value="aksyon"
+                            name="wrsd[]" value="checked"
                             {{ isset($sectionC['aksyon']) ? 'checked' : '' }} disabled>
                         <label class="form-check-label" for="aksyon">Financial Assistance through AKSYON fund</label>
                     </div>
@@ -405,7 +409,7 @@
                 <div class="mb-2">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="ofw_info_sheet_mwpd_protection"
-                            name="mwpd_protection[]" value="ofw_info_sheet_mwpd_protection"
+                            name="mwpd_protection[]" value="checked"
                             {{ isset($sectionC['ofw_info_sheet_mwpd_protection']) ? 'checked' : '' }} disabled>
                         <label class="form-check-label" for="ofw_info_sheet_mwpd_protection">
                             Request for OFW Information Sheet for legal purposes
@@ -415,7 +419,7 @@
                 <div class="mb-2">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="sena"
-                            name="mwpd_protection[]" value="sena"
+                            name="mwpd_protection[]" value="checked"
                             {{ isset($sectionC['sena']) ? 'checked' : '' }} disabled>
                         <label class="form-check-label" for="sena">Request for Assistance for SEnA/Conciliation</label>
                     </div>

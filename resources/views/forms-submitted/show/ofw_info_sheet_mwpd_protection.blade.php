@@ -151,11 +151,17 @@
   </style>
 
   <div class="container my-5">
-    @if(session('success'))
-      <div class="alert alert-success" role="alert">
-        {{ session('success') }}
-      </div>
-    @endif
+    <div class="position-relative d-flex align-items-center justify-content-center mb-3" style="min-height: 38px;">
+        <a href="{{ route('forms-submitted.show', $request->id) }}" 
+          class="btn btn-secondary btn-sm position-absolute start-0 d-flex align-items-center gap-1"
+          style="border-radius: 6px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+            </svg>
+            Back to Request
+        </a>
+        <h4 class="h2 mb-0 fw-bold">Request #{{ $request->id }}</h4>
+    </div>
 
     <div class="form-header text-center">
       <h4 class="fw-bold">REQUEST FOR VERIFICATION/CERTIFICATION OF OFW RECORDS</h4>

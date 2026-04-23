@@ -13,4 +13,13 @@ class Request_Form_Field_Values extends Model
         'request_form_field_id',
         'value'
     ];
+    public function field()
+    {
+        return $this->belongsTo(Request_Form_Field::class, 'request_form_field_id', 'id');
+    }
+
+    public function entry()
+    {
+        return $this->belongsTo(Request_Form_Entries::class, 'request_form_entry_id', 'id');
+    }
 }
