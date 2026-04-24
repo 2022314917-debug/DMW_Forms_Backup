@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Log;
 use App\Models\ProcessingRequest;
 use App\Models\Request_Ofw_Address;
 use App\Models\Request_Status_History;
+use App\Models\Requirements;
+use Illuminate\Support\Facades\Storage;
+
 
 class FormController extends Controller
 {
@@ -342,7 +345,13 @@ class FormController extends Controller
         $formsData = session('forms.data', []);
 
         DB::beginTransaction();
-
+        // dd([
+        //     'general_form_data' => session('general_form_data', []),
+        //     'forms_steps'       => session('forms.steps', []),
+        //     'forms_data'        => session('forms.data', []),
+        //     'request_all'       => $request->except('_token'),
+        //     'files'             => $request->allFiles(),
+        // ]);
         try {
             $requestNumber = Request_Number::create([
                 'status' => 'Pending'
@@ -480,6 +489,54 @@ class FormController extends Controller
                 }
             }
 
+            // -------------------------
+        // HANDLE FILE UPLOADS
+        // -------------------------
+        // Map each input name to a human-readable type label
+        $fileInputs = [
+            'passport'    => 'Philippine Passport / Travel Document',
+            'boarding'    => 'Arrival Stamp / Boarding Pass',
+            'contract'    => 'Employment Contract',
+            'visa'        => 'VISA / Latest OEC',
+            'medical'     => 'Medical Record / Abstract',
+            'endorsement' => 'Endorsement Certificate/Letter',
+            'distress'    => 'Other Proof of Distressed',
+            'valid_id'    => 'Valid ID',
+        ];
+
+        foreach ($fileInputs as $inputName => $fileType) {
+
+            if ($request->hasFile($inputName)) {
+
+                foreach ($request->file($inputName) as $file) {
+
+                    if (!$file->isValid()) {
+                        Log::warning("Invalid file upload for input: {$inputName}");
+                        continue;
+                    }
+
+                    $originalName = $file->getClientOriginalName();
+
+                    // ✅ Store inside: storage/app/public/requirements/{request_id}/{type}/
+                    $path = $file->storeAs(
+                        'requirements/' . $requestNumber->id . '/' . $inputName,
+                        $originalName,
+                        'public'
+                    );
+
+                    Requirements::create([
+                        'request_id' => $requestNumber->id,
+                        'file_name'  => $originalName,
+                        'file_path'  => $path, // IMPORTANT (use file_path now)
+                        'file_type'  => $fileType,
+                    ]);
+                }
+            }
+        }
+        // -------------------------
+        // END FILE UPLOADS
+        // -------------------------
+
             // Request_Status_History::create([
             //     'request_id' => $requestNumber->id,
             //     'status'     => 'Pending',
@@ -499,7 +556,15 @@ class FormController extends Controller
                 'trace' => $e->getTraceAsString()
             ]);
 
+            // dd([
+            //     'general_form_data' => session('general_form_data', []),
+            //     'forms_steps'       => session('forms.steps', []),
+            //     'forms_data'        => session('forms.data', []),
+            //     'request_all'       => $request->except('_token'),
+            //     'files'             => $request->allFiles(),
+            // ]);
 
+            dd($e->getMessage());
             return redirect()->route('forms.index')
                 ->with('error', 'Error submitting forms: ' . $e->getMessage());
         }

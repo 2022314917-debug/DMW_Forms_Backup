@@ -47,4 +47,9 @@ class Request_Number extends Model
     {
         return $this->hasMany(Request_Status_History::class, 'request_id', 'id');
     }
+
+    public function requirements()
+    {
+        return $this->hasMany(Requirements::class, 'request_id', 'id');
+    }
 }

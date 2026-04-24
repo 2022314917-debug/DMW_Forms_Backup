@@ -15,71 +15,13 @@ use Illuminate\Http\Request as HttpRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\ProcessingRequest;
+use App\Models\Requirements;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class SubmittedFormController extends Controller
 {
-    // public function index()
-    // {
-    //     $requests = Request_Number::latest()->paginate(10);
-
-    //     return view('forms-submitted.index', compact('requests'));
-    // }
-
-
-    // /**
-    //  * Show list of submitted GENERAL forms
-    //  */
-    // public function general()
-    // {
-    //     $requests = Request_Number::with([
-    //         'requestParty',
-    //         'requestOFW'
-    //     ])
-    //     ->latest()
-    //     ->paginate(10);
-
-    //     return view('forms-submitted.general.index', compact('requests'));
-    // }
-
-
-    // /**
-    //  * Show specific GENERAL form
-    //  */
-    // public function showGeneral($id){
-    //     // Main request
-    //     $request = Request_Number::findOrFail($id);
-
-    //     // Party info
-    //     $party = Request_Party::where('request_id', $id)->first();
-
-    //     // Party address
-    //     $address = Request_Party_Address::where('request_id', $id)->first();
-
-    //     // OFW info
-    //     $ofw = Request_OFW::where('request_id', $id)->first();
-
-    //     // Section C values
-    //     $sectionC = DB::table('request_form_entries as rfe')
-    //         ->join('request_form_field_values as rffv', 'rffv.request_form_entry_id', '=', 'rfe.id')
-    //         ->join('request_form_field as rff', 'rff.id', '=', 'rffv.request_form_field_id')
-    //         ->where('rfe.request_id', $id)
-    //         ->select(
-    //             'rff.field_name',
-    //             'rff.field_label',
-    //             'rffv.value'
-    //         )
-    //         ->get()
-    //         ->keyBy('field_name'); // IMPORTANT
-
-    //     return view('forms-submitted.general', compact(
-    //         'request',
-    //         'party',
-    //         'address',
-    //         'ofw',
-    //         'sectionC'
-    //     ));
-    // }
+    
 
     public function index()
     {
@@ -102,6 +44,7 @@ class SubmittedFormController extends Controller
             'requestPartyAddress',
             'requestFormEntries.form.division', // added .division here
             'statusHistory',
+            'requirements'
         ])->findOrFail($id);
 
         $forms = $request->requestFormEntries
@@ -183,6 +126,24 @@ class SubmittedFormController extends Controller
             default => abort(404, 'Form view not found'),
         };
     }
+    public function viewFile($id)
+    {
+        $requirement = Requirements::findOrFail($id);
+
+        return response()->json([
+            'url' => asset('storage/' . $requirement->file_path),
+            'name' => $requirement->file_name
+        ]);
+    }
+
+    public function downloadFile($id){
+        $requirement = Requirements::findOrFail($id);
+
+        return response()->json([
+            'url' => asset('storage/' . $requirement->file_path),
+            'name' => $requirement->file_name
+        ]);
+    }
 
     public function editGeneral($requestId, $formId)
     {
@@ -228,6 +189,10 @@ class SubmittedFormController extends Controller
             default => abort(404, 'Edit view not found'),
         };
     }
+
+
+
+    
     public function saveEditGeneral(Request $request, $requestId, $formId)
     {
         $requestNumber = Request_Number::findOrFail($requestId);
@@ -293,6 +258,238 @@ class SubmittedFormController extends Controller
         }
     }
 
+    public function editOFWInfoSheetMWPSD($requestId, $formId){
+        $request = Request_Number::with([
+            'requestOfw',
+            'requestParty',
+            'requestPartyAddress',
+            'requestOfwAddress',
+            'requestFormEntries' => function ($query) use ($formId) {
+                $query->where('request_form_id', $formId);
+            },
+        ])->findOrFail($requestId);
+
+        $form          = Request_Form::findOrFail($formId);
+        $ofw           = $request->requestOfw;
+        $party         = $request->requestParty;
+        $ofw_address   = $request->requestOfwAddress;
+        $party_address = $request->requestPartyAddress;
+
+        // Get entry IDs for this form
+        $entryIds = $request->requestFormEntries->pluck('id');
+
+        // Get all field values from request_form_field_values directly
+        $allFieldValues = Request_Form_Field_Values::with('field')
+            ->whereIn('request_form_entry_id', $entryIds)
+            ->get();
+
+        // Keyed by field_name => value
+        $entries = $allFieldValues->mapWithKeys(function ($fv) {
+            return [$fv->field->field_name => $fv->value];
+        });
+
+        // Keyed by field_name => full fieldValue model
+        $sectionC = $allFieldValues->keyBy(fn($fv) => $fv->field->field_name);
+
+        return match ($formId) {
+            '101' =>
+                view('forms-submitted.edit.processing', compact(
+                    'request', 'entries', 'form',
+                    'ofw', 'party', 'ofw_address', 'party_address', 'sectionC'
+                )),
+
+            default => abort(404, 'Edit view not found'),
+        };
+    }
+
+    public function editAksyon ($requestId, $formId)
+    {
+        $request = Request_Number::with([
+            'requestOfw',
+            'requestParty',
+            'requestPartyAddress',
+            'requestOfwAddress',
+            'requestFormEntries' => function ($query) use ($formId) {
+                $query->where('request_form_id', $formId);
+            },
+        ])->findOrFail($requestId);
+
+        $form          = Request_Form::findOrFail($formId);
+        $ofw           = $request->requestOfw;
+        $party         = $request->requestParty;
+        $ofw_address   = $request->requestOfwAddress;
+        $party_address = $request->requestPartyAddress;
+
+        // Get entry IDs for this form
+        $entryIds = $request->requestFormEntries->pluck('id');
+
+        // Get all field values from request_form_field_values directly
+        $allFieldValues = Request_Form_Field_Values::with('field')
+            ->whereIn('request_form_entry_id', $entryIds)
+            ->get();
+
+        // Keyed by field_name => value
+        $entries = $allFieldValues->mapWithKeys(function ($fv) {
+            return [$fv->field->field_name => $fv->value];
+        });
+
+        // Keyed by field_name => full fieldValue model
+        $sectionC = $allFieldValues->keyBy(fn($fv) => $fv->field->field_name);
+
+        return match ($formId) {
+            '102' =>
+                view('forms-submitted.edit.aksyon', compact(
+                    'request', 'entries', 'form',
+                    'ofw', 'party', 'ofw_address', 'party_address', 'sectionC'
+                )),
+
+            default => abort(404, 'Edit view not found'),
+        };
+    }
+
+    public function saveEditAksyon(Request $request, $requestId, $formId){
+        $requestNumber = Request_Number::findOrFail($requestId);
+
+        DB::beginTransaction();
+
+        try {
+
+            // UPDATE PARTY
+            // $requestNumber->requestParty->update([
+            //     'party_lname' => $request->party_lname,
+            //     'party_fname' => $request->party_fname,
+            //     'party_mname' => $request->party_mname,
+            //     'party_ename' => $request->party_ename,
+            //     'party_bday'  => $request->party_bday,
+            //     'party_relationship'=> $request->party_relationship,
+            //     'party_phone' => $request->party_phone,
+            //     'party_email' => $request->party_email,
+            // ]);
+
+            // $requestNumber->requestPartyAddress->update([
+            //     'province' => $request->party_province_name,
+            //     'municipality' => $request->party_municipality_name,
+            //     'brgy' => $request->party_barangay_name,
+            //     'house_no' => $request->party_house_no,
+            //     'zip_code' => $request->party_zip_code
+            // ]);
+
+            // // UPDATE OFW
+            // $requestNumber->requestOfw->update([
+            //     'ofw_lname' => $request->ofw_lname,
+            //     'ofw_fname' => $request->ofw_fname,
+            //     'ofw_mname' => $request->ofw_mname,
+            //     'ofw_ename' => $request->ofw_ename,
+            //     'ofw_gender'=> $request->ofw_gender,
+            //     'ofw_phone' => $request->ofw_phone,
+            //     'ofw_email' => $request->ofw_email,
+            //     'ofw_bday'  => $request->ofw_bday,
+            //     // 'ofw_agency'=> $request->ofw_agency,
+            //     'ofw_employer'=> $request->ofw_employer,
+            //     'ofw_country'=> $request->ofw_country,
+            //     'ofw_job'   => $request->ofw_job,
+            // ]);
+
+            // $requestNumber->requestOfwAddress->update([
+            //     'province' => $request->ofw_province_name,
+            //     'municipality' => $request->ofw_municipality_name,
+            //     'brgy' => $request->ofw_barangay_name,
+            //     'house_no' => $request->ofw_house_no,
+            //     'zip_code' => $request->ofw_zip_code
+            // ]);
+            $requestRecord = Request_Number::with([
+                'requestFormEntries' => function ($query) use ($formId) {
+                    $query->where('request_form_id', $formId);
+                }
+            ])->findOrFail($requestId);
+
+            // Get entry IDs
+            $entryIds = $requestRecord->requestFormEntries->pluck('id');
+
+            // Get all fields for this form
+            $fields = Request_Form_Field::where('request_form_id', $formId)->get()->keyBy('field_name');
+
+            /*
+            |--------------------------------------------------------------------------
+            | 1. HANDLE CHECKBOXES (DELETE FIRST)
+            |--------------------------------------------------------------------------
+            */
+            $checkboxFields = [
+                'ofw_hanapbuhay_program_wrsd',
+                'ofw_livelihood_program_wrsd',
+                'ofw_aksyon_fund_wrsd',
+                'ofw_no_program_wrsd'
+            ];
+
+            // Delete old checkbox values
+            foreach ($checkboxFields as $fieldName) {
+                if (isset($fields[$fieldName])) {
+                    Request_Form_Field_Values::whereIn('request_form_entry_id', $entryIds)
+                        ->where('request_form_field_id', $fields[$fieldName]->id)
+                        ->delete();
+                }
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | 2. LOOP THROUGH REQUEST INPUTS
+            |--------------------------------------------------------------------------
+            */
+            foreach ($request->all() as $fieldName => $value) {
+
+                if (!isset($fields[$fieldName])) {
+                    continue; // skip non-form fields
+                }
+
+                $field = $fields[$fieldName];
+
+                // Handle checkbox (only insert if checked)
+                if (in_array($fieldName, $checkboxFields)) {
+
+                    if ($value) {
+                        foreach ($entryIds as $entryId) {
+                            Request_Form_Field_Values::create([
+                                'request_form_entry_id' => $entryId,
+                                'request_form_field_id' => $field->id,
+                                'value' => 'checked',
+                            ]);
+                        }
+                    }
+
+                    continue;
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | 3. HANDLE RADIO BUTTONS & NORMAL INPUTS
+                |--------------------------------------------------------------------------
+                */
+                foreach ($entryIds as $entryId) {
+
+                    Request_Form_Field_Values::updateOrCreate(
+                        [
+                            'request_form_entry_id' => $entryId,
+                            'request_form_field_id' => $field->id,
+                        ],
+                        [
+                            'value' => $value,
+                        ]
+                    );
+                }
+            }
+
+            DB::commit();
+
+            return redirect()
+                ->route('forms-submitted.show', $requestId)
+                ->with('success', 'Form updated successfully');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e->getMessage());
+            return back()->with('error', $e->getMessage());
+        }
+    }
     public function editSENA($requestId, $formId){
         $request = Request_Number::with([
             'requestOfw',
@@ -338,50 +535,120 @@ class SubmittedFormController extends Controller
     }
 
     public function saveEditSENA(Request $request, $requestId, $formId)
-    {
-        $requestModel = Request_Number::with([
+{
+    DB::beginTransaction();
+
+    try {
+        $requestRecord = Request_Number::with([
             'requestFormEntries' => function ($query) use ($formId) {
                 $query->where('request_form_id', $formId);
-            },
+            }
         ])->findOrFail($requestId);
 
         // Get entry IDs
-        $entryIds = $requestModel->requestFormEntries->pluck('id');
+        $entryIds = $requestRecord->requestFormEntries->pluck('id');
 
-        // Get all existing field values for this form
-        $fieldValues = Request_Form_Field_Values::with('field')
-            ->whereIn('request_form_entry_id', $entryIds)
-            ->get();
+        // Get all fields for this form
+        $fields = Request_Form_Field::where('request_form_id', $formId)->get()->keyBy('field_name');
 
-        foreach ($fieldValues as $fv) {
-            $fieldName = $fv->field->field_name;
+        /*
+        |--------------------------------------------------------------------------
+        | 1. HANDLE CHECKBOXES (DELETE FIRST)
+        |--------------------------------------------------------------------------
+        */
+        $checkboxFields = [
+            'non_payment_mwpd_protection',
+            'salary_mwpd_protection',
+            'overtime_mwpd_protection',
+            'rest_day_mwpd_protection',
+            'sick_leave_mwpd_protection',
+            'vacation_leave_mwpd_protection',
+            'holiday_pay_mwpd_protection',
+            'illegal_deduct_mwpd_protection',
+            'non_provision_transport_mwpd_protection',
+            'non_provision_food_mwpd_protection',
+            'others_sena_mwpd_protection',
+            'end_service_benefits_mwpd_protection',
+            'airfare_mwpd_protection',
+            'unexpired_contract_mwpd_protection',
+            'illegal_fees_mwpd_protection',
+            'disability_benefits_mwpd_protection',
+            'holding_of_passport_mwpd_protection',
+            'holding_of_documents_mwpd_protection',
+            'trasfer_company_mwpd_protection',
+            'illegal_contract_termination_mwpd_protection',
+        ];
 
-            // Only update if present in request
-            if ($request->has($fieldName)) {
-
-                $value = $request->input($fieldName);
-
-                // Handle checkboxes (unchecked = null → store empty or 0)
-                if (is_null($value)) {
-                    $value = '';
-                }
-
-                // Save updated value
-                $fv->value = $value;
-                $fv->save();
-            } else {
-                // Optional: for unchecked checkboxes (not sent in request)
-                if (str_contains($fieldName, '_mwpd_protection')) {
-                    $fv->value = ''; // or null / 0 depending on your system
-                    $fv->save();
-                }
+        // Delete old checkbox values
+        foreach ($checkboxFields as $fieldName) {
+            if (isset($fields[$fieldName])) {
+                Request_Form_Field_Values::whereIn('request_form_entry_id', $entryIds)
+                    ->where('request_form_field_id', $fields[$fieldName]->id)
+                    ->delete();
             }
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | 2. LOOP THROUGH REQUEST INPUTS
+        |--------------------------------------------------------------------------
+        */
+        foreach ($request->all() as $fieldName => $value) {
+
+            if (!isset($fields[$fieldName])) {
+                continue; // skip non-form fields
+            }
+
+            $field = $fields[$fieldName];
+
+            // Handle checkbox (only insert if checked)
+            if (in_array($fieldName, $checkboxFields)) {
+
+                if ($value) {
+                    foreach ($entryIds as $entryId) {
+                        Request_Form_Field_Values::create([
+                            'request_form_entry_id' => $entryId,
+                            'request_form_field_id' => $field->id,
+                            'value' => 'checked',
+                        ]);
+                    }
+                }
+
+                continue;
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | 3. HANDLE RADIO BUTTONS & NORMAL INPUTS
+            |--------------------------------------------------------------------------
+            */
+            foreach ($entryIds as $entryId) {
+
+                Request_Form_Field_Values::updateOrCreate(
+                    [
+                        'request_form_entry_id' => $entryId,
+                        'request_form_field_id' => $field->id,
+                    ],
+                    [
+                        'value' => $value,
+                    ]
+                );
+            }
+        }
+
+        DB::commit();
+
         return redirect()
-            ->route('forms-submitted.show', $requestId)
+            ->route('forms-submitted.edit.sena', [$requestId, $formId])
             ->with('success', 'SENA form updated successfully.');
+
+    } catch (\Exception $e) {
+
+        DB::rollback();
+
+        return back()->with('error', 'Error updating form: ' . $e->getMessage());
     }
+}
 
     public function search(Request $request)
     {

@@ -317,7 +317,7 @@
             
             <div class="mb-2">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="ofw_info_sheet_mwpd" name="mwpd[]" value="checked" {{ in_array('ofw_info_sheet_mwpd', session('general_form_data.mwpd', [])) ? 'checked' : '' }}>
+                <input class="form-check-input" type="checkbox" id="ofw_info_sheet_mwpd" name="mwpd[]" value="ofw_info_sheet_mwpd" {{ in_array('ofw_info_sheet_mwpd', session('general_form_data.mwpd', [])) ? 'checked' : '' }}>
                 <label class="form-check-label" for="ofw_info_sheet_mwpd">OFW Records/OFW Information Sheet</label>
               </div>
             </div>
@@ -418,7 +418,7 @@
 
             <div class="mb-2">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="aksyon" name="wrsd[]" value="checked" {{ in_array('aksyon', session('general_form_data.wrsd', [])) ? 'checked' : '' }}>
+                <input class="form-check-input" type="checkbox" id="aksyon" name="wrsd[]" value="aksyon" {{ in_array('aksyon', session('general_form_data.wrsd', [])) ? 'checked' : '' }}>
                 <label class="form-check-label" for="aksyon">Financial Assistance through AKSYON fund</label>
               </div>
             </div>
@@ -438,14 +438,14 @@
             
             <div class="mb-2">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="ofw_info_sheet_mwpd_protection" name="mwpd_protection[]" value="checked" {{ in_array('ofw_info_sheet_mwpd_protection', session('general_form_data.mwpd_protection', [])) ? 'checked' : '' }}>
+                <input class="form-check-input" type="checkbox" id="ofw_info_sheet_mwpd_protection" name="mwpd_protection[]" value="ofw_info_sheet_mwpd_protection" {{ in_array('ofw_info_sheet_mwpd_protection', session('general_form_data.mwpd_protection', [])) ? 'checked' : '' }}>
                 <label class="form-check-label" for="ofw_info_sheet_mwpd_protection">Request for OFW Information Sheet for legal purposes</label>
               </div>
             </div>
 
             <div class="mb-2">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="sena" name="mwpd_protection[]" value="checked" {{ in_array('sena', session('general_form_data.mwpd_protection', [])) ? 'checked' : '' }}>
+                <input class="form-check-input" type="checkbox" id="sena" name="mwpd_protection[]" value="sena" {{ in_array('sena', session('general_form_data.mwpd_protection', [])) ? 'checked' : '' }}>
                 <label class="form-check-label" for="sena">Request for Assistance for SEnA/Conciliation</label>
               </div>
             </div>

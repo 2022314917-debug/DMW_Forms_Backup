@@ -84,8 +84,9 @@
         <p class="mb-0">Use this form to submit a request for assistance. Please ensure that all information provided is accurate and complete so that our team can process your request efficiently.</p>
     </div>
 
-    <form action="" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('forms-submitted.save-edit-aksyon', [$request->id, $form->id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
+        @method('PUT')
         <!-- Accordion Form -->
         <div class="accordion mb-5" id="requestAccordion">
         <!-- Section A: Personal Information -->
@@ -162,7 +163,7 @@
                         <h6 class="fw-bold mb-3">Address in the Philippines</h6>
                         <div class="mb-2">
                             <label class="form-label">Unit/Room/House Number/Street name</label>
-                            <input type="text" class="form-control disabled" name="ofw_address_street" value="{{ $ofw_address->house_no }}">
+                            <input type="text" class="form-control disabled" name="ofw_house_no" value="{{ $ofw_address->house_no }}">
                         </div>
                         <div class="row g-3">
                             <div class="col-md-3">
@@ -192,7 +193,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">Zip Code</label>
-                                <input type="text" class="form-control disabled" id="ofw_zipcode" name="ofw_zipcode" value="{{ $ofw_address->zip_code }}">
+                                <input type="text" class="form-control disabled" id="ofw_zip_code" name="ofw_zip_code" value="{{ $ofw_address->zip_code }}">
                             </div>
                         </div>
                     </div>
@@ -245,13 +246,13 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Job Position</label>
-                            <input type="text" class="form-control disabled" placeholder="Factory Worker" name="ofw_job_position" value="{{ $ofw->ofw_job }}">
+                            <input type="text" class="form-control disabled" placeholder="Factory Worker" name="ofw_job" value="{{ $ofw->ofw_job }}">
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Agency / Employer</label>
-                        <input type="text" class="form-control disabled" placeholder="JS Contractor Inc." name="ofw_agency" value="{{ $ofw->ofw_agency }}">
+                        <label class="form-label">Employer</label>
+                        <input type="text" class="form-control disabled" placeholder="JS Contractor Inc." name="ofw_employer" value="{{ $ofw->ofw_employer }}">
                     </div>
 
                     <!-- Agency and Return Reason -->
@@ -397,22 +398,22 @@
                         <h6 class="fw-bold mb-3">Kompletong Address sa Pilipinas</h6>
                         <div class="mb-2">
                             <label class="form-label">Unit/Room/House Number/Street name</label>
-                            <input type="text" class="form-control disabled" name="party_address_street" value="{{ $party_address->house_no }}">
+                            <input type="text" class="form-control disabled" name="party_house_no" value="{{ $party_address->house_no }}">
                         </div>
                         <div class="row g-3">
                             <div class="col-md-3">
                                 <label class="form-label">Province</label>
-                                <input type="text" class="form-control disabled" name="party_province" value="{{ $party_address->province }}"> 
+                                <input type="text" class="form-control disabled" name="party_province_name" value="{{ $party_address->province }}"> 
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">City/ Municipality</label>
 
-                                <input type="text" class="form-control disabled" name="party_municipality" value="{{ $party_address->municipality }}"> 
+                                <input type="text" class="form-control disabled" name="party_municipality_name" value="{{ $party_address->municipality }}"> 
 
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">Barangay</label>
-                                <input type="text" class="form-control disabled" name="party_barangay" value="{{ $party_address->brgy }}"> 
+                                <input type="text" class="form-control disabled" name="party_barangay_name" value="{{ $party_address->brgy }}"> 
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">Zip Code</label>
@@ -456,25 +457,25 @@
                 data-bs-parent="#requestAccordion">
                 <div class="accordion-body aksyon-accordion-body aksyon-section-content">
                     <div class="form-check mb-3">
-                        <input class="form-check-input" type="radio" name="nature_of_request_wrsd" id="medical_assistance_wrsd" value="checked" {{ ($entries['nature_of_request_wrsd'] ?? '') == 'medical_assistance_wrsd' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="nature_of_request_wrsd" id="medical_assistance_wrsd" value="medical_assistance_wrsd" {{ ($entries['nature_of_request_wrsd'] ?? '') == 'medical_assistance_wrsd' ? 'checked' : '' }}>
                         <label class="form-check-label" for="medical_assistance_wrsd">
                             <strong>Medical Assistance</strong> - para sa pagtugon sa gastusing ng pagpapagamot at pagpapabuti ng kalusugan ng OFW na hindi sakop ng employer o health insurance.
                         </label>
                     </div>
                     <div class="form-check mb-3">
-                        <input class="form-check-input" type="radio" name="nature_of_request_wrsd" id="financial_assistance_wrsd" value="checked" {{ ($entries['nature_of_request_wrsd'] ?? '') == 'financial_assistance_wrsd' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="nature_of_request_wrsd" id="financial_assistance_wrsd" value="financial_assistance_wrsd" {{ ($entries['nature_of_request_wrsd'] ?? '') == 'financial_assistance_wrsd' ? 'checked' : '' }}>
                         <label class="form-check-label" for="financial_assistance_wrsd">
                             <strong>Financial Assistance</strong> - para sa agarang tulong pinansyal sa OFW at kaniyang pamilya upang maibsan ang epekto ng krisis o pagkawala ng hanapbuhay.
                         </label>
                     </div>
                     <div class="form-check mb-3">
-                        <input class="form-check-input" type="radio" name="nature_of_request_wrsd" id="welfare_assistance_wrsd" value="checked" {{ ($entries['nature_of_request_wrsd'] ?? '') == 'welfare_assistance_wrsd' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="nature_of_request_wrsd" id="welfare_assistance_wrsd" value="welfare_assistance_wrsd" {{ ($entries['nature_of_request_wrsd'] ?? '') == 'welfare_assistance_wrsd' ? 'checked' : '' }}>
                         <label class="form-check-label" for="welfare_assistance_wrsd">
                             <strong>Welfare Assistance</strong> - para sa pagbibigay ng tulong pinansyal o medikal sa mga nakakatandang OFW na may edad 60 pataas na pauwi na sa Pilipinas.
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="nature_of_request_wrsd" id="repatriation_assistance_wrsd" value="checked" {{ ($entries['nature_of_request_wrsd'] ?? '') == 'repatriation_assistance_wrsd' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="nature_of_request_wrsd" id="repatriation_assistance_wrsd" value="repatriation_assistance_wrsd" {{ ($entries['nature_of_request_wrsd'] ?? '') == 'repatriation_assistance_wrsd' ? 'checked' : '' }}>
                         <label class="form-check-label" for="repatriation_assistance_wrsd">
                             <strong>Repatriation Assistance</strong> - para sa pagbibigay ng tulong sa agarang pagpapauwi ng OFW sa Pilipinas mula sa ibang bansa, kabilang ang koordinasyon sa mga kaukulang ahensya at pagsagot sa kinakailangang gastusin sa repatriation sa panahon ng krisis, emergency, o iba pang hindi inaasahang sitwasyon.
                         </label>
@@ -547,6 +548,52 @@
                         </div>
                     </div>
                     
+                </div>
+            </div>
+        </div>
+        <!-- ACTION BUTTONS -->
+        <div class="d-flex justify-content-end gap-3 mb-5">
+            <a href="{{ route('forms-submitted.show', $request->id) }}" class="btn btn-cancel">
+                Cancel
+            </a>
+            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#confirmEditModal">
+                Update Form
+            </button>
+        </div>
+
+        <!-- Confirm Edit Modal -->
+        <div class="modal fade" id="confirmEditModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+
+                    <div class="modal-header bg-warning">
+                        <h5 class="modal-title">
+                            Confirm Update
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <p class="mb-2">
+                            You are about to modify <strong>sensitive information</strong>.
+                        </p>
+
+                        <p class="text-muted small">
+                            Please make sure all details are correct before proceeding.
+                            This action will update the OFW and Request Party records.
+                        </p>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+
+                        <button type="submit" class="btn btn-warning">
+                            Yes, Update Information
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </div>

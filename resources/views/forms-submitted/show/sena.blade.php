@@ -153,79 +153,79 @@
                     <div class="checkbox-grid" style="grid-template-columns: repeat(2, 1fr);">
                         
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="household_professional_mwpd_protection" id="household_professional_mwpd_protection" 
-                                value="checked" {{ ($entries['household_professional_mwpd_protection'] ?? '') == 'checked' ? 'checked' : '' }} disabled>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="household_professional_mwpd_protection" 
+                                value="household_professional_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'household_professional_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Household Service</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="seaferer_sena_mwpd_protection" id="seaferer_sena_mwpd_protection" 
-                                value="checked" {{ ($entries['seaferer_sena_mwpd_protection'] ?? '') == 'checked' ? 'checked' : '' }} disabled>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="seaferer_sena_mwpd_protection" 
+                                value="seaferer_sena_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'seaferer_sena_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Seafarer</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="medical_professional_mwpd_protection" id="medical_professional_mwpd_protection" 
-                                value="checked" {{ ($entries['medical_professional_mwpd_protection'] ?? '') == 'checked' ? 'checked' : '' }} disabled>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="medical_professional_mwpd_protection" 
+                                value="medical_professional_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'medical_professional_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Medical Professional</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="offshore_worker_mwpd_protection" id="offshore_worker_mwpd_protection" 
-                                value="checked" {{ ($entries['offshore_worker_mwpd_protection'] ?? '') == 'checked' ? 'checked' : '' }} disabled>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="offshore_worker_mwpd_protection" 
+                                value="offshore_worker_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'offshore_worker_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Offshore Worker</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="engineering_professional_mwpd_protection" id="engineering_professional_mwpd_protection" 
-                                value="checked" {{ ($entries['engineering_professional_mwpd_protection'] ?? '') == 'checked' ? 'checked' : '' }} disabled>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="engineering_professional_mwpd_protection" 
+                                value="engineering_professional_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'engineering_professional_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Engineering Professional</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="construcion_laborer_mwpd_protection" id="construcion_laborer_mwpd_protection" 
-                                value="checked" {{ ($entries['construcion_laborer_mwpd_protection'] ?? '') == 'checked' ? 'checked' : '' }} disabled>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="construcion_laborer_mwpd_protection" 
+                                value="construcion_laborer_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'construcion_laborer_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Construction Laborer</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="caregiver_mwpd_protection" id="caregiver_mwpd_protection" 
-                                value="checked" {{ ($entries['caregiver_mwpd_protection'] ?? '') == 'checked' ? 'checked' : '' }} disabled>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="caregiver_mwpd_protection" 
+                                value="caregiver_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'caregiver_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Caregiver</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="plumber_mwpd_protection" id="plumber_mwpd_protection" 
-                                value="checked" {{ ($entries['plumber_mwpd_protection'] ?? '') == 'checked' ? 'checked' : '' }} disabled>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="plumber_mwpd_protection" 
+                                value="plumber_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'plumber_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Plumber/Fitter</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="manufacturing_laborer_mwpd_protection" id="manufacturing_laborer_mwpd_protection" 
-                                value="checked" {{ ($entries['manufacturing_laborer_mwpd_protection'] ?? '') == 'checked' ? 'checked' : '' }} disabled>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="manufacturing_laborer_mwpd_protection" 
+                                value="manufacturing_laborer_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'manufacturing_laborer_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Manufacturing Laborer</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="welder_mwpd_protection" id="welder_mwpd_protection" 
-                                value="checked" {{ ($entries['welder_mwpd_protection'] ?? '') == 'checked' ? 'checked' : '' }} disabled>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="welder_mwpd_protection" 
+                                value="welder_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'welder_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Welder/Cutter</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="hotel_staff_mwpd_protection" id="hotel_staff_mwpd_protection" 
-                                value="checked" {{ ($entries['hotel_staff_mwpd_protection'] ?? '') == 'checked' ? 'checked' : '' }} disabled>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="hotel_staff_mwpd_protection" 
+                                value="hotel_staff_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'hotel_staff_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Hotel Staff</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="cleaner_mwpd_protection" id="cleaner_mwpd_protection" 
-                                value="checked" {{ ($entries['cleaner_mwpd_protection'] ?? '') == 'checked' ? 'checked' : '' }} disabled>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="cleaner_mwpd_protection" 
+                                value="cleaner_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'cleaner_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Cleaner/Helper</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="entertainer_mwpd_protection" id="entertainer_mwpd_protection"
-                                value="checked" {{ ($entries['entertainer_mwpd_protection'] ?? '') == 'checked' ? 'checked' : '' }} disabled>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="entertainer_mwpd_protection"
+                                value="entertainer_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'entertainer_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Entertainer</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" id="other_professional_mwpd_protection" name="other_professional_mwpd_protection" 
-                                value="checked" {{ ($entries['other_professional_mwpd_protection'] ?? '') == 'checked' ? 'checked' : '' }} readonly>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="other_professional_mwpd_protection"
+                                value="other_professional_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'other_professional_mwpd_protection' ? 'checked' : '' }} readonly>
                             <span class="form-check-label"><strong>Others, specify:</strong></span>
                         </label>
                         

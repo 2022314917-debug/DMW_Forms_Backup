@@ -117,23 +117,27 @@
         width: 100%;
         /* border-collapse: collapse; */
         border-radius: 16px;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
-        overflow: hidden;
+        box-shadow: -6px 0 10px rgba(0, 0, 0, 0.06),
+                 6px 0 10px rgba(0, 0, 0, 0.06);
+        overflow: visible;
     }
 
     .forms-table thead tr {
-        /* background: #f8f9fb; */
-         background: #ffffff;
-        border-bottom: 1.5px solid #eef0f3;
+        background: #f0f2f8;
+        border-bottom: 2px solid #e2e6f0;
+        box-shadow: 0 3px 8px rgba(78, 115, 223, 0.12),
+                    0 1px 3px rgba(0, 0, 0, 0.08);
+        position: relative;
+        z-index: 1;
     }
 
     .forms-table thead th {
         padding: 0.85rem 1.2rem;
         font-size: 0.8rem;
-        font-weight: 600;
-        color: #6b7280;
+        font-weight: 700;
+        color: #3d4a6b;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: 0.05em;
         white-space: nowrap;
         user-select: none;
     }
@@ -155,13 +159,20 @@
         border-bottom: none;
     }
 
-    .forms-table tbody tr:nth-child(odd) {
-        background: #f7f9fc;
+    /* .forms-table tbody tr:nth-child(odd) {
+        background: #ffffff;
     }
 
     .forms-table tbody tr:nth-child(even) {
         
+        background: #f7f9fc;
+    } */
+
+    .forms-table tbody tr {
         background: #ffffff;
+    }
+    .forms-table tbody tr.row-alt {
+        background: #f7f9fc;
     }
 
 
@@ -170,7 +181,15 @@
         font-size: 0.875rem;
         color: #374151;
         vertical-align: middle;
+        text-align: left
     }
+
+    .forms-table td:last-child {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    
 
     .badge-status {
         display: inline-block;
@@ -229,6 +248,58 @@
     .division-text {
         font-size: 0.8rem;
         color: #666;
+    }
+
+    .custom-modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.6);
+    }
+
+    .custom-modal-content {
+        background: #fff;
+        margin: 5% auto;
+        padding: 1rem;
+        width: 80%;
+        max-width: 900px;
+        border-radius: 10px;
+        position: relative;
+    }
+
+    .close-modal {
+        position: absolute;
+        right: 15px;
+        top: 10px;
+        font-size: 22px;
+        cursor: pointer;
+    }
+
+    #previewContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 70vh;
+        overflow: auto;
+    }
+
+    #previewContainer img {
+        max-width: 100%;
+        max-height: 70vh;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        border-radius: 6px;
+    }
+
+    #previewContainer iframe {
+        width: 100%;
+        height: 70vh;
+        border: none;
     }
 </style>
 
@@ -318,10 +389,10 @@
                             $divisionName = $data['form']->division->division_name ?? $data['form']->division ?? '—';
 
                             $editRoutes = [
-                                'General' => 'forms-submitted.edit.general',
-                                'OFW Info Sheet MWPD' => 'forms-submitted.edit.ofw_info_sheet_mwpd',
+                                'OFFICIAL DMW-RO3 RFA FORM' => 'forms-submitted.edit.general',
+                                'REQUEST FOR VERIFICATION / CERTIFICATION OF OFW RECORDS' => 'forms-submitted.edit.processing',
                                 'OFW Info Sheet MWPD Protection' => 'forms-submitted.edit.general.ofw_info_sheet_mwpd_protection',
-                                'Aksyon' => 'forms-submitted.edit.general.aksyon',
+                                'REQUEST FOR ASSISTANCE (RFA) FORM' => 'forms-submitted.edit.aksyon',
                                 'SINGLE-ENTRY APPROACH (SENA)' => 'forms-submitted.edit.sena',
                             ];
 
@@ -356,6 +427,200 @@
         </div>
     @endif
 
+    {{-- REQUIREMENTS TABLE --}}
+        <div class="section-title mt-4">Submitted Requirements</div>
+
+        @php
+            $requirements = $request->requirements ?? collect();
+            $groupedRequirements = $requirements->groupBy('file_type');
+        @endphp
+
+        @if($requirements->isEmpty())
+            <div class="alert alert-warning">No requirements uploaded for this request.</div>
+        @else
+            <div class="table-responsive">
+                <table class="forms-table">
+                    <thead>
+                        <tr>
+                            <th>Document Type</th>
+                            <th>File Name <span class="sort-arrow">&#9660;</span></th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+
+
+                    <tbody>
+                        @foreach($groupedRequirements as $type => $files)
+                            @php
+                                $rowCount = $files->count();
+                            @endphp
+
+                            @foreach($files as $index => $requirement)
+                                @php
+                                    $ext = strtolower(pathinfo($requirement->file_name, PATHINFO_EXTENSION));
+
+                                    $iconClass = in_array($ext, ['jpg','jpeg','png'])
+                                        ? 'fas fa-file-image text-success'
+                                        : ($ext === 'pdf'
+                                            ? 'fas fa-file-pdf text-danger'
+                                            : 'fas fa-file text-secondary');
+                                @endphp
+
+                                <tr>
+                                    {{-- DOCUMENT TYPE (rowspan like your image) --}}
+                                    @if($index === 0)
+                                        <td rowspan="{{ $rowCount }}" style="vertical-align: middle; font-weight: 600;">
+                                            {{ $type }}
+                                        </td>
+                                    @endif
+
+                                    {{-- FILE NAME --}}
+                                    <td>
+                                        <i class="{{ $iconClass }} me-1"></i>
+                                        {{ $requirement->file_name }}
+                                    </td>
+
+                                    {{-- ACTION --}}
+                                    <td>
+                                        <div class="d-flex gap-2 justify-content-center text-center">
+
+                                            <a href="javascript:void(0)"
+                                            class="btn-table-view btn-preview"
+                                            data-file="{{ route('requirements.view', $requirement->id) }}">
+                                                VIEW
+                                            </a>
+
+                                            <a href=""
+                                            class="btn-table-download"
+                                            data-file="{{ route('requirements.download', $requirement->id) }}">
+                                                DOWNLOAD
+                                            </a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endif
+
+    </div> {{-- end request-wrapper --}}
+
+    <div id="filePreviewModal" class="custom-modal">
+        <div class="custom-modal-content">
+            <span class="close-modal">&times;</span>
+
+            <div id="previewContainer">
+                <!-- AJAX content will be injected here -->
+            </div>
+        </div>
+    </div>
+
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const modal = document.getElementById("filePreviewModal");
+    const previewContainer = document.getElementById("previewContainer");
+    const closeBtn = document.querySelector(".close-modal");
+
+    document.querySelectorAll(".btn-preview").forEach(button => {
+        button.addEventListener("click", function () {
+
+            const apiUrl = this.dataset.file;
+
+            fetch(apiUrl)
+                .then(res => res.json())
+                .then(data => {
+
+                    const fileUrl = data.url;
+                    const ext = fileUrl.split('.').pop().toLowerCase();
+
+                    let content = '';
+
+                    if (['jpg','jpeg','png','gif','webp'].includes(ext)) {
+                        content = `<img src="${fileUrl}" alt="Preview">`;
+                    } 
+                    else if (ext === 'pdf') {
+                        content = `<iframe src="${fileUrl}#toolbar=1"></iframe>`;
+                    } 
+                    else if (['doc','docx'].includes(ext)) {
+                        content = `<iframe src="https://docs.google.com/gview?url=${encodeURIComponent(fileUrl)}&embedded=true"></iframe>`;
+                    } 
+                    else {
+                        content = `
+                            <div style="text-align:center; padding:2rem;">
+                                <p>Preview not available</p>
+                                <a href="${fileUrl}" target="_blank" class="btn-view">Open File</a>
+                            </div>
+                        `;
+                    }
+
+                    previewContainer.innerHTML = content;
+                    modal.style.display = "block";
+                });
+        });
+    });
+
+    document.querySelectorAll(".btn-table-download").forEach(button => {
+        button.addEventListener("click", function (e) {
+            e.preventDefault();
+
+            const apiUrl = this.dataset.file;
+
+            fetch(apiUrl)
+                .then(res => res.json())
+                .then(data => {
+                    const link = document.createElement('a');
+                    link.href = data.url;
+                    link.download = data.name;
+                    link.target = '_blank';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                });
+        });
+    });
+
+    closeBtn.onclick = function () {
+        modal.style.display = "none";
+        previewContainer.innerHTML = '';
+    };
+
+    window.onclick = function (e) {
+        if (e.target === modal) {
+            modal.style.display = "none";
+            previewContainer.innerHTML = '';
+        }
+    };
+
+    fetch(fileUrl)
+    .then(res => res.json())
+    .then(data => {
+
+        const url = data.url;
+        const ext = url.split('.').pop().toLowerCase();
+
+        let content = '';
+
+        if (['jpg','jpeg','png','gif','webp'].includes(ext)) {
+            content = `<img src="${url}">`;
+        }
+        else if (ext === 'pdf') {
+            content = `<iframe src="${url}"></iframe>`;
+        }
+        else {
+            content = `<a href="${url}" target="_blank">Open File</a>`;
+        }
+
+        previewContainer.innerHTML = content;
+        modal.style.display = "block";
+    });
+
+});
+</script>
 
 @endsection

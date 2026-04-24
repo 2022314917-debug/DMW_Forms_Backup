@@ -12,7 +12,7 @@
   <style>
     html, body {
       width: 100%;
-      overflow-x: hidden;
+      /* overflow-x: hidden; */
       margin: 0;
       padding: 0;
     }
@@ -186,17 +186,17 @@
 
           <div class="col-md-4">
             <label class="form-label">Surname</label>
-            <input type="text" class="form-control disabled" name="ofw_lname" placeholder="Dela Cruz" id="ofw_lname" value="{{ $ofw->ofw_lname }}">
+            <input type="text" class="form-control disabled" name="ofw_lname" id="ofw_lname" value="{{ $ofw->ofw_lname }}">
           </div>
 
           <div class="col-md-4">
             <label class="form-label">First Name</label>
-            <input type="text" class="form-control disabled" name="ofw_fname" placeholder="Juan" id="ofw_fname" value="{{ $ofw->ofw_fname }}">
+            <input type="text" class="form-control disabled" name="ofw_fname" id="ofw_fname" value="{{ $ofw->ofw_fname }}">
           </div>
 
           <div class="col-md-4">
             <label class="form-label">Middle Name</label>
-            <input type="text" class="form-control disabled" name="ofw_mname" placeholder="Santos" id="ofw_mname" value="{{ $ofw->ofw_mname }}">
+            <input type="text" class="form-control disabled" name="ofw_mname" id="ofw_mname" value="{{ $ofw->ofw_mname }}">
           </div>
 
         </div>
@@ -1002,15 +1002,13 @@
 
 
   <script>
-
     const now = new Date();
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
 
     document.getElementById("time_received_mwpd_processing").value = `${hours}:${minutes}`;
-    document.getElementById('openReviewModalBtn').addEventListener('click', function () {
-        
 
+    document.getElementById('openReviewModalBtn').addEventListener('click', function () {
         const modal = new bootstrap.Modal(document.getElementById('reviewModal'));
         modal.show();
     });
@@ -1018,5 +1016,8 @@
     document.getElementById('confirmSubmitBtn').addEventListener('click', function () {
         document.querySelector('form[method="POST"]').submit();
     });
+
+
+   
 </script>
 @endsection

@@ -135,7 +135,7 @@
                         <i class="fas fa-plus fa-2x text-muted"></i>
                         <p class="text-muted mb-0">Upload File</p>
                     </div>
-                    <input type="file" name="assistance[]" accept=".docx,.pdf,.jpg,.jpeg,.png" multiple hidden>
+                    <input type="file" name="assistance[]" accept=".pdf,.jpg,.jpeg,.png" multiple hidden>
                 </div>
             </div> -->
 
@@ -151,7 +151,7 @@
                         <i class="fas fa-plus fa-2x text-muted"></i>
                         <p class="text-muted mb-0">Upload File</p>
                     </div>
-                    <input type="file" name="passport[]" accept=".docx,.pdf,.jpg,.jpeg,.png" multiple hidden>
+                    <input type="file" name="passport[]" accept=".pdf,.jpg,.jpeg,.png" multiple hidden>
                 </div>
             </div>
 
@@ -167,7 +167,7 @@
                         <i class="fas fa-plus fa-2x text-muted"></i>
                         <p class="text-muted mb-0">Upload File</p>
                     </div>
-                    <input type="file" name="boarding[]" accept=".docx,.pdf,.jpg,.jpeg,.png" multiple hidden>
+                    <input type="file" name="boarding[]" accept=".pdf,.jpg,.jpeg,.png" multiple hidden>
                 </div>
             </div>
 
@@ -183,7 +183,7 @@
                         <i class="fas fa-plus fa-2x text-muted"></i>
                         <p class="text-muted mb-0">Upload File</p>
                     </div>
-                    <input type="file" name="contract[]" accept=".docx,.pdf,.jpg,.jpeg,.png" multiple hidden>
+                    <input type="file" name="contract[]" accept=".pdf,.jpg,.jpeg,.png" multiple hidden>
                 </div>
             </div>
 
@@ -200,7 +200,7 @@
                         <i class="fas fa-plus fa-2x text-muted"></i>
                         <p class="text-muted mb-0">Upload File</p>
                     </div>
-                    <input type="file" name="contract[]" accept=".docx,.pdf,.jpg,.jpeg,.png" multiple hidden>
+                    <input type="file" name="visa[]" accept=".pdf,.jpg,.jpeg,.png" multiple hidden>
                 </div>
             </div>
 
@@ -216,7 +216,7 @@
                         <i class="fas fa-plus fa-2x text-muted"></i>
                         <p class="text-muted mb-0">Upload File</p>
                     </div>
-                    <input type="file" name="contract[]" accept=".docx,.pdf,.jpg,.jpeg,.png" multiple hidden>
+                    <input type="file" name="medical[]" accept=".pdf,.jpg,.jpeg,.png" multiple hidden>
                 </div>
             </div>
 
@@ -232,7 +232,7 @@
                         <i class="fas fa-plus fa-2x text-muted"></i>
                         <p class="text-muted mb-0">Upload File</p>
                     </div>
-                    <input type="file" name="contract[]" accept=".docx,.pdf,.jpg,.jpeg,.png" multiple hidden>
+                    <input type="file" name="endorsement[]" accept=".pdf,.jpg,.jpeg,.png" multiple hidden>
                 </div>
             </div>
 
@@ -248,7 +248,7 @@
                         <i class="fas fa-plus fa-2x text-muted"></i>
                         <p class="text-muted mb-0">Upload File</p>
                     </div>
-                    <input type="file" name="contract[]" accept=".docx,.pdf,.jpg,.jpeg,.png" multiple hidden>
+                    <input type="file" name="distress[]" accept=".pdf,.jpg,.jpeg,.png" multiple hidden>
                 </div>
             </div>
 
@@ -264,7 +264,7 @@
                         <i class="fas fa-plus fa-2x text-muted"></i>
                         <p class="text-muted mb-0">Upload File</p>
                     </div>
-                    <input type="file" name="contract[]" accept=".docx,.pdf,.jpg,.jpeg,.png" multiple hidden>
+                    <input type="file" name="valid_id[]" accept=".pdf,.jpg,.jpeg,.png" multiple hidden>
                 </div>
             </div>
 
@@ -311,103 +311,189 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
 
-        let sections = document.querySelectorAll('.drop-area');
+    // Attach _filesArray to every drop-area section
+    document.querySelectorAll('.drop-area').forEach(section => {
 
-        sections.forEach(section => {
+        const input       = section.querySelector('input[type="file"]');
+        const placeholder = section.querySelector('.drop-placeholder');
 
-            let input = section.querySelector('input[type="file"]');
-            let placeholder = section.querySelector('.drop-placeholder');
+        section._filesArray  = [];
+        let fileIdCounter    = 0;
+        const MAX_FILES      = 10;
 
-            let filesArray = [];
-            let fileIdCounter = 0;
+        const allowedTypes = [
+            'application/pdf',
+            'image/jpeg',
+            'image/png'
+        ];
 
-            section.addEventListener('click', (e)=>{
-                if(e.target.closest('.remove-btn')) return;
-                input.click();
-            });
-
-            input.addEventListener('change', function(){
-                handleFiles(this.files);
-                this.value='';
-            });
-
-            section.addEventListener('dragover', e=>{
-                e.preventDefault();
-                section.classList.add('drag-over');
-            });
-
-            section.addEventListener('dragleave', ()=>{
-                section.classList.remove('drag-over');
-            });
-
-            section.addEventListener('drop', e=>{
-                e.preventDefault();
-                section.classList.remove('drag-over');
-                handleFiles(e.dataTransfer.files);
-            });
-
-            function handleFiles(files){
-                Array.from(files).forEach(async file => {
-
-                    // Allowed file types
-                    const allowedTypes = [
-                        'application/pdf', 
-                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // docx
-                        'image/jpeg',
-                        'image/png'
-                    ];
-
-                    if(!allowedTypes.includes(file.type)){
-                        alert(`File "${file.name}" is not supported!`);
-                        return; // skip this file
-                    }
-
-                    const fileId = fileIdCounter++;
-
-                    filesArray.push({file,id:fileId});
-
-                    const div = document.createElement('div');
-                    div.classList.add('file-preview');
-                    div.dataset.id = fileId;
-
-                    const remove = document.createElement('button');
-                    remove.innerHTML = '×';
-                    remove.classList.add('remove-btn');
-                    remove.onclick = (e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        filesArray = filesArray.filter(f => f.id != fileId);
-                        div.remove();
-                    };
-                    div.appendChild(remove);
-
-                    if(file.type.startsWith('image/')){
-                        const img = document.createElement('img');
-                        img.src = URL.createObjectURL(file);
-                        img.classList.add('preview-image');
-                        div.appendChild(img);
-                    } else {
-                        const icon = document.createElement('i');
-                        icon.className = 'fas fa-file fa-2x';
-                        div.appendChild(icon);
-                    }
-
-                    const name = document.createElement('small');
-                    name.classList.add('file-name');
-                    name.title = file.name; // show full name on hover
-                    name.textContent = file.name;
-                    div.appendChild(name);
-                    
-
-                    section.insertBefore(div, placeholder);
-
-                });
-            }
-
+        // -------------------------
+        // Click to open file picker
+        // -------------------------
+        section.addEventListener('click', (e) => {
+            if (e.target.closest('.remove-btn')) return;
+            input.click();
         });
 
+        // -------------------------
+        // File input change
+        // -------------------------
+        input.addEventListener('change', function () {
+            handleFiles(this.files);
+            this.value = ''; // reset so same file can be re-added after removal
+        });
+
+        // -------------------------
+        // Drag & Drop
+        // -------------------------
+        section.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            section.classList.add('drag-over');
+        });
+
+        section.addEventListener('dragleave', () => {
+            section.classList.remove('drag-over');
+        });
+
+        section.addEventListener('drop', (e) => {
+            e.preventDefault();
+            section.classList.remove('drag-over');
+            handleFiles(e.dataTransfer.files);
+        });
+
+        // -------------------------
+        // Handle selected files
+        // -------------------------
+        function handleFiles(files) {
+            let limitReached = false;
+
+            Array.from(files).forEach(file => {
+
+                // Max file count check
+                if (section._filesArray.length >= MAX_FILES) {
+                    if (!limitReached) {
+                        alert(`You can only upload up to ${MAX_FILES} files in this section.`);
+                        limitReached = true;
+                    }
+                    return;
+                }
+
+                // File type check
+                if (!allowedTypes.includes(file.type)) {
+                    alert(`File "${file.name}" is not supported. Only PDF, DOCX, JPG, and PNG are allowed.`);
+                    return;
+                }
+
+                // Max file size check (100 MB)
+                if (file.size > 100 * 1024 * 1024) {
+                    alert(`File "${file.name}" exceeds the 100 MB limit.`);
+                    return;
+                }
+
+                const fileId = fileIdCounter++;
+
+                // Push to section's file array
+                section._filesArray.push({ file, id: fileId });
+
+                // Build preview card
+                const div = document.createElement('div');
+                div.classList.add('file-preview');
+                div.dataset.id = fileId;
+
+                // Remove button
+                const removeBtn = document.createElement('button');
+                removeBtn.innerHTML    = '&times;';
+                removeBtn.classList.add('remove-btn');
+                removeBtn.title        = 'Remove file';
+                removeBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    section._filesArray = section._filesArray.filter(f => f.id !== fileId);
+                    div.remove();
+                    syncInputFiles(section, input);
+                });
+                div.appendChild(removeBtn);
+
+                // Preview: image thumbnail or file icon
+                if (file.type.startsWith('image/')) {
+                    const img    = document.createElement('img');
+                    img.src      = URL.createObjectURL(file);
+                    img.classList.add('preview-image');
+                    img.onload   = () => URL.revokeObjectURL(img.src); // free memory after load
+                    div.appendChild(img);
+                } else {
+                    // Show different icons per type
+                    const icon = document.createElement('i');
+                    if (file.type === 'application/pdf') {
+                        icon.className = 'fas fa-file-pdf fa-2x text-danger';
+                    } else {
+                        icon.className = 'fas fa-file-word fa-2x text-primary';
+                    }
+                    div.appendChild(icon);
+                }
+
+                // File name label
+                const nameLabel       = document.createElement('small');
+                nameLabel.classList.add('file-name');
+                nameLabel.title       = file.name; // full name on hover
+                nameLabel.textContent = file.name;
+                div.appendChild(nameLabel);
+
+                // Insert preview before the placeholder
+                section.insertBefore(div, placeholder);
+
+                // Sync the actual hidden input
+                syncInputFiles(section, input);
+            });
+        }
+
+        // -------------------------
+        // Sync filesArray → input.files
+        // via DataTransfer so the form
+        // actually submits the files
+        // -------------------------
+        function syncInputFiles(section, input) {
+            const dt = new DataTransfer();
+            section._filesArray.forEach(f => dt.items.add(f.file));
+            input.files = dt.files;
+        }
+
     });
+
+    // -------------------------
+    // On form submit: sync all
+    // sections one final time
+    // to be safe
+    // -------------------------
+    const form = document.getElementById('file-form');
+
+    form.addEventListener('submit', function (e) {
+
+        // Final sync pass for all sections
+        document.querySelectorAll('.drop-area').forEach(section => {
+            const input = section.querySelector('input[type="file"]');
+            if (!input || !section._filesArray) return;
+
+            const dt = new DataTransfer();
+            section._filesArray.forEach(f => dt.items.add(f.file));
+            input.files = dt.files;
+        });
+
+        // Show upload spinner
+        const spinner = document.getElementById('upload-spinner');
+        if (spinner) spinner.style.display = 'block';
+
+        // Disable submit button to prevent double-submit
+        const submitBtn = form.querySelector('button[name="action"][value="submit"]');
+        if (submitBtn) {
+            submitBtn.disabled    = true;
+            submitBtn.textContent = 'Submitting...';
+        }
+
+    });
+
+});
 </script>
 @endsection

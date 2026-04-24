@@ -92,14 +92,22 @@ Route::middleware('auth')->group(function () {
     // -------------------------------------------------------
     Route::get('forms-submitted/request/{id}', [\App\Http\Controllers\SubmittedFormController::class, 'show'])->name('forms-submitted.show');
     Route::get('forms-submitted/{requestId}/form/{formId}', [\App\Http\Controllers\SubmittedFormController::class, 'openForm'])->name('forms-submitted.open-form');
+    Route::get('/requirements/view/{id}', [\App\Http\Controllers\SubmittedFormController::class, 'viewFile'])->name('requirements.view');
+    Route::get('/requirements/download/{id}', [\App\Http\Controllers\SubmittedFormController::class, 'downloadFile'])->name('requirements.download');
 
 
 
     Route::get('/forms-submitted/{requestId}/{formId}/editGeneral',[\App\Http\Controllers\SubmittedFormController::class, 'editGeneral'])->name('forms-submitted.edit.general');
-    Route::put('/forms-submitted/{requestId}/{formId}',[\App\Http\Controllers\SubmittedFormController::class, 'saveEditGeneral'])->name('forms-submitted.save-edit-general');
+    Route::put('/forms-submitted/{requestId}/{formId}/editGeneral',[\App\Http\Controllers\SubmittedFormController::class, 'saveEditGeneral'])->name('forms-submitted.save-edit-general');
+
+    Route::get('/forms-submitted/{requestId}/{formId}/editOFWInfoSheetMWPSD',[\App\Http\Controllers\SubmittedFormController::class, 'editOFWInfoSheetMWPSD'])->name('forms-submitted.edit.processing');
+    Route::put('/forms-submitted/{requestId}/{formId}/editOFWInfoSheetMWPSD',[\App\Http\Controllers\SubmittedFormController::class, 'saveEditOFWInfoSheetMWPSD'])->name('forms-submitted.save-edit-processing');
+
+    Route::get('/forms-submitted/{requestId}/{formId}/editAksyon',[\App\Http\Controllers\SubmittedFormController::class, 'editAksyon'])->name('forms-submitted.edit.aksyon');
+    Route::put('/forms-submitted/{requestId}/{formId}/editAksyon',[\App\Http\Controllers\SubmittedFormController::class, 'saveEditAksyon'])->name('forms-submitted.save-edit-aksyon');
 
     Route::get('/forms-submitted/{requestId}/{formId}/editSENA',[\App\Http\Controllers\SubmittedFormController::class, 'editSENA'])->name('forms-submitted.edit.sena');
-    Route::put('/forms-submitted/{requestId}/{formId}',[\App\Http\Controllers\SubmittedFormController::class, 'saveEditSENA'])->name('forms-submitted.save-edit-sena');
+    Route::put('/forms-submitted/{requestId}/{formId}/editSENA',[\App\Http\Controllers\SubmittedFormController::class, 'saveEditSENA'])->name('forms-submitted.save-edit-sena');
 
     Route::get('/forms-submitted/search', [\App\Http\Controllers\SubmittedFormController::class, 'search'])->name('forms-submitted.search');
 

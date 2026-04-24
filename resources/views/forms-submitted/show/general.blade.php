@@ -3,7 +3,7 @@
   <style>
     body {
       background-color: #f4f4f4;
-      font-family: 'Assistant', Arial, sans-serif;
+      /* font-family: 'Assistant', Arial, sans-serif; */
     }
 
     .form-header {
@@ -39,7 +39,7 @@
   </style>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700&display=swap" rel="stylesheet">
  
-  <div class="container my-5">
+  <div class="container my-5" style="font-family: 'Assistant', Arial, sans-serif;">
 
     <div class="position-relative d-flex align-items-center justify-content-center mb-3" style="min-height: 38px;">
         <a href="{{ route('forms-submitted.show', $request->id) }}" 

@@ -49,7 +49,9 @@
         </div>
 
 
-
+        <form method="POST" action="{{ route('forms-submitted.save-edit-sena', [$request->id, $form->id]) }}">
+            @csrf
+            @method('PUT')
             <div class="sena-section">
                 <h5>Name of OFW (Pangalan)</h5>
                 <div class="row g-3">
@@ -153,85 +155,85 @@
                     <div class="checkbox-grid" style="grid-template-columns: repeat(2, 1fr);">
                         
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" id="household_professional_mwpd_protection" 
-                                value="household_professional_mwpd_protection" {{ ($entries['nature_of_work'] ?? '') == 'household_professional_mwpd_protection' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="household_professional_mwpd_protection" 
+                                value="household_professional_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'household_professional_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Household Service</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" id="seaferer_sena_mwpd_protection" 
-                                value="seaferer_sena_mwpd_protection" {{ ($entries['nature_of_work'] ?? '') == 'seaferer_sena_mwpd_protection' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="seaferer_sena_mwpd_protection" 
+                                value="seaferer_sena_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'seaferer_sena_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Seafarer</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" id="medical_professional_mwpd_protection" 
-                                value="medical_professional_mwpd_protection" {{ ($entries['nature_of_work'] ?? '') == 'medical_professional_mwpd_protection' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="medical_professional_mwpd_protection" 
+                                value="medical_professional_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'medical_professional_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Medical Professional</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" id="offshore_worker_mwpd_protection" 
-                                value="offshore_worker_mwpd_protection" {{ ($entries['nature_of_work'] ?? '') == 'offshore_worker_mwpd_protection' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="offshore_worker_mwpd_protection" 
+                                value="offshore_worker_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'offshore_worker_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Offshore Worker</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" id="engineering_professional_mwpd_protection" 
-                                value="engineering_professional_mwpd_protection" {{ ($entries['nature_of_work'] ?? '') == 'engineering_professional_mwpd_protection' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="engineering_professional_mwpd_protection" 
+                                value="engineering_professional_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'engineering_professional_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Engineering Professional</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" id="construcion_laborer_mwpd_protection" 
-                                value="construcion_laborer_mwpd_protection" {{ ($entries['nature_of_work'] ?? '') == 'construcion_laborer_mwpd_protection' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="construcion_laborer_mwpd_protection" 
+                                value="construcion_laborer_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'construcion_laborer_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Construction Laborer</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" id="caregiver_mwpd_protection" 
-                                value="caregiver_mwpd_protection" {{ ($entries['nature_of_work'] ?? '') == 'caregiver_mwpd_protection' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="caregiver_mwpd_protection" 
+                                value="caregiver_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'caregiver_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Caregiver</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" id="plumber_mwpd_protection" 
-                                value="plumber_mwpd_protection" {{ ($entries['nature_of_work'] ?? '') == 'plumber_mwpd_protection' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="plumber_mwpd_protection" 
+                                value="plumber_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'plumber_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Plumber/Fitter</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" id="manufacturing_laborer_mwpd_protection" 
-                                value="manufacturing_laborer_mwpd_protection" {{ ($entries['nature_of_work'] ?? '') == 'manufacturing_laborer_mwpd_protection' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="manufacturing_laborer_mwpd_protection" 
+                                value="manufacturing_laborer_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'manufacturing_laborer_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Manufacturing Laborer</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" id="welder_mwpd_protection" 
-                                value="welder_mwpd_protection" {{ ($entries['nature_of_work'] ?? '') == 'welder_mwpd_protection' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="welder_mwpd_protection" 
+                                value="welder_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'welder_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Welder/Cutter</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" id="hotel_staff_mwpd_protection" 
-                                value="hotel_staff_mwpd_protection" {{ ($entries['nature_of_work'] ?? '') == 'hotel_staff_mwpd_protection' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="hotel_staff_mwpd_protection" 
+                                value="hotel_staff_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'hotel_staff_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Hotel Staff</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" id="cleaner_mwpd_protection" 
-                                value="cleaner_mwpd_protection" {{ ($entries['nature_of_work'] ?? '') == 'cleaner_mwpd_protection' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="cleaner_mwpd_protection" 
+                                value="cleaner_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'cleaner_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Cleaner/Helper</span>
                         </label>
 
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" name="nature_of_work[]" id="entertainer_mwpd_protection"
-                                value="entertainer_mwpd_protection" {{ ($entries['nature_of_work'] ?? '') == 'entertainer_mwpd_protection' ? 'checked' : '' }}>
+                            <input class="form-check-input" type="radio" name="ofw_nature_of_work_mwpd_protection" id="entertainer_mwpd_protection"
+                                value="entertainer_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'entertainer_mwpd_protection' ? 'checked' : '' }}>
                             <span class="form-check-label">Entertainer</span>
                         </label>
                         <label class="form-check">
-                            <input class="form-check-input" type="radio" id="nature_of_work[]" name="other_professional_mwpd_protection" 
-                                value="other_professional_mwpd_protection" {{ ($entries['nature_of_work'] ?? '') == 'other_professional_mwpd_protection' ? 'checked' : '' }} readonly>
+                            <input class="form-check-input" type="radio"  name="ofw_nature_of_work_mwpd_protection" id="other_professional_mwpd_protection"
+                                value="other_professional_mwpd_protection" {{ ($entries['ofw_nature_of_work_mwpd_protection'] ?? '') == 'other_professional_mwpd_protection' ? 'checked' : '' }} readonly>
                             <span class="form-check-label"><strong>Others, specify:</strong></span>
                         </label>
                         
                     </div>
                     <div style="grid-column: 2 / span 1; margin-top: 0.3rem;">
-                        <input type="text" name="other_professional_specify_mwpd_protection" class="form-control disabled" placeholder="Specify other nature of work" id="other_professional_specify_mwpd_protection" disabled 
+                        <input type="text" name="other_professional_specify_mwpd_protection" class="form-control" placeholder="Specify other nature of work" id="other_professional_specify_mwpd_protection" disabled 
                             value="{{ $entries['other_professional_specify_mwpd_protection'] }}">
                     </div>
                 </div>
@@ -254,7 +256,7 @@
 
                     <div class="col-6 col-md-4">
                         <label class="form-label">Monthly Salary <span class="fst-italic">(PHP)</span></label>
-                        <input type="text" name="monthly_salary_mwpd_protection" id="monthly_salary_mwpd_protection" class="form-control disabled" value="{{ $entries['monthly_salary_mwpd_protection'] }}">
+                        <input type="text" name="monthly_salary_mwpd_protection" id="monthly_salary_mwpd_protection" class="form-control" value="{{ $entries['monthly_salary_mwpd_protection'] }}">
                     </div>
                 </div>
 
@@ -263,30 +265,30 @@
                         <label class="form-label">Contract Duration</label>
                         <div class="row g-2">
                             <div class="col-6">
-                                <input type="date" name="contract_start_mwpd_protection" id="contract_start_mwpd_protection" class="form-control disabled" 
+                                <input type="date" name="contract_start_mwpd_protection" id="contract_start_mwpd_protection" class="form-control" 
                                     value="{{ $entries['contract_start_mwpd_protection'] }}">
                             </div>
                             <div class="col-6">
-                                <input type="date" name="contract_end_mwpd_protection" id="contract_end_mwpd_protection" class="form-control disabled"
+                                <input type="date" name="contract_end_mwpd_protection" id="contract_end_mwpd_protection" class="form-control"
                                     value="{{ $entries['contract_end_mwpd_protection'] }}">
                             </div>
                         </div>
                     </div>
                     <div class="col-12 col-md-7">
                         <label class="form-label">Length of Contract Served</label>
-                        <input type="text" name="length_contract_mwpd_protection" id="length_contract_mwpd_protection" class="form-control disabled"
+                        <input type="text" name="length_contract_mwpd_protection" id="length_contract_mwpd_protection" class="form-control"
                             value="{{ $entries['length_contract_mwpd_protection'] }}">
                     </div>
                 </div>
 
                 <div class="mt-3">
                     <label class="form-label">Action Taken at the Employer Level (Aksyon ng Employer)</label>
-                    <textarea name="action_employer_level_mwpd_protection" id="action_employer_level_mwpd_protection" class="form-control disabled" rows="2">{{ $entries['action_employer_level_mwpd_protection'] }}
+                    <textarea name="action_employer_level_mwpd_protection" id="action_employer_level_mwpd_protection" class="form-control" rows="2">{{ $entries['action_employer_level_mwpd_protection'] }}
                     </textarea>
                 </div>
                 <div class="mt-3">
                     <label class="form-label">Action Taken at the MWO Level (Aksyon ng ginawa ng MWO)</label>
-                    <textarea name="action_mwo_level_mwpd_protection" id="action_mwo_level_mwpd_protection" class="form-control disabled" rows="2">{{ $entries['action_mwo_level_mwpd_protection'] }}
+                    <textarea name="action_mwo_level_mwpd_protection" id="action_mwo_level_mwpd_protection" class="form-control" rows="2">{{ $entries['action_mwo_level_mwpd_protection'] }}
                     </textarea>
                 </div>
             </div>
@@ -297,12 +299,12 @@
 
                 <div class="mb-3">
                     <label class="form-label mb-1">Agency Name</label>
-                    <input type="text" name="ph_agency_name_mwpd_protection" id="ph_agency_name_mwpd_protection" class="form-control disabled"
+                    <input type="text" name="ph_agency_name_mwpd_protection" id="ph_agency_name_mwpd_protection" class="form-control"
                         value="{{ $entries['ph_agency_name_mwpd_protection'] }}">
                 </div>
                 <div class="mb-3">
                     <label class="form-label mb-1">Agency Address</label>
-                    <input type="text" name="ph_agency_address_mwpd_protection" id="ph_agency_address_mwpd_protection" class="form-control disabled"
+                    <input type="text" name="ph_agency_address_mwpd_protection" id="ph_agency_address_mwpd_protection" class="form-control"
                         value="{{ $entries['ph_agency_address_mwpd_protection'] }}">
                 </div>
 
@@ -310,19 +312,19 @@
 
                     <div class="col-md-4">
                         <label class="form-label mb-1">Contact Person Name</label>
-                        <input type="text" name="ph_contact_name_mwpd_protection" id="ph_contact_name_mwpd_protection" class="form-control disabled"
+                        <input type="text" name="ph_contact_name_mwpd_protection" id="ph_contact_name_mwpd_protection" class="form-control"
                             value="{{ $entries['ph_contact_name_mwpd_protection'] }}">
                     </div>
 
                     <div class="col-md-4">
                         <label class="form-label mb-1">Contact Person Position</label>
-                        <input type="text" name="ph_contact_position_mwpd_protection" id="ph_contact_position_mwpd_protection" class="form-control disabled"
+                        <input type="text" name="ph_contact_position_mwpd_protection" id="ph_contact_position_mwpd_protection" class="form-control"
                             value="{{ $entries['ph_contact_position_mwpd_protection'] }}">
                     </div>
 
                     <div class="col-md-4">
                         <label class="form-label mb-1"><span class="d-none d-lg-inline">Telephone / </span>Cellphone<span class="d-none d-lg-inline">/ Fax </span> / Email Address</label>
-                        <input type="text" name="ph_contact_details_mwpd_protection" id="ph_contact_details_mwpd_protection" class="form-control disabled"
+                        <input type="text" name="ph_contact_details_mwpd_protection" id="ph_contact_details_mwpd_protection" class="form-control"
                             value="{{ $entries['ph_contact_details_mwpd_protection'] }}">
                     </div>
                 </div>
@@ -335,12 +337,12 @@
 
                 <div class="mb-3">
                     <label class="form-label mb-1">Foreign Agency Name / Employer Name</label>
-                    <input type="text" name="foreign_agency_name_mwpd_protection" id="foreign_agency_name_mwpd_protection" class="form-control disabled"
+                    <input type="text" name="foreign_agency_name_mwpd_protection" id="foreign_agency_name_mwpd_protection" class="form-control"
                         value="{{ $entries['foreign_agency_name_mwpd_protection'] }}">
                 </div>
                 <div class="mb-3">
                     <label class="form-label mb-1">Foreign Agency Address</label>
-                    <input type="text" name="foreign_agency_address_mwpd_protection" id="foreign_agency_address_mwpd_protection" class="form-control disabled"
+                    <input type="text" name="foreign_agency_address_mwpd_protection" id="foreign_agency_address_mwpd_protection" class="form-control"
                         value="{{ $entries['foreign_agency_address_mwpd_protection'] }}">
                 </div>
 
@@ -348,25 +350,25 @@
 
                     <div class="col-md-6">
                         <label class="form-label mb-1">Contact Person Name</label>
-                        <input type="text" name="foreign_contact_name_mwpd_protection" id="foreign_contact_name_mwpd_protection" class="form-control disabled"
+                        <input type="text" name="foreign_contact_name_mwpd_protection" id="foreign_contact_name_mwpd_protection" class="form-control"
                             value="{{ $entries['foreign_contact_name_mwpd_protection'] }}">
                     </div>
 
                     <div class="col-md-6">
                         <label class="form-label mb-1">Contact Person Position</label>
-                        <input type="text" name="foreign_contact_position_mwpd_protection" id="foreign_contact_position_mwpd_protection" class="form-control disabled"
+                        <input type="text" name="foreign_contact_position_mwpd_protection" id="foreign_contact_position_mwpd_protection" class="form-control"
                             value="{{ $entries['foreign_contact_position_mwpd_protection'] }}">
                     </div>
 
                     <div class="col-md-6">
                         <label class="form-label mb-1"><span class="d-none d-lg-inline">Telephone / </span>Cellphone<span class="d-none d-lg-inline">/ Fax </span> / Email Address</label>
-                        <input type="text" name="foreign_contact_details_mwpd_protection" id="foreign_contact_details_mwpd_protection" class="form-control disabled"
+                        <input type="text" name="foreign_contact_details_mwpd_protection" id="foreign_contact_details_mwpd_protection" class="form-control"
                             value="{{ $entries['foreign_contact_details_mwpd_protection'] }}">
                     </div>
 
                     <div class="col-md-6">
                         <label class="form-label mb-1">Nature of Business</label>
-                        <input type="text" name="nature_of_business_mwpd_protection" id="nature_of_business_mwpd_protection" class="form-control disabled"
+                        <input type="text" name="nature_of_business_mwpd_protection" id="nature_of_business_mwpd_protection" class="form-control"
                             value="{{ $entries['nature_of_business_mwpd_protection'] }}">
                     </div>
 
@@ -377,17 +379,17 @@
                     <div class="row g-3 align-items-end">
                         <div class="col-sm-4">
                             <label class="form-label mb-1">Date</label>
-                            <input type="date" name="complaints_at_other_office_date_mwpd_protection" id="complaints_at_other_office_date_mwpd_protection" class="form-control disabled"
+                            <input type="date" name="complaints_at_other_office_date_mwpd_protection" id="complaints_at_other_office_date_mwpd_protection" class="form-control"
                                 value="{{ $entries['complaints_at_other_office_date_mwpd_protection'] }}">
                         </div>
                         <div class="col-sm-4">
                             <label class="form-label mb-1">Office</label>
-                            <input type="text" name="complaints_at_other_office_name_mwpd_protection" id="complaints_at_other_office_name_mwpd_protection" class="form-control disabled"
+                            <input type="text" name="complaints_at_other_office_name_mwpd_protection" id="complaints_at_other_office_name_mwpd_protection" class="form-control"
                                 value="{{ $entries['complaints_at_other_office_name_mwpd_protection'] }}">
                         </div>
                         <div class="col-sm-4">
                             <label class="form-label mb-1">Nature of Case</label>
-                            <input type="text" name="complaints_at_other_office_case__mwpd_protection" id="complaints_at_other_office_case__mwpd_protection" class="form-control disabled"
+                            <input type="text" name="complaints_at_other_office_case__mwpd_protection" id="complaints_at_other_office_case__mwpd_protection" class="form-control"
                                 value="{{ $entries['complaints_at_other_office_case__mwpd_protection'] }}">
                         </div>
                     </div>
@@ -458,7 +460,7 @@
                                 {{ $entries['others_sena_mwpd_protection'] ?? '' == 'checked' ? 'checked' : '' }}>
                             <label class="form-check-label" for="others_sena_mwpd_protection">Others, please specify</label>
                         </div>
-                        <input type="text" name="others_specify_sena_mwpd_protection" id="others_specify_sena_mwpd_protection" class="form-control disabled" style="margin-top: 0.5rem;"
+                        <input type="text" name="others_specify_sena_mwpd_protection" id="others_specify_sena_mwpd_protection" class="form-control" style="margin-top: 0.5rem;"
                             value="{{ $entries['others_specify_sena_mwpd_protection']}}">
 
                         <h6 class="mt-3">2.) Other Money Claims</h6>
@@ -491,7 +493,7 @@
 
                     <div class="col-md-6">
                         <h6>3.) Delayed in Payment/Time of Payment (specify)</h6>
-                        <textarea name="delayed_in_payment_mwpd_protection" id="delayed_in_payment_mwpd_protection" class="form-control disabled" rows="3">{{ $entries['delayed_in_payment_mwpd_protection'] }}</textarea>
+                        <textarea name="delayed_in_payment_mwpd_protection" id="delayed_in_payment_mwpd_protection" class="form-control" rows="3">{{ $entries['delayed_in_payment_mwpd_protection'] }}</textarea>
 
                         <h6 class="mt-3">4.) Non-Monetary issues</h6>
                         <div class="form-check">
@@ -521,10 +523,91 @@
                 </div>
             </div>
 
+            <!-- ACTION BUTTONS -->
+            <div class="d-flex justify-content-end gap-3 mb-5">
+                <a href="{{ route('forms-submitted.show', $request->id) }}" class="btn btn-secondary">
+                    Cancel
+                </a>
+                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#confirmEditModal">
+                    Update Form
+                </button>
+            </div>
+
+            <!-- Confirm Edit Modal -->
+            <div class="modal fade" id="confirmEditModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+
+                        <div class="modal-header bg-warning">
+                            <h5 class="modal-title">
+                                Confirm Update
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <p class="mb-2">
+                                You are about to modify <strong>sensitive information</strong>.
+                            </p>
+
+                            <p class="text-muted small">
+                                Please make sure all details are correct before proceeding.
+                                This action will update the OFW and Request Party records.
+                            </p>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Cancel
+                            </button>
+
+                            <button type="submit" class="btn btn-warning">
+                                Yes, Update Information
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+
         <!-- </form> -->
     </div>
 
     <script>
-      
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const natureRadios = document.querySelectorAll('input[name="ofw_nature_of_work_mwpd_protection"]');
+            const natureOther = document.getElementById('other_professional_mwpd_protection');
+            const natureOtherText = document.getElementById('other_professional_specify_mwpd_protection');
+
+            function toggleOther() {
+                if (natureOther.checked) {
+                    natureOtherText.disabled = false;
+                } else {
+                    natureOtherText.disabled = true;
+                }
+            }
+
+            natureRadios.forEach(radio => {
+                radio.addEventListener('change', toggleOther);
+            });
+
+            toggleOther();
+
+            const nonPayment = document.getElementById('non_payment_mwpd_protection');
+            const nonPaymentSubs = document.querySelectorAll('#non_payment_sub input[type="checkbox"]');
+
+            function toggleNonPaymentSubs() {
+                nonPaymentSubs.forEach(cb => {
+                    cb.disabled = !nonPayment.checked;
+                    if (!nonPayment.checked) cb.checked = false;
+                });
+            }
+
+            nonPayment.addEventListener('change', toggleNonPaymentSubs);
+
+            toggleNonPaymentSubs();
+        });
     </script>
 @endsection
