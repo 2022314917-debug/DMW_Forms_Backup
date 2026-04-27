@@ -418,6 +418,7 @@
                                         'requestId' => $request->id,
                                         'formId'    => $formId,
                                     ]) }}" class="btn-edit">Edit</a>
+                                    <a href="" class="btn-edit">Status</a>
                                 </div>
                             </td>
                         </tr>

@@ -134,48 +134,45 @@
                 <div class="col-md-3">
                     <label class="form-label">Last Name</label>
                     <input type="text" class="form-control uppercase"
-                        name="party_lname" value="{{ old('party_lname', $party->party_lname) }}" required>
+                        name="party_lname" value="{{$party->party_lname ?? '' }}" required>
                     @error('party_lname')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">First Name</label>
                     <input type="text" class="form-control uppercase"
-                        name="party_fname" value="{{ old('party_fname', $party->party_fname) }}" required>
+                        name="party_fname" value="{{$party->party_fname ?? '' }}" required>
                     @error('party_fname')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
                 <div class="col-md-2">
                     <label class="form-label">Name Ext.</label>
                     <input type="text" class="form-control uppercase" name="party_ename"
-                        value="{{ old('party_ename', $party->party_ename) }}">
+                        value="{{$party->party_ename ?? '' }}">
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Middle Name</label>
                     <input type="text" class="form-control uppercase" name="party_mname"
-                        value="{{ old('party_mname', $party->party_mname) }}">
+                        value="{{$party->party_mname ?? '' }}">
                 </div>
             </div>
 
             <div class="row g-3 mb-3">
                 <div class="col-6 col-md-3">
                     <label class="form-label">Birthday <span class="text-danger">*</span></label>
-                    <input type="date" class="form-control @error('party_bday') is-invalid @enderror"
-                        name="party_bday" value="{{ old('party_bday', $party->party_bday) }}" required>
-                    @error('party_bday')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                    <input type="date" class="form-control"
+                        name="party_bday" value="{{ $party->party_bday ?? '' }}" required>
                 </div>
                 <div class="col-6 col-md-3">
-                    <label class="form-label">Sex <span class="text-danger">*</span></label>
-                    <select class="form-select @error('party_gender') is-invalid @enderror" name="party_gender" required>
+                    <label class="form-label">Sex</label>
+                    <select class="form-select" name="party_gender" required>
                         <option value="">Select</option>
-                        <option value="Male" {{ old('party_gender', $party->party_gender) == 'Male' ? 'selected' : '' }}>Male</option>
-                        <option value="Female" {{ old('party_gender', $party->party_gender) == 'Female' ? 'selected' : '' }}>Female</option>
+                        <option value="Male" {{ ($party->party_gender ?? '' )== 'Male' ? 'selected' : '' }}>Male</option>
+                        <option value="Female" {{ ($party->party_gender ?? '' )== 'Female' ? 'selected' : '' }}>Female</option>
                     </select>
-                    @error('party_gender')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Relationship to OFW <span class="text-danger">*</span></label>
                     <input type="text" class="form-control uppercase"
-                        name="party_relationship" value="{{ old('party_relationship', $party->party_relationship) }}" required>
-                    @error('party_relationship')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                        name="party_relationship" value="{{ $party->party_relationship ?? '' }}" required>
                 </div>
             </div>
 
@@ -183,13 +180,13 @@
                 <div class="col-md-6">
                     <label class="form-label">Contact Number <span class="text-danger">*</span></label>
                     <input type="text" class="form-control"
-                        name="party_phone" value="{{ old('party_phone', $party->party_phone) }}" required>
+                        name="party_phone" value="{{ $party->party_phone ?? '' }}" required>
                     @error('party_phone')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Email Address <span class="text-danger">*</span></label>
                     <input type="email" class="form-control"
-                        name="party_email" value="{{ old('party_email', $party->party_email) }}" required>
+                        name="party_email" value="{{ $party->party_email ?? '' }}" required>
                     @error('party_email')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
             </div>
@@ -198,30 +195,30 @@
                 <label class="form-label">Address in the Philippines</label>
                 <input type="text" class="form-control mb-2 uppercase" name="party_house_no"
                     placeholder="Unit/Room/House Number/Street name"
-                    value="{{ old('party_house_no', $party_address->house_no) }}" required>
+                    value="{{ $party->party_house_no ?? '' }}" required>
                 <div class="row g-3">
                     <div class="col-6 col-md-3">
                         <select class="form-select" name="party_province" id="party_province" required>
-                            <option value="{{ $party_address->province }}">{{ $party_address->province }}</option>
+                            <option value="{{ $party_address->province ?? '' }}">{{ $party_address->province ?? '' }}</option>
                         </select>
                         <input type="hidden" name="party_province_name" id="party_province_name">
                     </div>
                     <div class="col-6 col-md-3">
                         <select class="form-select" name="party_municipality" id="party_municipality" required>
-                            <option value="{{ $party_address->municipality }}">{{ $party_address->municipality }}</option>
+                            <option value="{{ $party_address->municipality ?? '' }}">{{ $party_address->municipality ?? '' }}</option>
                         </select>
                         <input type="hidden" name="party_municipality_name" id="party_municipality_name">
                     </div>
                     <div class="col-6 col-md-3">
                         <select class="form-select" name="party_barangay" id="party_barangay" required>
-                            <option value="{{ $party_address->brgy }}">{{ $party_address->brgy }}</option>
+                            <option value="{{ $party_address->brgy ?? '' }}">{{ $party_address->brgy ?? '' }}</option>
                         </select>
                         <input type="hidden" name="party_barangay_name" id="party_barangay_name">
                     </div>
                     <div class="col-6 col-md-3">
                         <input type="text" class="form-control" name="party_zip_code"
                             placeholder="ex. 2016"
-                            value="{{ old('zip_code', $party_address->zip_code) }}"
+                            value="{{ $party_address->zip_code ?? '' }}"
                             minlength="4" maxlength="4" pattern="\d{4}" inputmode="numeric" required>
                     </div>
                 </div>

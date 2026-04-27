@@ -53,13 +53,18 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a href="{{ route('forms-submitted.index', ['status' => 'processing']) }}" class="nav-link">
+                                    <span>Processing</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{{ route('forms-submitted.index', ['status' => 'approved']) }}" class="nav-link">
                                     <span>Approved</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('forms-submitted.index', ['status' => 'rejected']) }}" class="nav-link">
-                                    <span>Rejected</span>
+                                <a href="{{ route('forms-submitted.index', ['status' => 'declined']) }}" class="nav-link">
+                                    <span>Declined</span>
                                 </a>
                             </li>
                         </ul>
@@ -72,6 +77,16 @@
                             <path d="M176 60H80a4 4 0 0 0-4 4v48a4 4 0 0 0 4 4h96a4 4 0 0 0 4-4V64a4 4 0 0 0-4-4m-4 48H84V68h88Zm28-80H56a12 12 0 0 0-12 12v176a12 12 0 0 0 12 12h144a12 12 0 0 0 12-12V40a12 12 0 0 0-12-12m4 188a4 4 0 0 1-4 4H56a4 4 0 0 1-4-4V40a4 4 0 0 1 4-4h144a4 4 0 0 1 4 4ZM96 148a8 8 0 1 1-8-8 8 8 0 0 1 8 8m40 0a8 8 0 1 1-8-8 8 8 0 0 1 8 8m40 0a8 8 0 1 1-8-8 8 8 0 0 1 8 8m-80 40a8 8 0 1 1-8-8 8 8 0 0 1 8 8m40 0a8 8 0 1 1-8-8 8 8 0 0 1 8 8m40 0a8 8 0 1 1-8-8 8 8 0 0 1 8 8"/>
                         </svg>
                         <span>{{ __('Forms') }}</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ route('employees.index') }}" class="nav-link d-flex align-items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="8" r="4"></circle>
+                            <path d="M4 20c0-4 4-6 8-6s8 2 8 6"></path>
+                        </svg>
+                        <span>{{ __('Employees') }}</span>
                     </a>
                 </li>
 

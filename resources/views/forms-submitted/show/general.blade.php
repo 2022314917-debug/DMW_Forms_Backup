@@ -71,19 +71,19 @@
         <div class="row g-3 mb-3">
           <div class="col-md-3">
             <label class="form-label">Last Name</label>
-            <input type="text" class="form-control disabled" name="party_lname" value="{{ $party->party_lname }}" required>
+            <input type="text" class="form-control disabled" name="party_lname" value="{{ $party->party_lname ?? '' }}" required>
           </div>
           <div class="col-md-3">
             <label class="form-label">First Name</label>
-            <input type="text" class="form-control disabled" name="party_fname" value="{{ $party->party_fname }}" required>
+            <input type="text" class="form-control disabled" name="party_fname" value="{{ $party->party_fname ?? '' }}" required>
           </div>
           <div class="col-md-2">
             <label class="form-label">Name Ext.</label>
-            <input type="text" class="form-control disabled" name="party_ename" value="{{ $party->party_ename }}">
+            <input type="text" class="form-control disabled" name="party_ename" value="{{ $party->party_ename ?? ''   }}">
           </div>
           <div class="col-md-4">
             <label class="form-label">Middle Name</label>
-            <input type="text" class="form-control disabled" name="party_mname" value="{{ $party->party_mname }}">
+            <input type="text" class="form-control disabled" name="party_mname" value="{{ $party->party_mname ?? '' }}">
           </div>
         </div>
 
@@ -91,17 +91,17 @@
 
           <div class="col-6 col-md-3">
             <label class="form-label">Birthday</label>
-            <input type="date" class="form-control disabled" name="party_bday" value="{{ $party->party_bday }}" required>
+            <input type="date" class="form-control disabled" name="party_bday" value="{{ $party->party_bday ?? '' }}" required>
           </div>
 
           <div class="col-6 col-md-3">
             <label class="form-label">Sex</label>
-            <input type="text" class="form-control disabled" value="{{ $party->party_gender }}">
+            <input type="text" class="form-control disabled" value="{{ $party->party_gender ?? '' }}">
           </div>
 
           <div class="col-md-6">
             <label class="form-label">Relationship to OFW</label>
-            <input type="text" class="form-control disabled" name="party_relationship" value="{{ $party->party_relationship }}" required>
+            <input type="text" class="form-control disabled" name="party_relationship" value="{{ $party->party_relationship ?? '' }}" required>
           </div>
 
         </div>
@@ -109,29 +109,29 @@
         <div class="row g-3 mb-3">
           <div class="col-md-6">
             <label class="form-label">Contact Number</label>
-            <input type="text" class="form-control disabled" name="party_phone" value="{{ $party->party_phone }}" required>
+            <input type="text" class="form-control disabled" name="party_phone" value="{{ $party->party_phone ?? '' }}" required>
           </div>
           <div class="col-md-6">
             <label class="form-label">Email Address</label>
-            <input type="email" class="form-control disabled" name="party_email" value="{{ $party->party_email }}" required>
+            <input type="email" class="form-control disabled" name="party_email" value="{{ $party->party_email ?? '' }}" required>
           </div>
         </div>
 
         <div class="mb-3">
           <label class="form-label">Address in the Philippines</label>
-          <input type="text" class="form-control mb-2 disabled" name="party_house_no" value="{{ $party_address->house_no }}" required>
+          <input type="text" class="form-control mb-2 disabled" name="party_house_no" value="{{ $party_address->house_no ?? '' }}" required>
           <div class="row g-3">
             <div class="col-6 col-md-3">
-              <input type="text" class="form-control disabled" name="party_province_name" id="party_province_name" value="{{ $party_address->province }}">
+              <input type="text" class="form-control disabled" name="party_province_name" id="party_province_name" value="{{ $party_address->province ?? '' }}">
             </div>
             <div class="col-6 col-md-3">
-              <input type="text" class="form-control disabled" name="party_municipality_name" id="party_municipality_name" value="{{ $party_address->municipality }}">
+              <input type="text" class="form-control disabled" name="party_municipality_name" id="party_municipality_name" value="{{ $party_address->municipality ?? '' }}">
             </div>
             <div class="col-6 col-md-3">
-              <input type="text" class="form-control disabled" name="party_barangay_name" id="party_barangay_name" value="{{ $party_address->brgy }}">
+              <input type="text" class="form-control disabled" name="party_barangay_name" id="party_barangay_name" value="{{ $party_address->brgy ?? '' }}">
             </div>
             <div class="col-6 col-md-3">
-              <input type="text" class="form-control disabled" name="zip_code" value="{{ $party_address->zip_code }}" 
+              <input type="text" class="form-control disabled" name="zip_code" value="{{ $party_address->zip_code ?? '' }}" 
                             minlength="4" maxlength="4" pattern="\d{4}" inputmode="numeric" required>
             </div>
           </div>

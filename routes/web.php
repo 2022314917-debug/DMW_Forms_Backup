@@ -74,6 +74,10 @@ Route::post('/forms/submit', [\App\Http\Controllers\FormController::class, 'subm
 
 Route::get('forms/success', [\App\Http\Controllers\FormController::class, 'submissionSuccess'])->name('forms.success');
 
+Route::get('forms/mail/success', [\App\Http\Controllers\FormController::class, 'formsSubmittedSuccess'])->name('mail.forms_submitted_success');
+Route::get('send-email', [\App\Http\Controllers\FormController::class, 'sendEmail']);
+
+
 Route::middleware('auth')->group(function () {
     Route::view('about', 'about')->name('about');
 
@@ -82,8 +86,15 @@ Route::middleware('auth')->group(function () {
 
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
     Route::put('profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
-    
+
     Route::get('forms-submitted', [\App\Http\Controllers\SubmittedFormController::class, 'index'])->name('forms-submitted.index');
+
+    // Employee Routes
+    Route::get('employees', [\App\Http\Controllers\EmployeeController::class, 'index'])->name('employees.index');
+    Route::post('employees', [\App\Http\Controllers\EmployeeController::class, 'store'])->name('employees.store');
+    Route::get('employees/{employee}/edit', [\App\Http\Controllers\EmployeeController::class, 'edit'])->name('employees.edit');
+    Route::put('employees/{employee}', [\App\Http\Controllers\EmployeeController::class, 'update'])->name('employees.update');
+    Route::delete('employees/{employee}', [\App\Http\Controllers\EmployeeController::class, 'destroy'])->name('employees.destroy');
 
     Route::get('forms-submitted/general', [\App\Http\Controllers\SubmittedFormController::class, 'generalFormSubmitted'])->name('forms-submitted.general');
 

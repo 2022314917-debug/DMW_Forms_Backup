@@ -61,4 +61,10 @@ class Employees extends Authenticatable
     protected $casts = [
         'emp_bday' => 'date',
     ];
+
+    // Relations
+    public function division()
+    {
+        return $this->belongsTo(Division::class, 'division_id');
+    }
 }

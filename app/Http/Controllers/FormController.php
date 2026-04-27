@@ -19,6 +19,8 @@ use App\Models\Request_Ofw_Address;
 use App\Models\Request_Status_History;
 use App\Models\Requirements;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
+Use App\Mail\SubmittedFormsSuccessfully;
 
 
 class FormController extends Controller
@@ -385,28 +387,31 @@ class FormController extends Controller
                 'zip_code'        => $generalFormData['ofw_zip_code'] ?? null,
             ]);
 
-            $requestParty = Request_Party::create([
-                'request_id'          => $requestNumber->id,
-                'party_lname'         => $generalFormData['party_lname'] ?? null,
-                'party_fname'         => $generalFormData['party_fname'] ?? null,
-                'party_ename'         => $generalFormData['party_ename'] ?? null,
-                'party_mname'         => $generalFormData['party_mname'] ?? null,
-                'party_email'         => $generalFormData['party_email'] ?? null,
-                'party_phone'         => $generalFormData['party_phone'] ?? null,
-                'party_bday'          => $generalFormData['party_bday'] ?? null,
-                'party_gender'        => $generalFormData['party_gender'] ?? null,
-                'party_relationship'  => $generalFormData['party_relationship'] ?? null,
-            ]);
+            // Only create party record if party data is not empty
+            if (!empty($generalFormData['party_lname']) || !empty($generalFormData['party_fname']) || !empty($generalFormData['party_email']) || !empty($generalFormData['party_phone']) || !empty($generalFormData['party_bday']) || !empty($generalFormData['party_gender']) || !empty($generalFormData['party_relationship'])) {
+                $requestParty = Request_Party::create([
+                    'request_id'          => $requestNumber->id,
+                    'party_lname'         => $generalFormData['party_lname'] ?? null,
+                    'party_fname'         => $generalFormData['party_fname'] ?? null,
+                    'party_ename'         => $generalFormData['party_ename'] ?? null,
+                    'party_mname'         => $generalFormData['party_mname'] ?? null,
+                    'party_email'         => $generalFormData['party_email'] ?? null,
+                    'party_phone'         => $generalFormData['party_phone'] ?? null,
+                    'party_bday'          => $generalFormData['party_bday'] ?? null,
+                    'party_gender'        => $generalFormData['party_gender'] ?? null,
+                    'party_relationship'  => $generalFormData['party_relationship'] ?? null,
+                ]);
 
-            Request_Party_Address::create([
-                'request_id'       => $requestNumber->id,
-                'request_party_id' => $requestParty->id,
-                'house_no'         => $generalFormData['party_address_street'] ?? null,
-                'province'         => $generalFormData['party_province_name'] ?? null,
-                'municipality'     => $generalFormData['party_municipality_name'] ?? null,
-                'brgy'             => $generalFormData['party_barangay_name'] ?? null,
-                'zip_code'         => $generalFormData['party_zip_code'] ?? null,
-            ]);
+                Request_Party_Address::create([
+                    'request_id'       => $requestNumber->id,
+                    'request_party_id' => $requestParty->id,
+                    'house_no'         => $generalFormData['party_address_street'] ?? null,
+                    'province'         => $generalFormData['party_province_name'] ?? null,
+                    'municipality'     => $generalFormData['party_municipality_name'] ?? null,
+                    'brgy'             => $generalFormData['party_barangay_name'] ?? null,
+                    'zip_code'         => $generalFormData['party_zip_code'] ?? null,
+                ]);
+            }
 
             // Pre-load field map: ['field_name' => ['id' => x, 'form_id' => y]]
             $fieldMap = Request_Form_Field::with('form')
@@ -490,58 +495,118 @@ class FormController extends Controller
             }
 
             // -------------------------
-        // HANDLE FILE UPLOADS
-        // -------------------------
-        // Map each input name to a human-readable type label
-        $fileInputs = [
-            'passport'    => 'Philippine Passport / Travel Document',
-            'boarding'    => 'Arrival Stamp / Boarding Pass',
-            'contract'    => 'Employment Contract',
-            'visa'        => 'VISA / Latest OEC',
-            'medical'     => 'Medical Record / Abstract',
-            'endorsement' => 'Endorsement Certificate/Letter',
-            'distress'    => 'Other Proof of Distressed',
-            'valid_id'    => 'Valid ID',
-        ];
+            // HANDLE FILE UPLOADS
+            // -------------------------
+            // Map each input name to a human-readable type label
+            $fileInputs = [
+                'passport'    => 'Philippine Passport / Travel Document',
+                'boarding'    => 'Arrival Stamp / Boarding Pass',
+                'contract'    => 'Employment Contract',
+                'visa'        => 'VISA / Latest OEC',
+                'medical'     => 'Medical Record / Abstract',
+                'endorsement' => 'Endorsement Certificate/Letter',
+                'distress'    => 'Other Proof of Distressed',
+                'valid_id'    => 'Valid ID',
+            ];
 
-        foreach ($fileInputs as $inputName => $fileType) {
+            foreach ($fileInputs as $inputName => $fileType) {
 
-            if ($request->hasFile($inputName)) {
+                if ($request->hasFile($inputName)) {
 
-                foreach ($request->file($inputName) as $file) {
+                    foreach ($request->file($inputName) as $file) {
 
-                    if (!$file->isValid()) {
-                        Log::warning("Invalid file upload for input: {$inputName}");
-                        continue;
+                        if (!$file->isValid()) {
+                            Log::warning("Invalid file upload for input: {$inputName}");
+                            continue;
+                        }
+
+                        $originalName = $file->getClientOriginalName();
+
+                        // ✅ Store inside: storage/app/public/requirements/{request_id}/{type}/
+                        $path = $file->storeAs(
+                            'requirements/' . $requestNumber->id . '/' . $inputName,
+                            $originalName,
+                            'public'
+                        );
+
+                        Requirements::create([
+                            'request_id' => $requestNumber->id,
+                            'file_name'  => $originalName,
+                            'file_path'  => $path, // IMPORTANT (use file_path now)
+                            'file_type'  => $fileType,
+                        ]);
                     }
-
-                    $originalName = $file->getClientOriginalName();
-
-                    // ✅ Store inside: storage/app/public/requirements/{request_id}/{type}/
-                    $path = $file->storeAs(
-                        'requirements/' . $requestNumber->id . '/' . $inputName,
-                        $originalName,
-                        'public'
-                    );
-
-                    Requirements::create([
-                        'request_id' => $requestNumber->id,
-                        'file_name'  => $originalName,
-                        'file_path'  => $path, // IMPORTANT (use file_path now)
-                        'file_type'  => $fileType,
-                    ]);
                 }
             }
-        }
-        // -------------------------
-        // END FILE UPLOADS
-        // -------------------------
+            // -------------------------
+            // END FILE UPLOADS
+            // -------------------------
+            
+            // Collect all form IDs that were actually filled by the user
+            $usedFormIds = [];
 
-            // Request_Status_History::create([
-            //     'request_id' => $requestNumber->id,
-            //     'status'     => 'Pending',
-            //     'remarks'    => 'Initial submission',
-            // ]);
+            // Add form IDs from checkboxes (selected forms)
+            foreach ($checkboxesByForm as $formId => $checkboxFields) {
+                $usedFormIds[] = $formId;
+            }
+
+            // Add form IDs from form data (filled data)
+            foreach ($formsData as $step => $fields) {
+                $fieldsByForm = [];
+                foreach ($fields as $fieldKey => $value) {
+                    $fieldData = $fieldMap[$fieldKey] ?? null;
+                    if (!$fieldData) {
+                        continue;
+                    }
+                    $fieldsByForm[$fieldData['form_id']][] = [
+                        'field_id' => $fieldData['id'],
+                        'value'    => is_array($value) ? json_encode($value) : $value,
+                    ];
+                }
+                foreach ($fieldsByForm as $formId => $formFields) {
+                    $usedFormIds[] = $formId;
+                }
+            }
+
+            // Get unique form IDs only from forms that were actually used
+            $usedFormIds = array_unique($usedFormIds);
+
+            // Get form names for only the forms filled by the user
+            $form_names = Request_Form::whereIn('id', $usedFormIds)->pluck('form_name', 'id')->toArray();
+            
+            $to = $generalFormData['ofw_email'] ?? null;
+            $ofw_full_name = trim(($generalFormData['ofw_fname'] ?? '') . ' ' . ($generalFormData['ofw_mname'] ?? '') . ' ' . ($generalFormData['ofw_lname'] ?? ''));
+            $partyEmail = $generalFormData['party_email'] ?? null;
+            $party_full_name = trim(($generalFormData['party_fname'] ?? '') . ' ' . ($generalFormData['party_mname'] ?? '') . ' ' . ($generalFormData['party_lname'] ?? ''));
+            $dateSubmitted = now()->toDateTimeString();
+            
+            // Check if party filled up
+            if (!empty($partyEmail) && !empty($party_full_name)) {
+                // Send email to both OFW and party with their respective names
+                $recipients = [
+                    [
+                        'email' => $to,
+                        'name' => $ofw_full_name,
+                    ],
+                    [
+                        'email' => $partyEmail,
+                        'name' => $party_full_name,
+                    ]
+                ];
+                
+                foreach ($recipients as $recipient) {
+                    Mail::to($recipient['email'])->send(new SubmittedFormsSuccessfully($form_names, $requestNumber->id, $recipient['name'], $dateSubmitted));
+                }
+            } else {
+                // Send email to OFW only
+                Mail::to($to)->send(new SubmittedFormsSuccessfully($form_names, $requestNumber->id, $ofw_full_name, $dateSubmitted));
+            }
+
+            Request_Status_History::create([
+                'request_id' => $requestNumber->id,
+                'status'     => 'Pending',
+                'remarks'    => 'Initial submission',
+            ]);
 
             DB::commit();
 
@@ -573,6 +638,12 @@ class FormController extends Controller
     public function submissionSuccess()
     {
         return view('forms.success');
+    }
+
+
+    function formsSubmittedSuccess()
+    {
+        return view('mail.forms_submitted_success');
     }
 }
 

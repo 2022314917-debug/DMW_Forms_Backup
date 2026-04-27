@@ -23,16 +23,23 @@ class SubmittedFormController extends Controller
 {
     
 
-    public function index()
+    public function index(HttpRequest $httpRequest)
     {
-        $requests = Request_Number::with([
+        $status = $httpRequest->query('status');
+        
+        $query = Request_Number::with([
             'requestOfw',
             'requestParty'
-        ])
-        ->latest() // order by created_at desc
-        ->get();
+        ])->latest(); // order by created_at desc
+        
+        // Filter by status if provided
+        if ($status) {
+            $query->where('status', $status);
+        }
+        
+        $requests = $query->get();
 
-        return view('forms-submitted.index', compact('requests'));
+        return view('forms-submitted.index', compact('requests', 'status'));
     }
 
     public function show($id)
@@ -300,6 +307,69 @@ class SubmittedFormController extends Controller
 
             default => abort(404, 'Edit view not found'),
         };
+    }
+
+    public function saveEditOFWInfoSheetMWPSD(Request $request, $requestId, $formId){
+        $requestNumber = Request_Number::findOrFail($requestId);
+
+        DB::beginTransaction();
+
+        try {
+            $requestRecord = Request_Number::with([
+                'requestFormEntries' => function ($query) use ($formId) {
+                    $query->where('request_form_id', $formId);
+                }
+            ])->findOrFail($requestId);
+
+            // Get entry IDs
+            $entryIds = $requestRecord->requestFormEntries->pluck('id');
+
+            // Get all fields for this form
+            $fields = Request_Form_Field::where('request_form_id', $formId)->get()->keyBy('field_name');
+
+            // Only allow these three fields to be updated
+            $allowedFields = [
+                'record_needed_mwpd_processing',
+                'record_purpose_mwpd_processing',
+                'telephone_mwpd_processing'
+            ];
+
+            /*
+            |--------------------------------------------------------------------------
+            | UPDATE ONLY ALLOWED FIELDS
+            |--------------------------------------------------------------------------
+            */
+            foreach ($allowedFields as $fieldName) {
+                if (!isset($fields[$fieldName])) {
+                    continue; // skip if field doesn't exist
+                }
+
+                $field = $fields[$fieldName];
+                $value = $request->input($fieldName);
+
+                foreach ($entryIds as $entryId) {
+                    Request_Form_Field_Values::updateOrCreate(
+                        [
+                            'request_form_entry_id' => $entryId,
+                            'request_form_field_id' => $field->id,
+                        ],
+                        [
+                            'value' => $value,
+                        ]
+                    );
+                }
+            }
+
+            DB::commit();
+
+            return redirect()
+                ->route('forms-submitted.show', $requestId)
+                ->with('success', 'Form updated successfully');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', $e->getMessage());
+        }
     }
 
     public function editAksyon ($requestId, $formId)
