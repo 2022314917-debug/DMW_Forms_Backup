@@ -320,15 +320,15 @@
                   <div class="col-md-3">
                       <h5>Worker Category</h5>
                       <div class="form-check d-flex align-items-center mb-1">
-                          <input class="form-check-input" type="checkbox" name="landbased_mwpd_processing" id="landbased_mwpd_processing" value="landbased_mwpd_processing">
+                          <input class="form-check-input" type="radio" name="landbased_mwpd_processing" id="landbased_mwpd_processing" value="landbased_mwpd_processing">
                           <label class="form-check-label ms-2" for="landbased_mwpd_processing">Landbased (Newhire)</label>
                       </div>
                       <div class="form-check d-flex align-items-center mb-1">
-                          <input class="form-check-input" type="checkbox" name="rehire_mwpd_processing" id="rehire_mwpd_processing" value="rehire_mwpd_processing">
+                          <input class="form-check-input" type="radio" name="rehire_mwpd_processing" id="rehire_mwpd_processing" value="rehire_mwpd_processing">
                           <label class="form-check-label ms-2" for="rehire_mwpd_processing">Rehire (Balik Manggagawa)</label>
                       </div>
                       <div class="form-check d-flex align-items-center mb-1">
-                          <input class="form-check-input" type="checkbox" name="seafarer_mwpd_processing" id="seafarer_mwpd_processing" value="seafarer_mwpd_processing">
+                          <input class="form-check-input" type="radio" name="seafarer_mwpd_processing" id="seafarer_mwpd_processing" value="seafarer_mwpd_processing">
                           <label class="form-check-label ms-2" for="seafarer_mwpd_processing">Seafarer</label>
                       </div>
                   </div>
