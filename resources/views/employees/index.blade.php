@@ -16,7 +16,7 @@
                         </svg>
                     </span>
                 </div>
-                <button class="btn btn-success btn-sm px-2" data-bs-toggle="modal" data-bs-target="#employeeModal">+</button>
+                <button class="btn btn-outline-secondary btn-sm px-2 fw-bolder" data-bs-toggle="modal" data-bs-target="#employeeModal">+</button>
             </div>
         </div>
 
@@ -33,9 +33,49 @@
             @endif
 
             @if (session('success'))
-                <div class="alert alert-success border-start border-success border-4 rounded-0 mb-0">
-                    {{ session('success') }}
+                <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1050">
+                    <div id="successToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: white; border: 1px solid #dee2e6;">
+                        <div class="toast-header bg-success text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            <strong class="me-auto">Success</strong>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                        <div class="toast-body text-dark">
+                            {{ session('success') }}
+                            <div class="progress mt-2" style="height: 3px; background-color: #e9ecef;">
+                                <div id="toastProgressBar" class="progress-bar bg-success" role="progressbar" style="width: 100%; height: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
+                <style>
+                    @keyframes slideInToast {
+                        from {
+                            opacity: 0;
+                            transform: translateX(100%);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateX(0);
+                        }
+                    }
+
+                    @keyframes toastProgress {
+                        0% { width: 100%; }
+                        100% { width: 0%; }
+                    }
+                    
+                    #successToast {
+                        animation: slideInToast 0.3s ease-out;
+                    }
+
+                    #toastProgressBar {
+                        animation: toastProgress 4s linear forwards;
+                    }
+                </style>
             @endif
 
             <div class="table-responsive">
@@ -97,19 +137,19 @@
                     <div class="row g-3 mb-3">
                         <div class="col-md-3">
                             <label class="form-label small fw-medium">Surname</label>
-                            <input type="text" class="form-control form-control-sm" id="add_emp_lname" name="emp_lname" placeholder="Last Name" required>
+                            <input type="text" class="form-control form-control-sm uppercase" id="add_emp_lname" name="emp_lname" placeholder="Last Name" required>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label small fw-medium">First Name</label>
-                            <input type="text" class="form-control form-control-sm" id="add_emp_fname" name="emp_fname" placeholder="First Name" required>
+                            <input type="text" class="form-control form-control-sm uppercase" id="add_emp_fname" name="emp_fname" placeholder="First Name" required>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label small fw-medium">Ext. Name</label>
-                            <input type="text" class="form-control form-control-sm" id="add_emp_ename" name="emp_ename" placeholder="Jr.">
+                            <input type="text" class="form-control form-control-sm uppercase" id="add_emp_ename" name="emp_ename" placeholder="Jr.">
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label small fw-medium">Middle Initial</label>
-                            <input type="text" class="form-control form-control-sm" id="add_emp_mname" name="emp_mname" placeholder="A." maxlength="5">
+                            <label class="form-label small fw-medium">Middle Name</label>
+                            <input type="text" class="form-control form-control-sm uppercase" id="add_emp_mname" name="emp_mname" placeholder="A.">
                         </div>
                     </div>
 
@@ -140,13 +180,13 @@
                             <select class="form-select form-select-sm" id="add_division_id" name="division_id" required>
                                 <option value="">Choose</option>
                                 @foreach ($divisions as $division)
-                                    <option value="{{ $division->id }}">{{ $division->div_name }}</option>
+                                    <option value="{{ $division->id }}">{{ $division->division_name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-medium">Position</label>
-                            <input type="text" class="form-control form-control-sm" id="add_emp_position" name="emp_position" placeholder="Ex. Information Technology Officer III" required>
+                            <input type="text" class="form-control form-control-sm uppercase" id="add_emp_position" name="emp_position" placeholder="Ex. Information Technology Officer III" required>
                         </div>
                     </div>
 
@@ -158,11 +198,36 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label small fw-medium">Password</label>
-                            <input type="password" class="form-control form-control-sm" id="add_emp_password" name="emp_password" placeholder="••••••••" required>
+                            <div class="input-group">
+                                <input type="password" class="form-control form-control-sm password-field" id="add_emp_password" name="emp_password" placeholder="••••••••" required>
+                                <button class="btn btn-sm toggle-password" type="button" data-target="add_emp_password" style="border: none; background: transparent; padding: 0.25rem 0.75rem; cursor: pointer;">
+                                    <svg class="eye-open" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <svg class="eye-closed d-none" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                        <line x1="1" y1="1" x2="23" y2="23"></line>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-medium">Confirm Password</label>
-                            <input type="password" class="form-control form-control-sm" id="add_emp_password_confirm" name="emp_password_confirmation" placeholder="••••••••" required>
+                            <div class="input-group">
+                                <input type="password" class="form-control form-control-sm password-field" id="add_emp_password_confirm" name="emp_password_confirmation" placeholder="••••••••" required>
+                                <button class="btn btn-sm toggle-password" type="button" data-target="add_emp_password_confirm" style="border: none; background: transparent; padding: 0.25rem 0.75rem; cursor: pointer;">
+                                    <svg class="eye-open" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <svg class="eye-closed d-none" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                        <line x1="1" y1="1" x2="23" y2="23"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                            <small class="text-danger d-none" id="add_password_error">Passwords do not match</small>
                         </div>
                     </div>
 
@@ -269,19 +334,19 @@
                     <div class="row g-3 mb-3">
                         <div class="col-md-3">
                             <label class="form-label small fw-medium">Surname</label>
-                            <input type="text" class="form-control form-control-sm" id="edit_emp_lname" name="emp_lname" placeholder="Last Name" required>
+                            <input type="text" class="form-control form-control-sm uppercase" id="edit_emp_lname" name="emp_lname" placeholder="Last Name" required>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label small fw-medium">First Name</label>
-                            <input type="text" class="form-control form-control-sm" id="edit_emp_fname" name="emp_fname" placeholder="First Name" required>
+                            <input type="text" class="form-control form-control-sm uppercase" id="edit_emp_fname" name="emp_fname" placeholder="First Name" required>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label small fw-medium">Ext. Name</label>
-                            <input type="text" class="form-control form-control-sm" id="edit_emp_ename" name="emp_ename" placeholder="Jr.">
+                            <input type="text" class="form-control form-control-sm uppercase" id="edit_emp_ename" name="emp_ename" placeholder="Jr.">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label small fw-medium">Middle Initial</label>
-                            <input type="text" class="form-control form-control-sm" id="edit_emp_mname" name="emp_mname" placeholder="A." maxlength="5">
+                            <input type="text" class="form-control form-control-sm uppercase" id="edit_emp_mname" name="emp_mname" placeholder="A." maxlength="5">
                         </div>
                     </div>
 
@@ -319,13 +384,49 @@
                             <select class="form-select form-select-sm" id="edit_division_id" name="division_id" required>
                                 <option value="">Choose</option>
                                 @foreach ($divisions as $division)
-                                    <option value="{{ $division->id }}">{{ $division->div_name }}</option>
+                                    <option value="{{ $division->id }}">{{ $division->division_name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-medium">Position</label>
-                            <input type="text" class="form-control form-control-sm" id="edit_emp_position" name="emp_position" placeholder="Ex. Information Technology Officer III" required>
+                            <input type="text" class="form-control form-control-sm uppercase" id="edit_emp_position" name="emp_position" placeholder="Ex. Information Technology Officer III" required>
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-medium">Password (optional)</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control form-control-sm password-field" id="edit_emp_password" name="emp_password" placeholder="Leave blank to keep current password">
+                                <button class="btn btn-sm toggle-password" type="button" data-target="edit_emp_password" style="border: none; background: transparent; padding: 0.25rem 0.75rem; cursor: pointer;">
+                                    <svg class="eye-open" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <svg class="eye-closed d-none" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                        <line x1="1" y1="1" x2="23" y2="23"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-medium">Confirm Password (optional)</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control form-control-sm password-field" id="edit_emp_password_confirm" name="emp_password_confirmation" placeholder="Leave blank to keep current password">
+                                <button class="btn btn-sm toggle-password" type="button" data-target="edit_emp_password_confirm" style="border: none; background: transparent; padding: 0.25rem 0.75rem; cursor: pointer;">
+                                    <svg class="eye-open" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <svg class="eye-closed d-none" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                        <line x1="1" y1="1" x2="23" y2="23"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                            <small class="text-danger d-none" id="edit_password_error">Passwords do not match</small>
                         </div>
                     </div>
 
@@ -341,7 +442,14 @@
 </div>
 
 <script>
+    
     document.addEventListener('DOMContentLoaded', function () {
+
+        document.querySelectorAll('.uppercase').forEach(input => {
+            input.addEventListener('input', function() {
+                this.value = this.value.toUpperCase();
+            });
+        });
         const addModal  = bootstrap.Modal.getOrCreateInstance(document.getElementById('employeeModal'));
         const viewModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('viewEmployeeModal'));
         const editModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('editEmployeeModal'));
@@ -397,6 +505,93 @@
                 row.style.display = row.getAttribute('data-search').includes(input) ? '' : 'none';
             });
         };
+
+        // Toggle password visibility
+        document.querySelectorAll('.toggle-password').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('data-target');
+                const input = document.getElementById(targetId);
+                const isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
+                
+                // Swap icons
+                const eyeOpen = this.querySelector('.eye-open');
+                const eyeClosed = this.querySelector('.eye-closed');
+                if (isPassword) {
+                    eyeOpen.classList.add('d-none');
+                    eyeClosed.classList.remove('d-none');
+                } else {
+                    eyeOpen.classList.remove('d-none');
+                    eyeClosed.classList.add('d-none');
+                }
+            });
+        });
+
+        // Password match validation for Add form
+        const addPasswordInput = document.getElementById('add_emp_password');
+        const addPasswordConfirm = document.getElementById('add_emp_password_confirm');
+        const addPasswordError = document.getElementById('add_password_error');
+        const addSubmitBtn = document.querySelector('#employeeForm button[type="submit"]');
+
+        if (addPasswordInput && addPasswordConfirm) {
+            const validateAddPasswords = function() {
+                if (addPasswordInput.value && addPasswordConfirm.value) {
+                    if (addPasswordInput.value === addPasswordConfirm.value) {
+                        addPasswordError.classList.add('d-none');
+                        addSubmitBtn.disabled = false;
+                    } else {
+                        addPasswordError.classList.remove('d-none');
+                        addSubmitBtn.disabled = true;
+                    }
+                } else {
+                    addPasswordError.classList.add('d-none');
+                    addSubmitBtn.disabled = false;
+                }
+            };
+
+            addPasswordInput.addEventListener('input', validateAddPasswords);
+            addPasswordConfirm.addEventListener('input', validateAddPasswords);
+        }
+
+        // Password match validation for Edit form
+        const editPasswordInput = document.getElementById('edit_emp_password');
+        const editPasswordConfirm = document.getElementById('edit_emp_password_confirm');
+        const editPasswordError = document.getElementById('edit_password_error');
+        const editSubmitBtn = document.querySelector('#editEmployeeForm button[type="submit"]');
+
+        if (editPasswordInput && editPasswordConfirm) {
+            const validateEditPasswords = function() {
+                if (editPasswordInput.value || editPasswordConfirm.value) {
+                    if (editPasswordInput.value === editPasswordConfirm.value) {
+                        editPasswordError.classList.add('d-none');
+                        editSubmitBtn.disabled = false;
+                    } else {
+                        editPasswordError.classList.remove('d-none');
+                        editSubmitBtn.disabled = true;
+                    }
+                } else {
+                    editPasswordError.classList.add('d-none');
+                    editSubmitBtn.disabled = false;
+                }
+            };
+
+            editPasswordInput.addEventListener('input', validateEditPasswords);
+            editPasswordConfirm.addEventListener('input', validateEditPasswords);
+        }
+
+        // Initialize success toast with auto-dismiss
+        const toastElement = document.getElementById('successToast');
+        if (toastElement) {
+            setTimeout(function() {
+                toastElement.style.opacity = '0';
+                toastElement.style.transform = 'translateX(110%)';
+                toastElement.style.transition = 'all 0.3s ease-out';
+                setTimeout(function() {
+                    toastElement.remove();
+                }, 300);
+            }, 4000);
+        }
     });
 </script>
 @endsection
