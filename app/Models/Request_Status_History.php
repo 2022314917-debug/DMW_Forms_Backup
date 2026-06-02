@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Employees;
 
 class Request_Status_History extends Model
 {
@@ -10,8 +11,13 @@ class Request_Status_History extends Model
 
     protected $fillable = [
         'request_id',
-        'emp_id',
+        'employee_id',
         'status',
         'remarks'
     ];
+
+    public function employee()
+    {
+        return $this->belongsTo(Employees::class, 'employee_id');
+    }
 }

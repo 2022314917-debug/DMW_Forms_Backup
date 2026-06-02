@@ -18,7 +18,10 @@ class Request_Party extends Model
         'party_phone',
         'party_bday',
         'party_gender',
-        'party_relationship'
+        'party_relationship',
+        'party_relationship_other',
+        'party_fb_acc',
+        'party_valid_id',
     ];
 
     public function request()

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Employees;
 use App\Models\Division;
+use App\Models\Office;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -24,7 +25,8 @@ class RegisterController extends Controller
     public function showRegistrationForm()
     {
         $divisions = Division::all();
-        return view('auth.register', compact('divisions'));
+        $offices = Office::all();
+        return view('auth.register', compact('divisions', 'offices'));
     }
 
     /**
@@ -35,6 +37,7 @@ class RegisterController extends Controller
         $this->validator($request->all())->validate();
 
         Employees::create([
+            'office_id'      => $request->office_id,
             'division_id'    => $request->division_id,
             'emp_lname'      => $request->emp_lname,
             'emp_fname'      => $request->emp_fname,
@@ -57,6 +60,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
+            'office_id'      => ['required', 'exists:office,id'],
             'division_id'    => ['required', 'exists:division,id'],
             'emp_lname'      => ['required', 'string', 'max:255'],
             'emp_fname'      => ['required', 'string', 'max:255'],

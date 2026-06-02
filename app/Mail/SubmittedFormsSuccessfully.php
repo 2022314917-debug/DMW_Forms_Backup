@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 class SubmittedFormsSuccessfully extends Mailable
 {
     use Queueable, SerializesModels;
-    public $form_names;
+
     public $requestId;
     public $ofw_full_name;
     public $dateSubmitted;
@@ -20,9 +20,8 @@ class SubmittedFormsSuccessfully extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($form_names, $requestId, $ofw_full_name, $dateSubmitted)
+    public function __construct($requestId, $ofw_full_name, $dateSubmitted)
     {
-        $this->form_names = $form_names;
         $this->requestId = $requestId;
         $this->ofw_full_name = $ofw_full_name;
         $this->dateSubmitted = $dateSubmitted;

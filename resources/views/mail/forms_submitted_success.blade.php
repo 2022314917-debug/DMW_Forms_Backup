@@ -5,15 +5,6 @@
 
 <p>This is to confirm that we have successfully received your submitted form(s). Below are the details of the information you provided.</p>
 
-<p>
-    <strong>Submitted Forms:</strong>
-</p>
-
-<ul>
-    @foreach($form_names as $form)
-        <li>{{ $form }}</li>
-    @endforeach
-</ul>
 
 <p>
     <strong>Submission Details:</strong>

@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function(){
             return;
         }
 
-        window.location.href = "{{ url('/forms/step/general') }}";
+        window.location.href = "{{ url('/forms/rfa') }}";
     });
 
 });

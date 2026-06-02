@@ -30,7 +30,7 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('register.store') }}">
+                    <form method="POST" action="">
                         @csrf
 
                         {{-- ── Personal Information ── --}}
@@ -142,7 +142,25 @@
                         </h6>
 
                         <div class="row g-3 mb-3">
-                            <div class="col-md-6">
+                            <div class="col-mb-4">
+                                <label for="office_id" class="form-label fw-medium">
+                                    Office <span class="text-danger">*</span>
+                                </label>
+                                <select id="office_id" name="office_id"
+                                    class="form-select @error('office_id') is-invalid @enderror" required>
+                                    <option value="" disabled {{ old('office_id') ? '' : 'selected' }}>Select office…</option>
+                                    @foreach ($offices as $office)
+                                        <option value="{{ $office->id }}"
+                                            {{ old('office_id') == $office->id ? 'selected' : '' }}>
+                                            {{ $office->office_name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('office_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-4">
                                 <label for="division_id" class="form-label fw-medium">
                                     Division <span class="text-danger">*</span>
                                 </label>
@@ -161,7 +179,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="emp_position" class="form-label fw-medium">
                                     Position <span class="text-danger">*</span>
                                 </label>

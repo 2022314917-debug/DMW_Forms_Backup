@@ -48,20 +48,26 @@
                     <div class="collapse sub-nav" id="requestCollapse">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('forms-submitted.index', ['status' => 'pending']) }}" class="nav-link">
-                                    <span>Pending</span>
+                                <a href="{{ route('forms-submitted.index', ['status' => 'NEW_SUBMISSION']) }}" class="nav-link">
+                                    <span>New Submissions</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('forms-submitted.index', ['status' => 'processing']) }}" class="nav-link">
-                                    <span>Processing</span>
+                                <a href="{{ route('forms-submitted.index', ['status' => 'FORMS_REQUESTED']) }}" class="nav-link">
+                                    <span>Forms in Progress</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="{{ route('forms-submitted.index', ['status' => 'approved']) }}" class="nav-link">
+                                <a href="{{ route('forms-submitted.index', ['status' => 'SUBMITTED_FOR_REVIEW']) }}" class="nav-link">
+                                    <span>Submitted For Review</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('forms-submitted.index', ['status' => 'APPROVED']) }}" class="nav-link">
                                     <span>Approved</span>
                                 </a>
                             </li>
+
                             <li class="nav-item">
                                 <a href="{{ route('forms-submitted.index', ['status' => 'declined']) }}" class="nav-link">
                                     <span>Declined</span>

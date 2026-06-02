@@ -11,7 +11,6 @@ class Request_Form_Entries extends Model
     protected $fillable = [
         'request_id',
         'request_form_id',
-        'status',
     ];
 
     public function request()

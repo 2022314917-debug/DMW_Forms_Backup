@@ -15,6 +15,7 @@ class Employees extends Authenticatable
     protected $table = 'employees';
 
     protected $fillable = [
+        'office_id',
         'division_id',
         'emp_lname',
         'emp_fname',
@@ -47,9 +48,14 @@ class Employees extends Authenticatable
         return $this->emp_password;
     }
 
-    public function getAuthIdentifierName()
+    // public function getAuthIdentifierName()
+    // {
+    //     return 'emp_email';
+    // }
+
+    public function getAuthIdentifier()
     {
-        return 'emp_email';
+        return $this->id;
     }
 
     // public function getRememberTokenName()
@@ -66,5 +72,15 @@ class Employees extends Authenticatable
     public function division()
     {
         return $this->belongsTo(Division::class, 'division_id');
+    }
+
+    public function office()
+    {
+        return $this->belongsTo(Office::class, 'office_id');
+    }
+
+    public function statusHistory()
+    {
+        return $this->hasMany(Request_Status_History::class, 'employee_id', 'id');
     }
 }

@@ -9,8 +9,13 @@ class Request_Number extends Model
     protected $table = 'request';
     
     protected $fillable = [
-        'user_id',
-        'status'
+        'status',
+        'uri_ng_tulong',
+        'maikling_salaysay',
+    ];
+
+    protected $casts = [
+        'form_step' => 'array',
     ];
 
     public function requestParty()
@@ -52,4 +57,21 @@ class Request_Number extends Model
     {
         return $this->hasMany(Requirements::class, 'request_id', 'id');
     }
+
+    public function bankAccountDetails()
+    {
+        return $this->hasOne(BankAccountDetails::class, 'request_id', 'id');
+    }
+
+    public function startupEquipmentProducts()
+    {
+        return $this->hasMany(Startup_Equipment_Products::class, 'request_id', 'id');
+    }
+
+    public function ofwTrainingRecord()
+    {
+        return $this->hasMany(Ofw_Training_Record::class, 'request_id', 'id');
+    }
+
+    
 }

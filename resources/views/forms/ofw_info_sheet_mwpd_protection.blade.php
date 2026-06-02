@@ -190,29 +190,29 @@
       </small>
     </div>
 
-    <form method="POST" action="{{ url('/forms/step/' . $currentStep) }}">
+    <form method="POST" action="">
       @csrf
       <div class="form-section">
         <h5>FULL NAME (Pangalan ng OFW)</h5>
         <div class="row g-3 mb-3">
           <div class="col-md-4">
             <label class="form-label">Surname</label>
-            <input type="text" class="form-control disabled" name="ofw_lname" placeholder="Dela Cruz" id="ofw_lname" value="{{ session('general_form_data.ofw_lname') }}">
+            <input type="text" class="form-control disabled" name="ofw_lname" placeholder="Dela Cruz" id="ofw_lname" value="{{ old('ofw_lname') }}">
           </div>
           <div class="col-md-4">
             <label class="form-label">First Name</label>
-            <input type="text" class="form-control disabled" name="ofw_fname" placeholder="Juan" id="ofw_fname" value="{{ session('general_form_data.ofw_fname') }}">
+            <input type="text" class="form-control disabled" name="ofw_fname" placeholder="Juan" id="ofw_fname" value="{{ old('ofw_fname') }}">
           </div>
           <div class="col-md-4">
             <label class="form-label">Middle Name</label>
-            <input type="text" class="form-control disabled" name="ofw_mname" placeholder="Santos" id="ofw_mname" value="{{ session('general_form_data.ofw_mname') }}">
+            <input type="text" class="form-control disabled" name="ofw_mname" placeholder="Santos" id="ofw_mname" value="{{ old('ofw_mname') }}">
           </div>
         </div>
 
         <div class="row g-3 mb-3">
           <div class="col-md-4">
             <label class="form-label">Jobsite (Bansang Pinagtatrabahuhan)</label>
-            <input type="text" class="form-control disabled" name="ofw_country_name" id="ofw_country_name" value="{{ session('general_form_data.ofw_country_name') }}">
+            <input type="text" class="form-control disabled" name="ofw_country_name" id="ofw_country_name" value="{{ old('ofw_country_name') }}">
           </div>
           <div class="col-md-4">
             <label class="form-label">Record Needed - Year (Kailangang Record - Taon)</label>
@@ -226,7 +226,7 @@
 
         <div class="mb-3">
           <label class="form-label">Name of Agency</label>
-          <input type="text" class="form-control disabled" name="ofw_agency" placeholder="ex. ABC Agency" id="ofw_agency" value="{{ session('general_form_data.ofw_agency') }}">
+          <input type="text" class="form-control disabled" name="ofw_agency" placeholder="ex. ABC Agency" id="ofw_agency" value="{{ old('ofw_agency') }}">
         </div>
       </div>
 
@@ -235,26 +235,26 @@
           <div class="row g-3 mb-3">
             <div class="col-md-4">
               <label class="form-label">Surname</label>
-              <input type="text" class="form-control disabled" name="party_lname" placeholder="Dela Cruz" id="party_lname" value="{{ session('general_form_data.party_lname') }}">
+              <input type="text" class="form-control disabled" name="party_lname" placeholder="Dela Cruz" id="party_lname" value="{{ old('party_lname') }}">
             </div>
             <div class="col-md-4">
               <label class="form-label">First Name</label>
-              <input type="text" class="form-control disabled" name="party_fname" placeholder="Juan" id="party_fname" value="{{ session('general_form_data.party_fname') }}">
+              <input type="text" class="form-control disabled" name="party_fname" placeholder="Juan" id="party_fname" value="{{ old('party_fname') }}">
             </div>
             <div class="col-md-4">
               <label class="form-label">Middle Name</label>
-              <input type="text" class="form-control disabled" name="party_mname" placeholder="Santos" id="party_mname" value="{{ session('general_form_data.party_mname') }}">
+              <input type="text" class="form-control disabled" name="party_mname" placeholder="Santos" id="party_mname" value="{{ old('party_mname') }}">
             </div>
           </div>
 
           <div class="row g-3 mb-3">
             <div class="col-md-6">
               <label class="form-label">Relationship to OFW</label>
-              <input type="text" class="form-control disabled" name="party_relationship" placeholder="ex. Brother" id="relationship_ofw" value="{{ session('general_form_data.party_relationship') }}">
+              <input type="text" class="form-control disabled" name="party_relationship" placeholder="ex. Brother" id="relationship_ofw" value="{{ old('party_relationship') }}">
             </div>
             <div class="col-md-6">
               <label class="form-label">Contact Number</label>
-              <input type="text" class="form-control disabled" name="party_phone" placeholder="ex. 09123456789" id="contact_number" value="{{ session('general_form_data.party_phone') }}">
+              <input type="text" class="form-control disabled" name="party_phone" placeholder="ex. 09123456789" id="contact_number" value="{{ old('party_phone') }}">
             </div>
           </div>
 
@@ -262,26 +262,26 @@
             <label class="form-label"> <strong>Complete Address in the Philippines</strong> </label> 
             <div class="m-0 p-0">
               <label class="form-label">House Number/Street name</label>
-              <input type="text" class="form-control disabled" name="ofw_address_street" placeholder="Unit/Room/House Number/Street name" id="address_street" value="{{ session('general_form_data.ofw_address_street') }}">
+              <input type="text" class="form-control disabled" name="ofw_address_street" placeholder="Unit/Room/House Number/Street name" id="address_street" value="{{ old('ofw_address_street') }}">
             </div>
             
 
             <div class="row g-3">
               <div class="col-md-3">
                 <label class="form-label">Province</label>
-                <input type="text" class="form-control disabled" name="ofw_province_name" id="party_province_name" value="{{ session('general_form_data.ofw_province_name') }}">
+                <input type="text" class="form-control disabled" name="ofw_province_name" id="party_province_name" value="{{ old('ofw_province_name') }}">
               </div>
               <div class="col-md-3">
                 <label class="form-label">City/Municipality</label>
-                <input type="text" class="form-control disabled" name="ofw_municipality_name" id="party_municipality_name" value="{{ session('general_form_data.ofw_municipality_name') }}">
+                <input type="text" class="form-control disabled" name="ofw_municipality_name" id="party_municipality_name" value="{{ old('ofw_municipality_name') }}">
               </div>
               <div class="col-md-3">
                 <label class="form-label">Barangay</label>
-                <input type="text" class="form-control disabled" name="ofw_barangay_name" id="party_barangay_name" value="{{ session('general_form_data.ofw_barangay_name') }}">
+                <input type="text" class="form-control disabled" name="ofw_barangay_name" id="party_barangay_name" value="{{ old('ofw_barangay_name') }}">
               </div>
               <div class="col-md-3">
                 <label class="form-label">Zip Code</label>
-                <input type="text" class="form-control disabled" name="ofw_zip_code" placeholder="ex. 2016" id="zipcode" value="{{ session('general_form_data.ofw_zip_code') }}">
+                <input type="text" class="form-control disabled" name="ofw_zip_code" placeholder="ex. 2016" id="zipcode" value="{{ old('ofw_zip_code') }}">
               </div>
             </div>
 
@@ -292,44 +292,16 @@
               </div>
               <div class="col-md-6">
                 <label class="form-label">Email Address</label>
-                <input type="email" class="form-control disabled" name="party_email" placeholder="ex. sample@email.com" id="party_email" value="{{ session('general_form_data.party_email') }}">
+                <input type="email" class="form-control disabled" name="party_email" placeholder="ex. sample@email.com" id="party_email" value="{{ old('party_email') }}">
               </div>
             </div>
           </div>
       </div>
+      <div class="d-grid gap-2 mt-4">
+          <button type="submit" class="btn btn-success btn-lg fw-bold" style="background-color: #2d7a2d; border-color: #2d7a2d;">Submit</button>
+      </div>
 
 
-        @php
-            $steps = session('forms.steps', []);
-            $currentStep = request()->segment(3); // /forms/step/{step}
-            $currentIndex = array_search($currentStep, $steps);
-            $previousStep = ($currentIndex !== false && $currentIndex > 0) ? $steps[$currentIndex - 1] : null;
-            $nextStep = ($currentIndex !== false && $currentIndex < count($steps) - 1) ? $steps[$currentIndex + 1] : null;
-        @endphp
-
-        <div class="step-wrapper">
-            <ul class="steps">
-                @foreach($steps as $index => $step)
-                    <li class="step 
-                        {{ $step == $currentStep ? 'active' : '' }}
-                        {{ array_search($step,$steps) < array_search($currentStep,$steps) ? 'completed' : '' }}">
-                        <span>{{ $index + 1 }}</span>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-
-        <div class="d-flex justify-content-between mt-4">
-            <button type="submit" name="action" value="back"
-                class="btn btn-back {{ $previousStep ? '' : 'disabled' }}">
-                    ← BACK
-            </button>
-
-            <button type="submit" name="action" value="next"
-                    class="btn btn-next">
-                NEXT →
-            </button>
-        </div>
     </form>
   </div>
 

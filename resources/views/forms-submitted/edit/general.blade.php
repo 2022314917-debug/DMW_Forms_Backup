@@ -125,109 +125,9 @@
   
         @csrf
         @method('PUT')
-
         <!-- ======================== SECTION A ======================== -->
         <div class="form-section">
-            <h5>A. IMPORMASYON NG HUMIHILING (Request Party)</h5>
-
-            <div class="row g-3 mb-3">
-                <div class="col-md-3">
-                    <label class="form-label">Last Name</label>
-                    <input type="text" class="form-control uppercase"
-                        name="party_lname" value="{{$party->party_lname ?? '' }}" required>
-                    @error('party_lname')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label">First Name</label>
-                    <input type="text" class="form-control uppercase"
-                        name="party_fname" value="{{$party->party_fname ?? '' }}" required>
-                    @error('party_fname')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
-                <div class="col-md-2">
-                    <label class="form-label">Name Ext.</label>
-                    <input type="text" class="form-control uppercase" name="party_ename"
-                        value="{{$party->party_ename ?? '' }}">
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Middle Name</label>
-                    <input type="text" class="form-control uppercase" name="party_mname"
-                        value="{{$party->party_mname ?? '' }}">
-                </div>
-            </div>
-
-            <div class="row g-3 mb-3">
-                <div class="col-6 col-md-3">
-                    <label class="form-label">Birthday <span class="text-danger">*</span></label>
-                    <input type="date" class="form-control"
-                        name="party_bday" value="{{ $party->party_bday ?? '' }}" required>
-                </div>
-                <div class="col-6 col-md-3">
-                    <label class="form-label">Sex</label>
-                    <select class="form-select" name="party_gender" required>
-                        <option value="">Select</option>
-                        <option value="Male" {{ ($party->party_gender ?? '' )== 'Male' ? 'selected' : '' }}>Male</option>
-                        <option value="Female" {{ ($party->party_gender ?? '' )== 'Female' ? 'selected' : '' }}>Female</option>
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">Relationship to OFW <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control uppercase"
-                        name="party_relationship" value="{{ $party->party_relationship ?? '' }}" required>
-                </div>
-            </div>
-
-            <div class="row g-3 mb-3">
-                <div class="col-md-6">
-                    <label class="form-label">Contact Number <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control"
-                        name="party_phone" value="{{ $party->party_phone ?? '' }}" required>
-                    @error('party_phone')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label">Email Address <span class="text-danger">*</span></label>
-                    <input type="email" class="form-control"
-                        name="party_email" value="{{ $party->party_email ?? '' }}" required>
-                    @error('party_email')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Address in the Philippines</label>
-                <input type="text" class="form-control mb-2 uppercase" name="party_house_no"
-                    placeholder="Unit/Room/House Number/Street name"
-                    value="{{ $party->party_house_no ?? '' }}" required>
-                <div class="row g-3">
-                    <div class="col-6 col-md-3">
-                        <select class="form-select" name="party_province" id="party_province" required>
-                            <option value="{{ $party_address->province ?? '' }}">{{ $party_address->province ?? '' }}</option>
-                        </select>
-                        <input type="hidden" name="party_province_name" id="party_province_name">
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <select class="form-select" name="party_municipality" id="party_municipality" required>
-                            <option value="{{ $party_address->municipality ?? '' }}">{{ $party_address->municipality ?? '' }}</option>
-                        </select>
-                        <input type="hidden" name="party_municipality_name" id="party_municipality_name">
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <select class="form-select" name="party_barangay" id="party_barangay" required>
-                            <option value="{{ $party_address->brgy ?? '' }}">{{ $party_address->brgy ?? '' }}</option>
-                        </select>
-                        <input type="hidden" name="party_barangay_name" id="party_barangay_name">
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <input type="text" class="form-control" name="party_zip_code"
-                            placeholder="ex. 2016"
-                            value="{{ $party_address->zip_code ?? '' }}"
-                            minlength="4" maxlength="4" pattern="\d{4}" inputmode="numeric" required>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ======================== SECTION B ======================== -->
-        <div class="form-section">
-            <h5>B. IMPORMASYON NG OFW (Kung Iba sa Humihiling)</h5>
+            <h5>A. IMPORMASYON NG OFW</h5>
 
             <div class="row g-3 mb-3">
                 <div class="col-md-3">
@@ -364,64 +264,112 @@
                 </div>
             </div>
         </div>
-
-        <!-- ======================== SECTION C ======================== -->
+        <!-- ======================== SECTION B ======================== -->
         <div class="form-section">
-            <h5>C. URI NG TULONG (Nature Of Request)</h5>
+            <h5>B. IMPORMASYON NG HUMIHILING (Kung hindi OFW ang humihiling)</h5>
 
-            <!-- MIGRANT WORKERS PROCESSING DIVISION -->
-            <div class="section-divider">
-                <h6>MIGRANT WORKERS PROCESSING DIVISION</h6>
-                <div class="mb-2">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="ofw_info_sheet_mwpd"
-                            name="mwpd[]" value="checked"
-                            {{ isset($sectionC['ofw_info_sheet_mwpd']) ? 'checked' : '' }} disabled>
-                        <label class="form-check-label" for="ofw_info_sheet_mwpd">
-                            OFW Records/OFW Information Sheet
-                        </label>
-                    </div>
+            <div class="row g-3 mb-3">
+                <div class="col-md-3">
+                    <label class="form-label">Last Name</label>
+                    <input type="text" class="form-control uppercase"
+                        name="party_lname" value="{{$party->party_lname ?? '' }}" required>
+                    @error('party_lname')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
-                
+                <div class="col-md-3">
+                    <label class="form-label">First Name</label>
+                    <input type="text" class="form-control uppercase"
+                        name="party_fname" value="{{$party->party_fname ?? '' }}" required>
+                    @error('party_fname')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label">Name Ext.</label>
+                    <input type="text" class="form-control uppercase" name="party_ename"
+                        value="{{$party->party_ename ?? '' }}">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Middle Name</label>
+                    <input type="text" class="form-control uppercase" name="party_mname"
+                        value="{{$party->party_mname ?? '' }}">
+                </div>
             </div>
 
-            <!-- WELFARE AND REINTEGRATION SERVICES DIVISION -->
-            <div class="section-divider">
-                <h6>WELFARE AND REINTEGRATION SERVICES DIVISION</h6>
-
-                <div class="mb-2">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="aksyon"
-                            name="wrsd[]" value="checked"
-                            {{ isset($sectionC['aksyon']) ? 'checked' : '' }} disabled>
-                        <label class="form-check-label" for="aksyon">Financial Assistance through AKSYON fund</label>
-                    </div>
+            <div class="row g-3 mb-3">
+                <div class="col-6 col-md-3">
+                    <label class="form-label">Birthday <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control"
+                        name="party_bday" value="{{ $party->party_bday ?? '' }}" required>
                 </div>
-                
+                <div class="col-6 col-md-3">
+                    <label class="form-label">Sex</label>
+                    <select class="form-select" name="party_gender" required>
+                        <option value="">Select</option>
+                        <option value="Male" {{ ($party->party_gender ?? '' )== 'Male' ? 'selected' : '' }}>Male</option>
+                        <option value="Female" {{ ($party->party_gender ?? '' )== 'Female' ? 'selected' : '' }}>Female</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Relationship to OFW <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control uppercase"
+                        name="party_relationship" value="{{ $party->party_relationship ?? '' }}" required>
+                </div>
             </div>
 
-            <!-- MIGRANT WORKERS PROTECTION DIVISION -->
-            <div class="section-divider">
-                <h6>MIGRANT WORKERS PROTECTION DIVISION</h6>
-                <div class="mb-2">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="ofw_info_sheet_mwpd_protection"
-                            name="mwpd_protection[]" value="checked"
-                            {{ isset($sectionC['ofw_info_sheet_mwpd_protection']) ? 'checked' : '' }} disabled>
-                        <label class="form-check-label" for="ofw_info_sheet_mwpd_protection">
-                            Request for OFW Information Sheet for legal purposes
-                        </label>
+            <div class="row g-3 mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Contact Number <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control"
+                        name="party_phone" value="{{ $party->party_phone ?? '' }}" required>
+                    @error('party_phone')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Email Address <span class="text-danger">*</span></label>
+                    <input type="email" class="form-control"
+                        name="party_email" value="{{ $party->party_email ?? '' }}" required>
+                    @error('party_email')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Address in the Philippines</label>
+                <input type="text" class="form-control mb-2 uppercase" name="party_house_no"
+                    placeholder="Unit/Room/House Number/Street name"
+                    value="{{ $party_address->house_no ?? '' }}" required>
+                <div class="row g-3">
+                    <div class="col-6 col-md-3">
+                        <select class="form-select" name="party_province" id="party_province" required>
+                            <option value="{{ $party_address->province ?? '' }}">{{ $party_address->province ?? '' }}</option>
+                        </select>
+                        <input type="hidden" name="party_province_name" id="party_province_name">
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <select class="form-select" name="party_municipality" id="party_municipality" required>
+                            <option value="{{ $party_address->municipality ?? '' }}">{{ $party_address->municipality ?? '' }}</option>
+                        </select>
+                        <input type="hidden" name="party_municipality_name" id="party_municipality_name">
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <select class="form-select" name="party_barangay" id="party_barangay" required>
+                            <option value="{{ $party_address->brgy ?? '' }}">{{ $party_address->brgy ?? '' }}</option>
+                        </select>
+                        <input type="hidden" name="party_barangay_name" id="party_barangay_name">
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <input type="text" class="form-control" name="party_zip_code"
+                            placeholder="ex. 2016"
+                            value="{{ $party_address->zip_code ?? '' }}"
+                            minlength="4" maxlength="4" pattern="\d{4}" inputmode="numeric" required>
                     </div>
                 </div>
-                <div class="mb-2">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="sena"
-                            name="mwpd_protection[]" value="checked"
-                            {{ isset($sectionC['sena']) ? 'checked' : '' }} disabled>
-                        <label class="form-check-label" for="sena">Request for Assistance for SEnA/Conciliation</label>
-                    </div>
-                </div>
-                
+            </div>
+        </div>
+
+        
+
+       <div class="form-section">
+            <div class="mb-3">
+                <h5>C. PALIWANAG NG HILING (Nature of Request)</h5>
+                    <p class="mb-3">Ilahad dito ang maikling paliwanag kung anong uri ng tulong ang inyong hinihingi, kasama ang mahahalagang detalye tulad ng dahilan, kailan at saan ito kinakailangan.</p>
+                    <textarea class="form-control" rows="7" placeholder="Text here..." name="nature_of_request">{{ $request->nature_of_request }}</textarea>
             </div>
         </div>
 

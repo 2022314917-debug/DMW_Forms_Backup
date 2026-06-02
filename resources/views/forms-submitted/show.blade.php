@@ -3,8 +3,8 @@
 @section('content')
 
 @php
-    $ofw   = $request->requestOfw;
-    $party = $request->requestParty;
+    $ofw   = $requestNumber->requestOfw;
+    $party = $requestNumber->requestParty;
 
     $ofwName = trim(collect([
         $ofw->ofw_fname  ?? '',
@@ -18,13 +18,13 @@
         $party->party_lname  ?? '',
     ])->filter()->implode(' ')) ?: 'N/A';
 
-    $status = strtoupper($request->status ?? 'PENDING');
+    $status = strtoupper($requestNumber->status ?? 'PENDING');
 
     $headerColors = [
         'APPROVED'   => ['bg' => '#d4edda', 'border' => '#28a745', 'text' => '#155724'],
-        'PENDING'    => ['bg' => '#fff3cd', 'border' => '#ffc107', 'text' => '#856404'],
-        'PROCESSING' => ['bg' => '#cce5ff', 'border' => '#4e73df', 'text' => '#004085'],
-        'DECLINED'   => ['bg' => '#f8d7da', 'border' => '#dc3545', 'text' => '#721c24'],
+        'NEW_SUBMISSION'    => ['bg' => '#fff3cd', 'border' => '#ffc107', 'text' => '#856404'],
+        'FORMS_REQUESTED' => ['bg' => '#cce5ff', 'border' => '#4e73df', 'text' => '#004085'],
+        'SUBMITTED_FOR_REVIEW' => ['bg' => '#cce5ff', 'border' => '#4e73df', 'text' => '#004085'],
         'REJECTED'   => ['bg' => '#f8d7da', 'border' => '#dc3545', 'text' => '#721c24'],
     ];
 
@@ -235,6 +235,36 @@
     }
     .btn-edit:hover { background: #d4891a; color: #fff; text-decoration: none; }
 
+    .btn-update-status{
+        background-color: #3458c2;
+        color: #fff;
+        border: #3458c2;
+        padding: 7px 15px;
+        border-radius: 5px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background .2s;
+        display: inline-block;
+    }
+
+    .btn-update-status:hover{
+        background-color: #173799;
+    }
+
+    .btn-status-action {
+        border: none;
+        padding: 0.5rem 1.2rem;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: opacity 0.2s, transform 0.1s;
+    }
+    .btn-status-action:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-status-action:active { transform: translateY(0); }
+    .btn-status-action:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
     .back-link {
         display: inline-block;
         margin-bottom: 1rem;
@@ -304,14 +334,23 @@
 </style>
 
 <div class="request-wrapper">
-    <div class="position-relative d-flex align-items-center justify-content-center mb-3" style="min-height: 38px;">
-        <a href="{{ route('forms-submitted.index') }}" class="btn btn-secondary btn-sm position-absolute start-0 d-flex align-items-center gap-1"
-            style="border-radius: 6px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-                </svg>Back to List
-        </a>
+
+    <div class="">
+        <div class="d-flex align-items-center gap-2 mb-3" style="min-height: 38px;">
+            <a href="{{ route('forms-submitted.index') }}" class="btn btn-secondary btn-sm d-flex align-items-center gap-1"
+                style="border-radius: 6px;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                    </svg>Back to List
+            </a>
+
+            @if(($requestNumber->status) === "NEW_SUBMISSION")
+                <button class="btn-update-status" id="btnOpenStatusModal">Update Status</button>
+            @endif
+        </div>
     </div>
+
+    
    
 
     {{--
@@ -325,7 +364,7 @@
 
         <div class="status-block">
             <div class="status-label">{{ $status }}</div>
-            <div class="request-no">Request No. : #{{ $request->id }}</div>
+            <div class="request-no">Request No. : #{{ $requestNumber->id }}</div>
         </div>
 
         <div class="info-divider"></div>
@@ -343,9 +382,18 @@
 
         <div class="info-divider"></div>
 
-        <div class="datetime-block">
-            {{ $request->created_at->format('M d, Y | h:i A') }}
+        <div class="">
+            <div class="datetime-block">
+                {{ $requestNumber->created_at->format('M d, Y | h:i A') }}
+            </div>
+            @if(($requestNumber->status) !== "NEW_SUBMISSION")
+                <div>
+                    <span class="info-label">Evaluated by:</span> {{ $evaluator ? trim($evaluator->emp_fname . ' ' . $evaluator->emp_lname) : 'N/A' }}
+                </div>
+            @endif
         </div>
+        
+        
     </div>
 
     <script>
@@ -366,8 +414,14 @@
     </script>
 
     {{-- FORMS TABLE --}}
-    <div class="section-title">Submitted Forms</div>
+    <div class="flex items-center justify-between">
+        <div class="section-title">
+            Submitted Forms
+        </div>
 
+    </div>
+        
+    
     @if($forms->isEmpty())
         <div class="alert alert-warning">No forms found for this request.</div>
     @else
@@ -377,7 +431,6 @@
                     <tr>
                         <th>Form Names</th>
                         <th>Division <span class="sort-arrow">&#9660;</span></th>
-                        <th>Status <span class="sort-arrow">&#9660;</span></th>
                         <th>Date Submitted <span class="sort-arrow">&#9660;</span></th>
                         <th>Action</th>
                     </tr>
@@ -389,11 +442,15 @@
                             $divisionName = $data['form']->division->division_name ?? $data['form']->division ?? '—';
 
                             $editRoutes = [
-                                'OFFICIAL DMW-RO3 RFA FORM' => 'forms-submitted.edit.general',
+                                'REQUEST FOR ASSISTANCE (RFA) FORM' => 'forms-submitted.edit.rfa',
                                 'REQUEST FOR VERIFICATION / CERTIFICATION OF OFW RECORDS' => 'forms-submitted.edit.processing',
                                 'OFW Info Sheet MWPD Protection' => 'forms-submitted.edit.general.ofw_info_sheet_mwpd_protection',
-                                'REQUEST FOR ASSISTANCE (RFA) FORM' => 'forms-submitted.edit.aksyon',
+                                'AKSYON FORM' => 'forms-submitted.edit.aksyon',
                                 'SINGLE-ENTRY APPROACH (SENA)' => 'forms-submitted.edit.sena',
+                                'ELPOR FORM' => 'forms-submitted.edit.elpor',
+                                'OFW STATEMENT FORM' => 'forms-submitted.edit.ofw_statement',
+                                'ELPOR B1 FORM' => 'forms-submitted.edit.elporb1',
+                                'BUSINESS CANVAS FORM' => 'forms-submitted.edit.business_canvas'
                             ];
 
                             $formName = $data['form']->form_name;
@@ -402,23 +459,17 @@
                         <tr>
                             <td>{{ $data['form']->form_name }}</td>
                             <td class="division-text">{{ $divisionName }}</td>
-                            <td>
-                                <span class="badge-status badge-{{ $rowStatus }}">
-                                    {{ ucfirst($data['status']) }}
-                                </span>
-                            </td>
-                            <td>{{ $request->created_at->format('M d, Y | h:i A') }}</td>
+                            <td>{{ $requestNumber->created_at->format('M d, Y | h:i A') }}</td>
                             <td>
                                 <div class="d-flex gap-2">
                                     <a href="{{ route('forms-submitted.open-form', [
-                                        'requestId' => $request->id,
+                                        'requestId' => $requestNumber->id,
                                         'formId'    => $formId,
                                     ]) }}" class="btn-view">View</a>
                                     <a href="{{ route($editRoute, [
-                                        'requestId' => $request->id,
+                                        'requestId' => $requestNumber->id,
                                         'formId'    => $formId,
                                     ]) }}" class="btn-edit">Edit</a>
-                                    <a href="" class="btn-edit">Status</a>
                                 </div>
                             </td>
                         </tr>
@@ -432,7 +483,7 @@
         <div class="section-title mt-4">Submitted Requirements</div>
 
         @php
-            $requirements = $request->requirements ?? collect();
+            $requirements = $requestNumber->requirements ?? collect();
             $groupedRequirements = $requirements->groupBy('file_type');
         @endphp
 
@@ -510,12 +561,92 @@
 
     </div> {{-- end request-wrapper --}}
 
+    {{-- SPINNER OVERLAY --}}
+    <div id="spinnerOverlay" style="display:none; position:fixed; z-index:10000; inset:0;
+        background:rgba(0,0,0,0.55); align-items:center; justify-content:center;">
+        <div style="background:#fff; border-radius:12px; padding:2rem 2.5rem;
+                    display:flex; flex-direction:column; align-items:center; gap:1rem;
+                    min-width:220px; box-shadow:0 8px 32px rgba(0,0,0,0.18);">
+            <div id="spinnerRing" style="width:44px; height:44px; border:4px solid #e2e8f0;
+                border-top-color:#3458c2; border-radius:50%;
+                animation:spinAnim 0.75s linear infinite;"></div>
+            <div id="spinnerText" style="font-size:14px; color:#555; font-weight:600;">Updating status…</div>
+        </div>
+    </div>
+
+    {{-- TOAST CONTAINER --}}
+    <div id="toastContainer" style="position:fixed; top:1.5rem; right:1.5rem;
+        z-index:11000; display:flex; flex-direction:column; gap:10px; min-width:320px;"></div>
+
+    <style>
+        @keyframes spinAnim { to { transform: rotate(360deg); } }
+        @keyframes toastIn  { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+    </style>
+
     <div id="filePreviewModal" class="custom-modal">
         <div class="custom-modal-content">
             <span class="close-modal">&times;</span>
 
             <div id="previewContainer">
                 <!-- AJAX content will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    {{-- STATUS MODAL --}}
+    <div class="modal fade" id="statusModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-2 overflow-hidden">
+
+                {{-- Header --}}
+                <div class="modal-header border-0 px-4 py-3" style="background-color: #3458c2;">
+                    <h5 class="modal-title fw-bold text-white mb-0">Update Request Status</h5>
+                    <button type="button"
+                            class="btn-close btn-close-white"
+                            data-bs-dismiss="modal"
+                            aria-label="Close">
+                    </button>
+                </div>
+
+                {{-- Body --}}
+                <div class="modal-body px-4 pt-4 pb-4">
+
+                    <div id="statusModalMsg" class="alert d-none" role="alert"></div>
+
+                    {{-- Info Rows --}}
+                    <div class="mb-2 d-flex">
+                        <span class="fw-semibold text-secondary" style="width:110px;">Request No.</span>
+                        <span class="me-2 text-secondary">:</span>
+                        <span id="modalRequestNo">{{ $requestNumber->id }}</span>
+                    </div>
+                    <div class="mb-2 d-flex">
+                        <span class="fw-semibold text-secondary" style="width:110px;">OFW Name</span>
+                        <span class="me-2 text-secondary">:</span>
+                        <span id="modalOfwName">{{ $requestNumber->requestOfw->ofw_fname }} {{ $requestNumber->requestOfw->ofw_mname }} {{ $requestNumber->requestOfw->ofw_lname }} </span>
+                    </div>
+                    <div class="mb-4 d-flex">
+                        <span class="fw-semibold text-secondary" style="width:110px;">Party Name</span>
+                        <span class="me-2 text-secondary">:</span>
+                        <span id="modalPartyName">{{ $requestNumber->requestParty->party_fname ?? '' }} {{ $requestNumber->requestParty->party_mname ?? '' }} {{ $requestNumber->requestParty->party_lname ?? '' }}</span>
+                    </div>
+
+                    {{-- Action Buttons --}}
+                    <div class="d-flex gap-3 justify-content-center">
+                        <button id="btnReject"
+                                class="btn px-5 py-2 fw-bold text-white rounded-3"
+                                style="background-color: #c94c4c;">
+                            Reject
+                        </button>
+                        <button id="btnApprove"
+                                class="btn px-5 py-2 fw-bold text-white rounded-3"
+                                style="background-color: #3458c2;">
+                            Approve
+                        </button>
+
+                        
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
@@ -598,28 +729,136 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     };
 
-    fetch(fileUrl)
-    .then(res => res.json())
-    .then(data => {
+    // ── Bootstrap Status Modal ─────────────────────────────
+    const statusModalEl = document.getElementById('statusModal');
+    const statusModal = new bootstrap.Modal(statusModalEl);
 
-        const url = data.url;
-        const ext = url.split('.').pop().toLowerCase();
+    const btnOpenStatus = document.getElementById('btnOpenStatusModal');
+    const statusMsg = document.getElementById('statusModalMsg');
 
-        let content = '';
+    // const requestId = @json($requestNumber->id);
+    const requestId = "{{ $requestNumber->id }}";
 
-        if (['jpg','jpeg','png','gif','webp'].includes(ext)) {
-            content = `<img src="${url}">`;
+    function showStatusMsg(text, type) {
+
+        statusMsg.classList.remove('d-none', 'alert-success', 'alert-danger');
+
+        statusMsg.textContent = text;
+
+        if (type === 'success') {
+            statusMsg.classList.add('alert-success');
+        } else {
+            statusMsg.classList.add('alert-danger');
         }
-        else if (ext === 'pdf') {
-            content = `<iframe src="${url}"></iframe>`;
-        }
-        else {
-            content = `<a href="${url}" target="_blank">Open File</a>`;
-        }
+    }
 
-        previewContainer.innerHTML = content;
-        modal.style.display = "block";
+    function setStatusBtnsDisabled(state) {
+
+        ['btnApprove', 'btnReject'].forEach(id => {
+            document.getElementById(id).disabled = state;
+        });
+    }
+
+    function showToast(title, message, type) {
+        const colors = type === 'success'
+            ? { bg:'#d4edda', border:'#28a745', text:'#155724', icon:'✔' }
+            : { bg:'#f8d7da', border:'#dc3545', text:'#721c24', icon:'✖' };
+
+        const toast = document.createElement('div');
+        toast.style.cssText = `
+            display:flex; align-items:flex-start; gap:12px; padding:14px 18px;
+            border-radius:10px; font-family:'Segoe UI',sans-serif;
+            background:${colors.bg}; border:1.5px solid ${colors.border};
+            color:${colors.text}; animation:toastIn 0.25s ease;
+            box-shadow:0 4px 16px rgba(0,0,0,0.12);
+        `;
+        toast.innerHTML = `
+            <span style="font-size:18px; margin-top:1px;">${colors.icon}</span>
+            <div style="flex:1;">
+                <div style="font-weight:700; font-size:13px;">${title}</div>
+                <div style="font-size:12px; margin-top:3px; opacity:0.85;">${message}</div>
+            </div>
+            <span style="cursor:pointer; font-size:18px; opacity:0.5; margin-left:4px; line-height:1;"
+                onclick="this.closest('div[style]').remove()">&times;</span>
+        `;
+
+        document.getElementById('toastContainer').appendChild(toast);
+
+        setTimeout(() => {
+            toast.style.transition = 'opacity 0.3s, transform 0.3s';
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(-8px)';
+            setTimeout(() => toast.remove(), 320);
+        }, 4500);
+    }
+
+    function showSpinner(text) {
+        document.getElementById('spinnerText').textContent = text || 'Updating status…';
+        document.getElementById('spinnerOverlay').style.display = 'flex';
+    }
+
+    function hideSpinner() {
+        document.getElementById('spinnerOverlay').style.display = 'none';
+    }
+
+    function callStatusAction(action) {
+        const url = action === 'approve'
+            ? "{{ route('forms-submitted.request-approve', $requestNumber->id) }}"
+            : "{{ route('forms-submitted.request-reject', $requestNumber->id) }}";
+
+        statusModal.hide();                             // close the status modal
+        showSpinner(action === 'approve' ? 'Approving request…' : 'Rejecting request…');
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: JSON.stringify({ request_id: requestId }),
+            credentials: 'same-origin',
+        })
+        .then(res => res.json())
+        .then(data => {
+            hideSpinner();
+            if (data.success) {
+                showToast(
+                    'Status updated successfully',
+                    'An email notification has been sent to the OFW.',
+                    'success'
+                );
+                setTimeout(() => window.location.reload(), 2200);
+            } else {
+                showToast(
+                    'Update failed',
+                    data.message ?? 'Something went wrong. Please try again.',
+                    'error'
+                );
+            }
+        })
+        .catch(() => {
+            hideSpinner();
+            showToast('Request failed', 'Could not connect. Please try again.', 'error');
+        });
+    }
+
+    btnOpenStatus.addEventListener('click', () => {
+
+        statusMsg.classList.add('d-none');
+
+        setStatusBtnsDisabled(false);
+
+        statusModal.show();
     });
+
+    document.getElementById('btnApprove')
+        .addEventListener('click', () => callStatusAction('approve'));
+
+    document.getElementById('btnReject')
+        .addEventListener('click', () => callStatusAction('reject'));
+
+    
 
 });
 </script>

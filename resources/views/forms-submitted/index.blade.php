@@ -168,16 +168,22 @@
         white-space: nowrap;
     }
 
-    .badge-pending {
+    .badge-new-submission {
         background: #fff3cd;
         color: #856404;
         border: 1px solid #ffc10733;
     }
 
-    .badge-processing {
+    .badge-forms-requested {
         background: #cfe2ff;
         color: #084298;
         border: 1px solid #0d6efd33;
+    }
+
+    .badge-submitted-for-review {
+        background: #d1e7dd;
+        color: #0f5132;
+        border: 1px solid #19875433;
     }
 
     .badge-approved {
@@ -284,24 +290,25 @@
                             {{ optional($request->requestOfw)->ofw_ename }}
                         </td>
                         <td>
-                            {{ optional($request->requestParty)->party_fname }}
+                            {{ optional($request->requestParty)->party_fname ?? '-' }}
                             {{ optional($request->requestParty)->party_mname }}
-                            {{ optional($request->requestParty)->party_lname }}
+                            {{ optional($request->requestParty)->party_lname ?? '-' }}
                             {{ optional($request->requestParty)->party_ename }}
                         </td>
                         <td>
                             @php
-                                $status = strtolower($request->status);
+                                $status = strtoupper($request->status);
                                 $badgeClass = match($status) {
-                                    'pending'    => 'badge-pending',
-                                    'processing' => 'badge-processing',
-                                    'approved'   => 'badge-approved',
-                                    'declined'   => 'badge-declined',
-                                    default      => 'badge-pending',
+                                    'NEW_SUBMISSION'    => 'badge-new-submission',
+                                    'FORMS_REQUESTED' => 'badge-forms-requested',
+                                    'SUBMITTED_FOR_REVIEW'   => 'badge-submitted-for-review',
+                                    'APPROVED'   => 'badge-approved',
+                                    'REJECTED'   => 'badge-declined',
+                                    default      => 'badge-new-submission',
                                 };
                             @endphp
                             <span class="badge-status {{ $badgeClass }}">
-                                {{ ucfirst($request->status) }}
+                                {{ str_replace('_', ' ', ucfirst(strtolower($request->status))) }}
                             </span>
                         </td>
                         <td>{{ $request->created_at->format('M d, Y | h:i A') }}</td>
@@ -334,12 +341,20 @@
 
     function badgeClass(status) {
         const map = {
-            pending:    'badge-pending',
-            processing: 'badge-processing',
-            approved:   'badge-approved',
-            declined:   'badge-declined',
+            'NEW_SUBMISSION':    'badge-new-submission',
+            'FORMS_REQUESTED': 'badge-forms-requested',
+            'SUBMITTED_FOR_REVIEW':   'badge-submitted-for-review',
+            'APPROVED':   'badge-approved',
+            'REJECTED':   'badge-declined',
         };
-        return map[(status ?? '').toLowerCase()] ?? 'badge-pending';
+        return map[(status ?? '').toUpperCase()] ?? 'badge-new-submission';
+    }
+
+    function formatStatus(str) {
+        if (!str) return '';
+        return str.replace(/_/g, ' ').split(' ').map(word => 
+            word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+        ).join(' ');
     }
 
     function ucfirst(str) {
@@ -385,7 +400,7 @@
                     <td>${partyName}</td>
                     <td>
                         <span class="badge-status ${badgeClass(status)}">
-                            ${ucfirst(status)}
+                            ${formatStatus(status)}
                         </span>
                     </td>
                     <td>${formatDate(req.created_at)}</td>

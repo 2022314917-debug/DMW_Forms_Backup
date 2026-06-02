@@ -35,11 +35,20 @@
       font-weight: 500;
     }
 
+    .btn-confirm{
+      background-color: hsl(220, 49%, 51%);
+      color: #fff;
+    }
+    .btn-confirm:hover {
+      background-color: hsl(220, 49%, 55%);
+      color: #fff;
+    }
+
  
   </style>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700&display=swap" rel="stylesheet">
  
-  <div class="container my-5" style="font-family: 'Assistant', Arial, sans-serif;">
+  <div class="container my-5" style="font-family: 'Assistant', Arial, sans-serif;" data-request-id="{{ $request->id }}">
 
     <div class="position-relative d-flex align-items-center justify-content-center mb-3" style="min-height: 38px;">
         <a href="{{ route('forms-submitted.show', $request->id) }}" 
@@ -63,84 +72,8 @@
       </small>
     </div>
 
-
-    <!-- Section A -->
     <div class="form-section">
-      <h5>A. IMPORMASYON NG HUMIHILING (Request Party)</h5>
-
-        <div class="row g-3 mb-3">
-          <div class="col-md-3">
-            <label class="form-label">Last Name</label>
-            <input type="text" class="form-control disabled" name="party_lname" value="{{ $party->party_lname ?? '' }}" required>
-          </div>
-          <div class="col-md-3">
-            <label class="form-label">First Name</label>
-            <input type="text" class="form-control disabled" name="party_fname" value="{{ $party->party_fname ?? '' }}" required>
-          </div>
-          <div class="col-md-2">
-            <label class="form-label">Name Ext.</label>
-            <input type="text" class="form-control disabled" name="party_ename" value="{{ $party->party_ename ?? ''   }}">
-          </div>
-          <div class="col-md-4">
-            <label class="form-label">Middle Name</label>
-            <input type="text" class="form-control disabled" name="party_mname" value="{{ $party->party_mname ?? '' }}">
-          </div>
-        </div>
-
-        <div class="row g-3 mb-3">
-
-          <div class="col-6 col-md-3">
-            <label class="form-label">Birthday</label>
-            <input type="date" class="form-control disabled" name="party_bday" value="{{ $party->party_bday ?? '' }}" required>
-          </div>
-
-          <div class="col-6 col-md-3">
-            <label class="form-label">Sex</label>
-            <input type="text" class="form-control disabled" value="{{ $party->party_gender ?? '' }}">
-          </div>
-
-          <div class="col-md-6">
-            <label class="form-label">Relationship to OFW</label>
-            <input type="text" class="form-control disabled" name="party_relationship" value="{{ $party->party_relationship ?? '' }}" required>
-          </div>
-
-        </div>
-
-        <div class="row g-3 mb-3">
-          <div class="col-md-6">
-            <label class="form-label">Contact Number</label>
-            <input type="text" class="form-control disabled" name="party_phone" value="{{ $party->party_phone ?? '' }}" required>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label">Email Address</label>
-            <input type="email" class="form-control disabled" name="party_email" value="{{ $party->party_email ?? '' }}" required>
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Address in the Philippines</label>
-          <input type="text" class="form-control mb-2 disabled" name="party_house_no" value="{{ $party_address->house_no ?? '' }}" required>
-          <div class="row g-3">
-            <div class="col-6 col-md-3">
-              <input type="text" class="form-control disabled" name="party_province_name" id="party_province_name" value="{{ $party_address->province ?? '' }}">
-            </div>
-            <div class="col-6 col-md-3">
-              <input type="text" class="form-control disabled" name="party_municipality_name" id="party_municipality_name" value="{{ $party_address->municipality ?? '' }}">
-            </div>
-            <div class="col-6 col-md-3">
-              <input type="text" class="form-control disabled" name="party_barangay_name" id="party_barangay_name" value="{{ $party_address->brgy ?? '' }}">
-            </div>
-            <div class="col-6 col-md-3">
-              <input type="text" class="form-control disabled" name="zip_code" value="{{ $party_address->zip_code ?? '' }}" 
-                            minlength="4" maxlength="4" pattern="\d{4}" inputmode="numeric" required>
-            </div>
-          </div>
-        </div>
-    </div>
-
-    <!-- Section B -->
-    <div class="form-section">
-      <h5>B. IMPORMASYON NG OFW (Kung Iba sa Humihiling)</h5>
+      <h5>A. IMPORMASYON NG OFW</h5>
         <div class="row g-3 mb-3">
           <div class="col-md-3">
             <label class="form-label">Last Name</label>
@@ -239,193 +172,325 @@
         </div>
     </div>
 
-    <!-- Section C -->
+    <!-- Section A -->
     <div class="form-section">
-      <h5>C. URI NG TULONG (Nature Of Request)</h5>
-      <p style="font-size: 0.9rem; margin-bottom: 1rem;">
-        <strong>Halagi o Naturang ng Concern:</strong> Piliin ang lahat ng bagay na sumusunod halaki handi siguruduhin sa uring <em>Concern, Pakialam ng aming PAOs information na nakahintay sa Applicant sa lahat ng impormasyon Dept. Applicant sa nakahihintay tumutulong upang makabuo at dibhiyon pura at pa maiggi oras.</em>
-      </p>
-        <!-- MIGRANT WORKERS PROCESSING DIVISION -->
-        <div style="border: 1px solid #b0c4de; border-radius: 0.25rem; padding: 0.75rem; margin-bottom: 1rem; background-color: #e8f1fb;">
-          <h6 style="font-weight: bold; margin-bottom: 0.75rem; text-decoration: underline;">MIGRANT WORKERS PROCESSING DIVISION</h6>
-          
-          <div class="mb-2">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="ofw_info_sheet_mwpd" name="mwpd[]" {{ isset($sectionC['ofw_info_sheet_mwpd']) ? 'checked' : '' }} disabled>
-              <label class="form-check-label" for="ofw_info_sheet_mwpd">OFW Records/OFW Information Sheet</label>
-            </div>
-          </div>
+      <h5>B. IMPORMASYON NG HUMIHILING (Kung hindi OFW ang humihiling)</h5>
 
-          <!-- <div class="mb-2">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="oec_processing" name="mwpd[]" {{ isset($sectionC['oec_processing']) ? 'checked' : '' }} disabled>
-              <label class="form-check-label" for="oec_processing">Direct-Hire OEC processing concerns</label>
-            </div>
+        <div class="row g-3 mb-3">
+          <div class="col-md-3">
+            <label class="form-label">Last Name</label>
+            <input type="text" class="form-control disabled" name="party_lname" value="{{ $party->party_lname ?? '' }}" required>
           </div>
-
-          <div class="mb-2">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="gov_to_gov" name="mwpd[]" {{ isset($sectionC['gov_to_gov']) ? 'checked' : '' }} onchange="toggleG2GCountries()">
-              <label class="form-check-label" for="gov_to_gov">Submission of Government-to-Government application</label>
-            </div>
-            <div style="margin-left: 1.5rem; margin-top: 0.5rem;">
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="g2g_country" id="taiwan" {{ isset($sectionC['taiwan']) ? 'checked' : '' }} onchange="toggleG2GOthers()">
-                <label class="form-check-label" for="taiwan">Taiwan</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="g2g_country" id="moh_ksa" {{ isset($sectionC['mohksa']) ? 'checked' : '' }} onchange="toggleG2GOthers()">
-                <label class="form-check-label" for="moh_ksa">MOH-KSA</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="g2g_country" id="japan" {{ isset($sectionC['japan']) ? 'checked' : '' }} onchange="toggleG2GOthers()">
-                <label class="form-check-label" for="japan">JPEPA-Japan</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="g2g_country" id="israel" {{ isset($sectionC['israel']) ? 'checked' : '' }} onchange="toggleG2GOthers()">
-                <label class="form-check-label" for="israel">Israel</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="g2g_country" id="germany" {{ isset($sectionC['germany']) ? 'checked' : '' }} onchange="toggleG2GOthers()">
-                <label class="form-check-label" for="germany">Germany</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="g2g_country" id="others" {{ isset($sectionC['g2g_others']) ? 'checked' : '' }} onchange="toggleG2GOthers()">
-                <label class="form-check-label" for="others">Others:</label>
-              </div>
-              <input type="text" id="g2g_others_text" class="form-control" name="g2g_others_text" value="{{ $sectionC['g2g_others_specify']->value ?? '' }}" style="margin-left: 1.5rem; margin-top: 0.25rem; width: calc(100% - 1.5rem);" >
-            </div>
+          <div class="col-md-3">
+            <label class="form-label">First Name</label>
+            <input type="text" class="form-control disabled" name="party_fname" value="{{ $party->party_fname ?? '' }}" required>
           </div>
-
-          <div class="mb-2">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="other_concerns_mwpd" name="mwpd[]" {{ isset($sectionC['other_concerns_mwpd']) ? 'checked' : '' }} onchange="toggleTextbox('other_concerns_mwpd_text', this.checked)">
-              <label class="form-check-label" for="other_concerns_mwpd">Other Concerns</label>
-            </div>
-            <input type="text" class="form-control" id="other_concerns_mwpd_text" name="other_concerns_mwpd_text" value="{{ $sectionC['other_concerns_mwpd_text']->value ?? '' }}" style="margin-top: 0.25rem; padding-left: 1.5rem;"  >
-          </div> -->
+          <div class="col-md-2">
+            <label class="form-label">Name Ext.</label>
+            <input type="text" class="form-control disabled" name="party_ename" value="{{ $party->party_ename ?? ''   }}">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Middle Name</label>
+            <input type="text" class="form-control disabled" name="party_mname" value="{{ $party->party_mname ?? '' }}">
+          </div>
         </div>
 
-        <!-- WELFARE AND REINTEGRATION SERVICES DIVISION -->
-        <div style="border: 1px solid #b0c4de; border-radius: 0.25rem; padding: 0.75rem; margin-bottom: 1rem; background-color: #e8f1fb;">
-          <h6 style="font-weight: bold; margin-bottom: 0.75rem; text-decoration: underline;">WELFARE AND REINTEGRATION SERVICES DIVISION</h6>
-          
-          <!-- <div class="mb-2">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="reint_serv" name="wrsd[]" {{ isset($sectionC['reint_serv']) ? 'checked' : '' }} onchange="toggleTextbox('reint_serv_text', this.checked)">
-              <label class="form-check-label" for="reint_serv">Reintegration Services:</label>
-            </div>
-            <input type="text" id="reint_serv_text" name="reint_serv_text" class="form-control" value="{{ $sectionC['reint_serv_text']->value ?? '' }}" style="width: calc(100% - 1.5rem); margin-left: 1.5rem; margin-top: 0.25rem; margin-bottom: 0.75rem;">
+        <div class="row g-3 mb-3">
+
+          <div class="col-6 col-md-3">
+            <label class="form-label">Birthday</label>
+            <input type="date" class="form-control disabled" name="party_bday" value="{{ $party->party_bday ?? '' }}" required>
           </div>
 
-          <div class="mb-2">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="spims" name="wrsd[]" {{ isset($sectionC['spims']) ? 'checked' : '' }}>
-              <label class="form-check-label" for="spims">Sa Pinas, Ikaw ang Ma'am at Sir (SPIMS)</label>
-            </div>
+          <div class="col-6 col-md-3">
+            <label class="form-label">Sex</label>
+            <input type="text" class="form-control disabled" value="{{ $party->party_gender ?? '' }}">
           </div>
 
-          <div class="mb-2">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="assistance_nationals" name="wrsd[]" {{ isset($sectionC['assistance_nationals']) ? 'checked' : '' }} onchange="toggleAssistanceTypeRadios()">
-              <label class="form-check-label" for="assistance_nationals">Assistance to Nationals:</label>
-            </div>
-            <div style="margin-left: 1.5rem; margin-top: 0.5rem;">
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="assistance_type" id="shipment_remains" value="shipment_remains" {{ isset($sectionC['shipment_remains']) ? 'checked' : '' }} onchange="toggleAssistanceOthers()">
-                <label class="form-check-label" for="shipment_remains">Request for shipment or remains / belongs</label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="assistance_type" id="assistance_other" {{ isset($sectionC['assistance_other']) ? 'checked' : '' }} onchange="toggleAssistanceOthers()">
-                <label class="form-check-label" for="assistance_other">Others:</label>
-              </div>
-              <input type="text" id="assistance_others_text" name="assistance_others_text" class="form-control" value="{{ $sectionC['assistance_others_text']->value ?? '' }}" style="margin-left: 1.5rem; margin-top: 0.25rem; width: calc(100% - 1.5rem); margin-bottom: 0.75rem;">
-            </div>
+          <div class="col-md-6">
+            <label class="form-label">Relationship to OFW</label>
+            <input type="text" class="form-control disabled" name="party_relationship" value="{{ $party->party_relationship ?? '' }}" required>
           </div>
 
-          <div class="mb-2">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="repatriation" name="wrsd[]" {{ isset($sectionC['repatriation']) ? 'checked' : '' }}>
-              <label class="form-check-label" for="repatriation">Repatriation</label>
-            </div>
-          </div> -->
-
-          <div class="mb-2">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="aksyon" name="wrsd[]" {{ isset($sectionC['aksyon']) ? 'checked' : '' }} disabled>
-              <label class="form-check-label" for="aksyon">Financial Assistance through AKSYON fund</label>
-            </div>
-          </div>
-
-          <!-- <div class="mb-2">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="other_concerns_wrsd" name="wrsd[]" {{ isset($sectionC['other_concerns_wrsd']) ? 'checked' : '' }} onchange="toggleTextbox('other_concerns_wrsd_text', this.checked)">
-              <label class="form-check-label" for="other_concerns_wrsd">Others</label>
-            </div>
-            <input type="text" class="form-control" id="other_concerns_wrsd_text" name="other_concerns_wrsd_text" value="{{ $sectionC['other_concerns_wrsd_text']->value ?? '' }}" style="margin-top: 0.25rem; padding-left: 1.5rem;">
-          </div> -->
         </div>
 
-        <!-- MIGRANT WORKERS PROTECTION DIVISION -->
-        <div style="border: 1px solid #b0c4de; border-radius: 0.25rem; padding: 0.75rem; margin-bottom: 1rem; background-color: #e8f1fb;">
-          <h6 style="font-weight: bold; margin-bottom: 0.75rem; text-decoration: underline;">MIGRANT WORKERS PROTECTION DIVISION</h6>
-          
-          <div class="mb-2">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="ofw_info_sheet_mwpd_protection" name="mwpd_protection[]" {{ isset($sectionC['ofw_info_sheet_mwpd_protection']) ? 'checked' : '' }} disabled>
-              <label class="form-check-label" for="ofw_info_sheet_mwpd_protection">Request for OFW Information Sheet for legal purposes</label>
+        <div class="row g-3 mb-3">
+          <div class="col-md-6">
+            <label class="form-label">Contact Number</label>
+            <input type="text" class="form-control disabled" name="party_phone" value="{{ $party->party_phone ?? '' }}" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-control disabled" name="party_email" value="{{ $party->party_email ?? '' }}" required>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Address in the Philippines</label>
+          <input type="text" class="form-control mb-2 disabled" name="party_house_no" value="{{ $party_address->house_no ?? '' }}" required>
+          <div class="row g-3">
+            <div class="col-6 col-md-3">
+              <input type="text" class="form-control disabled" name="party_province_name" id="party_province_name" value="{{ $party_address->province ?? '' }}">
+            </div>
+            <div class="col-6 col-md-3">
+              <input type="text" class="form-control disabled" name="party_municipality_name" id="party_municipality_name" value="{{ $party_address->municipality ?? '' }}">
+            </div>
+            <div class="col-6 col-md-3">
+              <input type="text" class="form-control disabled" name="party_barangay_name" id="party_barangay_name" value="{{ $party_address->brgy ?? '' }}">
+            </div>
+            <div class="col-6 col-md-3">
+              <input type="text" class="form-control disabled" name="zip_code" value="{{ $party_address->zip_code ?? '' }}" 
+                            minlength="4" maxlength="4" pattern="\d{4}" inputmode="numeric" required>
             </div>
           </div>
+        </div>
+    </div>
 
-          <div class="mb-2">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="sena" name="mwpd_protection[]" {{ isset($sectionC['sena']) ? 'checked' : '' }} disabled>
-              <label class="form-check-label" for="sena">Request for Assistance for SEnA/Conciliation</label>
+    
+
+    <div class="form-section">
+        <div class="mb-3">
+            <h5>C. PALIWANAG NG HILING (Nature of Request)</h5>
+                <p class="mb-3">Ilahad dito ang maikling paliwanag kung anong uri ng tulong ang inyong hinihingi, kasama ang mahahalagang detalye tulad ng dahilan, kailan at saan ito kinakailangan.</p>
+                <textarea class="form-control" rows="7" placeholder="Text here..." name="nature_of_request" disabled>{{ $request->nature_of_request }}</textarea>
+        </div>
+    </div>
+
+    @if($request->status == 'NEW_SUBMISSION')
+      
+        <div class="d-grid gap-2">
+            <button type="button" id="nextButton" class="btn btn-success btn-lg fw-bold" style="background-color: #2d7a2d; border-color: #2d7a2d;">Next</button>
+        </div>
+        
+    @else
+        <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">New Submission</h4>
+            <p>This request has been submitted and is awaiting review. Please check back later for updates on the status of this request.</p>
+        </div> 
+    @endif
+   
+    <!-- Forms selection modal -->
+    <div class="modal fade" id="formsSelectionModal" tabindex="-1" aria-labelledby="formsSelectionModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header" style="background-color: hsl(220, 49%, 51%); color: white;">
+            <h5 class="modal-title" id="formsSelectionModalLabel">Choose Forms to Fill</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p class="mb-3">Please select the form(s) that the client will fill out next.</p>
+            <div class="row g-3">
+              <div class="col-md-12">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="REQUEST FOR ASSISTANCE (RFA) FORM" id="formOptionRfa">
+                  <label class="form-check-label" for="formOptionRfa">REQUEST FOR ASSISTANCE (RFA) FORM</label>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="REQUEST FOR VERIFICATION / CERTIFICATION OF OFW RECORDS" id="formOptionProcessing">
+                  <label class="form-check-label" for="formOptionProcessing">REQUEST FOR VERIFICATION / CERTIFICATION OF OFW RECORDS</label>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="SINGLE-ENTRY APPROACH (SENA)" id="formOptionSena">
+                  <label class="form-check-label" for="formOptionSena">SINGLE-ENTRY APPROACH (SENA)</label>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="ENHANCED LIVEHOOD PROGRAM FOR OFW REINTEGRATION (ELPOR) APPLICATION FORM" id="formOptionElpor">
+                  <label class="form-check-label" for="formOptionElpor">ENHANCED LIVEHOOD PROGRAM FOR OFW REINTEGRATION (ELPOR) APPLICATION FORM</label>
+                </div>
+              </div>
+            </div>
+            <div id="selectedFormsSummary" class="mt-4" style="display:none;">
+              <h6 class="mb-2">Selected forms:</h6>
+              <ul class="list-group" id="selectedFormsList"></ul>
             </div>
           </div>
-
-          <!-- <div class="mb-2">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="legal_assistance" name="mwpd_protection[]" {{ isset($sectionC['legal_assistance']) ? 'checked' : '' }}>
-              <label class="form-check-label" for="legal_assistance">Request for legal assistance/counseling</label>
-            </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-confirm" id="confirmFormSelectionButton">Confirm Selection</button>
           </div>
-
-          <div class="mb-2">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="illegal_recruitment" name="mwpd_protection[]" {{ isset($sectionC['illegal_recruitment']) ? 'checked' : '' }}>
-              <label class="form-check-label" for="illegal_recruitment">Request for the issuance of Illegal Recruitment Certification</label>
-            </div>
-          </div>
-
-          <div class="mb-2">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="disc_action" name="mwpd_protection[]" {{ isset($sectionC['disc_action']) ? 'checked' : '' }}>
-              <label class="form-check-label" for="disc_action">Request for the issuance of Disciplinary Action Agains Employer / Work and/or Recruitment Violation</label>
-            </div>
-          </div>
-
-          <div class="mb-2">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="other_concerns_mwpd_protection" name="mwpd_protection[]" {{ isset($sectionC['other_concerns_mwpd_protection']) ? 'checked' : '' }} onchange="toggleTextbox('other_concerns_mwpd_protection_text', this.checked)">
-              <label class="form-check-label" for="other_concerns_mwpd_protection">Others</label>
-            </div>
-            <input type="text" class="form-control" id="other_concerns_mwpd_protection_text" name="other_concerns_mwpd_protection_text" value="{{ $sectionC['other_concerns_mwpd_protection_text']->value ?? '' }}" style="margin-top: 0.25rem; padding-left: 1.5rem;">
-          </div> -->
         </div>
       </div>
+    </div>
+
+    <!-- Full-screen Loader Overlay -->
+    <div id="submissionLoader" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(255,255,255,0.92); backdrop-filter:blur(4px); flex-direction:column; align-items:center; justify-content:center;">
+      <div style="background:#fff; border-radius:16px; box-shadow:0 8px 40px rgba(0,0,0,0.13); padding:2.5rem 3rem; text-align:center; max-width:380px; width:90%;">
+        
+        <!-- Spinner -->
+        <div style="margin-bottom:1.5rem;">
+          <div id="loaderSpinner" style="width:64px;height:64px;border:5px solid #e2e8f0;border-top-color:hsl(220,49%,51%);border-radius:50%;animation:spin 0.85s linear infinite;margin:0 auto;"></div>
+          <div id="loaderCheckmark" style="display:none; width:64px;height:64px;margin:0 auto;">
+            <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:64px;height:64px;">
+              <circle cx="32" cy="32" r="30" fill="#2d7a2d" opacity="0.1"/>
+              <circle cx="32" cy="32" r="30" stroke="#2d7a2d" stroke-width="4" fill="none" stroke-dasharray="188" stroke-dashoffset="0"/>
+              <polyline points="18,33 28,43 46,22" stroke="#2d7a2d" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none" style="stroke-dasharray:50;stroke-dashoffset:0;animation:drawCheck 0.4s ease forwards;"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Step label -->
+        <h5 id="loaderTitle" style="font-family:'Assistant',sans-serif;font-weight:700;color:#1a202c;margin-bottom:0.5rem;">Saving Records</h5>
+        <p id="loaderDesc" style="font-family:'Assistant',sans-serif;font-size:0.9rem;color:#64748b;margin-bottom:1.5rem;">Please wait while we record the selected forms...</p>
+
+        <!-- Step indicators -->
+        <div style="display:flex;align-items:center;justify-content:center;gap:0.5rem;">
+          <div class="loader-step" id="step1" style="display:flex;align-items:center;gap:0.35rem;font-size:0.78rem;font-family:'Assistant',sans-serif;color:#94a3b8;">
+            <span id="step1Icon" style="width:18px;height:18px;border-radius:50%;background:#e2e8f0;display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;">1</span>
+            <span>Saving</span>
+          </div>
+          <div style="width:28px;height:2px;background:#e2e8f0;border-radius:2px;"></div>
+          <div class="loader-step" id="step2" style="display:flex;align-items:center;gap:0.35rem;font-size:0.78rem;font-family:'Assistant',sans-serif;color:#94a3b8;">
+            <span id="step2Icon" style="width:18px;height:18px;border-radius:50%;background:#e2e8f0;display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;">2</span>
+            <span>Sending Email</span>
+          </div>
+          <div style="width:28px;height:2px;background:#e2e8f0;border-radius:2px;"></div>
+          <div class="loader-step" id="step3" style="display:flex;align-items:center;gap:0.35rem;font-size:0.78rem;font-family:'Assistant',sans-serif;color:#94a3b8;">
+            <span id="step3Icon" style="width:18px;height:18px;border-radius:50%;background:#e2e8f0;display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;">3</span>
+            <span>Done</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      @keyframes spin { to { transform: rotate(360deg); } }
+      @keyframes drawCheck { from { stroke-dashoffset: 50; } to { stroke-dashoffset: 0; } }
+    </style>
+
   </div>
 
   <!-- Bootstrap JS -->
 
 
   <script>
-    
+      document.addEventListener('DOMContentLoaded', function () {
+        var nextButton = document.getElementById('nextButton');
+        var confirmButton = document.getElementById('confirmFormSelectionButton');
+        var modalElement = document.getElementById('formsSelectionModal');
+        var formsSelectionModal = new bootstrap.Modal(modalElement);
 
+        nextButton.addEventListener('click', function () {
+          formsSelectionModal.show();
+        });
 
+        confirmButton.addEventListener('click', function () {
+          var selected = Array.from(modalElement.querySelectorAll('input[type="checkbox"]'))
+            .filter(cb => cb.checked)
+            .map(cb => cb.value);
 
+          if (selected.length === 0) {
+            alert('Please choose at least one form to continue.');
+            return;
+          }
 
+          // Close modal first, then show loader
+          formsSelectionModal.hide();
+          modalElement.addEventListener('hidden.bs.modal', function onHidden() {
+            modalElement.removeEventListener('hidden.bs.modal', onHidden);
+            showLoader();
+            updateNewSubmission(selected);
+          });
+        });
+      });
 
-  </script>
+      // --- Loader helpers ---
+      function showLoader() {
+        document.getElementById('submissionLoader').style.display = 'flex';
+        setStep(1, 'active');
+      }
+
+      function setStep(stepNum, state) {
+        // state: 'active' | 'done'
+        const el = document.getElementById('step' + stepNum + 'Icon');
+        if (state === 'active') {
+          el.style.background = 'hsl(220,49%,51%)';
+          el.style.color = '#fff';
+          document.getElementById('step' + stepNum).style.color = 'hsl(220,49%,51%)';
+        } else if (state === 'done') {
+          el.style.background = '#2d7a2d';
+          el.style.color = '#fff';
+          el.textContent = '✓';
+          document.getElementById('step' + stepNum).style.color = '#2d7a2d';
+        }
+      }
+
+      function setLoaderMessage(title, desc) {
+        document.getElementById('loaderTitle').textContent = title;
+        document.getElementById('loaderDesc').textContent = desc;
+      }
+
+      function showSuccess(redirectUrl) {
+        document.getElementById('loaderSpinner').style.display = 'none';
+        document.getElementById('loaderCheckmark').style.display = 'block';
+        setStep(1, 'done');
+        setStep(2, 'done');
+        setStep(3, 'done');
+        setLoaderMessage('All Done!', 'Redirecting you now...');
+        setTimeout(() => { window.location.href = redirectUrl; }, 1800);
+      }
+
+      // --- API call ---
+      function updateNewSubmission(selectedForms) {
+        const requestId = parseInt(document.querySelector('.container').dataset.requestId);
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        // Step 1: Saving
+        setLoaderMessage('Saving Records', 'Recording the selected forms to the database...');
+        setStep(1, 'active');
+
+        fetch(`/forms-submitted/${requestId}/updateNewSubmission`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken,
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            selected_forms: selectedForms,
+            status: 'FORMS_REQUESTED'
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // Step 2: Sending email
+            setStep(1, 'done');
+            setStep(2, 'active');
+            setLoaderMessage('Sending Email', 'Notifying the client via email...');
+
+            // Small delay to let the "sending email" state be visible
+            // (your backend handles the mail; this just gives visual feedback)
+            setTimeout(() => {
+              setStep(2, 'done');
+              setStep(3, 'active');
+              setLoaderMessage('Finishing Up', 'Almost there...');
+
+              setTimeout(() => {
+                const redirectUrl = data.redirect_url || `/forms-submitted/request/${requestId}`;
+                showSuccess(redirectUrl);
+              }, 800);
+            }, 1200);
+
+          } else {
+            hideLoaderWithError(data.message || 'Unknown error');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          hideLoaderWithError('A network error occurred. Please try again.');
+        });
+      }
+
+      function hideLoaderWithError(message) {
+        document.getElementById('submissionLoader').style.display = 'none';
+        alert('Error: ' + message);
+      }
+    </script>
 
 @endsection

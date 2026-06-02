@@ -37,12 +37,18 @@
       font-weight: 500;
     }
 
+    .btn-confirm{
+      background-color: #2F5BB7;
+      color: #fff;
+    }
+
    
  
   </style>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700&display=swap" rel="stylesheet">
  
   <div class="container my-5">
+    
     <form action="{{ route('forms.general.store') }}" method="POST">
       @csrf
       <!-- Header -->
@@ -78,122 +84,25 @@
       @endif
 
       <!-- Section A -->
+      
       <div class="form-section">
-        <h5>A. IMPORMASYON NG HUMIHILING (Request Party)</h5>
-
+        <h5>A. IMPORMASYON NG OFW</h5>
           <div class="row g-3 mb-3">
             <div class="col-md-3">
               <label class="form-label">Last Name</label>
-              <!-- <input type="text" class="form-control uppercase" name="party_lname" placeholder="Dela Cruz" value="{{ old('party_lname') }}" required> -->
-              <input type="text" class="form-control uppercase" name="party_lname" placeholder="Dela Cruz" value="{{ session('general_form_data.party_lname') }}">
+              <input type="text" class="form-control uppercase" name="ofw_lname" placeholder="Dela Cruz" value="{{ old('ofw_lname') }}" required>
             </div>
             <div class="col-md-3">
               <label class="form-label">First Name</label>
-              <input type="text" class="form-control uppercase" name="party_fname" placeholder="Juan" value="{{ session('general_form_data.party_fname') }}">
+              <input type="text" class="form-control uppercase" name="ofw_fname" placeholder="Juan" value="{{ old('ofw_fname') }}" required>
             </div>
             <div class="col-md-2">
               <label class="form-label">Name Ext.</label>
-              <input type="text" class="form-control uppercase" name="party_ename" placeholder="Jr/Sr/III" value="{{ session('general_form_data.party_ename') }}">
+              <input type="text" class="form-control uppercase" name="ofw_ename" placeholder="Jr/Sr/III" value="{{ old('ofw_ename') }}">
             </div>
             <div class="col-md-4">
               <label class="form-label">Middle Name</label>
-              <input type="text" class="form-control uppercase" name="party_mname" placeholder="Santos" value="{{ session('general_form_data.party_mname') }}">
-            </div>
-          </div>
-
-          <div class="row g-3 mb-3">
-
-            <div class="col-6 col-md-3">
-              <label class="form-label">Birthday</label>
-              <input type="date" class="form-control" name="party_bday" value="{{ session('general_form_data.party_bday') }}">
-            </div>
-
-            <div class="col-6 col-md-3">
-              <label class="form-label">Sex</label>
-              <select class="form-select" name="party_gender">
-                <option selected disabled>Select</option>
-                <option value="Male" {{ session('general_form_data.party_gender') == 'Male' ? 'selected' : '' }}>Male</option>
-                <option value="Female" {{ session('general_form_data.party_gender') == 'Female' ? 'selected' : '' }}>Female</option>
-              </select>
-            </div>
-
-            <div class="col-md-6">
-              <label class="form-label">Relationship to OFW</label>
-              <input type="text" class="form-control uppercase" name="party_relationship" placeholder="ex. Brother" value="{{ session('general_form_data.party_relationship') }}">
-            </div>
-
-          </div>
-
-          <div class="row g-3 mb-3">
-            <div class="col-md-6">
-              <label class="form-label">Contact Number</label>
-              <input type="text" class="form-control" name="party_phone" placeholder="ex. 09123456768" value="{{ session('general_form_data.party_phone') }}">
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Email Address</label>
-              <input type="email" class="form-control" name="party_email" placeholder="ex. sample@email.com" value="{{ session('general_form_data.party_email') }}">
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label">Address in the Philippines</label>
-            <input type="text" class="form-control mb-2 uppercase" name="party_address_street" placeholder="Unit/Room/House Number/Street name" value="{{ session('general_form_data.party_address_street') }}">
-            <div class="row g-3">
-              <div class="col-6 col-md-3">
-                <select class="form-select" name="party_province" id="party_province">
-                  <option value="">Province</option>
-                </select>
-                <input type="hidden" name="party_province_name" id="party_province_name">
-              </div>
-              <div class="col-6 col-md-3">
-                <select class="form-select" name="party_municipality" id="party_municipality" disabled>
-                  <option value="">City / Municipality</option>
-                </select>
-                <input type="hidden" name="party_municipality_name" id="party_municipality_name">
-              </div>
-              <div class="col-6 col-md-3">
-                <select class="form-select" name="party_barangay" id="party_barangay" disabled>
-                  <option value="">Barangay</option>
-                </select>
-                <input type="hidden" name="party_barangay_name" id="party_barangay_name" value="{{ session('general_form_data.party_barangay_name') }}">
-              </div>
-              <div class="col-6 col-md-3">
-                <input 
-                    type="text" 
-                    class="form-control" 
-                    name="party_zip_code" 
-                    placeholder="ex. 2016" 
-                    value="{{ session('general_form_data.party_zip_code') }}" 
-                    maxlength="4"          
-                    pattern="\d{4}"         
-                    inputmode="numeric"     
-                    oninput="this.value = this.value.replace(/[^0-9]/g,'').slice(0,4);" 
-                    
-                >
-              </div>
-            </div>
-          </div>
-      </div>
-
-      <!-- Section B -->
-      <div class="form-section">
-        <h5>B. IMPORMASYON NG OFW (Kung Iba sa Humihiling)</h5>
-          <div class="row g-3 mb-3">
-            <div class="col-md-3">
-              <label class="form-label">Last Name</label>
-              <input type="text" class="form-control uppercase" name="ofw_lname" placeholder="Dela Cruz" value="{{ session('general_form_data.ofw_lname') }}">
-            </div>
-            <div class="col-md-3">
-              <label class="form-label">First Name</label>
-              <input type="text" class="form-control uppercase" name="ofw_fname" placeholder="Juan" value="{{ session('general_form_data.ofw_fname') }}">
-            </div>
-            <div class="col-md-2">
-              <label class="form-label">Name Ext.</label>
-              <input type="text" class="form-control uppercase" name="ofw_ename" placeholder="Jr/Sr/III" value="{{ session('general_form_data.ofw_ename') }}">
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Middle Name</label>
-              <input type="text" class="form-control uppercase" name="ofw_mname" placeholder="Santos" value="{{ session('general_form_data.ofw_mname') }}">
+              <input type="text" class="form-control uppercase" name="ofw_mname" placeholder="Santos" value="{{ old('ofw_mname') }}">
             </div>
           </div>
 
@@ -201,25 +110,25 @@
 
             <div class="col-12 col-md-4">
               <label class="form-label">Passport No.</label>
-              <input type="text" class="form-control uppercase" name="ofw_passport_no" placeholder="ex. 123456789" value="{{ session('general_form_data.ofw_passport_no') }}">
+              <input type="text" class="form-control uppercase" name="ofw_passport_no" placeholder="ex. 123456789" value="{{ old('ofw_passport_no') }}" required>
             </div>
 
             <div class="col-6 col-md-4">
               <label class="form-label">Sex</label>
-              <select class="form-select" name="ofw_gender">
+              <select class="form-select" name="ofw_gender" required>
                 <option selected disabled>Select</option>
-                <option value="Male" {{ session('general_form_data.ofw_gender') == 'Male' ? 'selected' : '' }}>Male</option>
-                <option value="Female" {{ session('general_form_data.ofw_gender') == 'Female' ? 'selected' : '' }}>Female</option>
+                <option value="Male" {{ old('ofw_gender') == 'Male' ? 'selected' : '' }}>Male</option>
+                <option value="Female" {{ old('ofw_gender') == 'Female' ? 'selected' : '' }}>Female</option>
               </select>
             </div>
 
             <div class="col-6 col-md-4">
                 <label class="form-label">Civil Status</label>
-                <select class="form-select" name="ofw_civil_status">
-                    <option selected {{ session('general_form_data.ofw_civil_status') == 'Select' ? 'selected' : '' }} disabled>Select</option>
-                    <option value="Single" {{ session('general_form_data.ofw_civil_status') == 'Single' ? 'selected' : '' }}>Single</option>
-                    <option value="Married" {{ session('general_form_data.ofw_civil_status') == 'Married' ? 'selected' : '' }}>Married</option>
-                    <option value="Widowed" {{ session('general_form_data.ofw_civil_status') == 'Widowed' ? 'selected' : '' }}>Widowed</option>
+                <select class="form-select" name="ofw_civil_status" required>
+                    <option selected {{ old('ofw_civil_status') == 'Select' ? 'selected' : '' }} disabled>Select</option>
+                    <option value="Single" {{ old('ofw_civil_status') == 'Single' ? 'selected' : '' }}>Single</option>
+                    <option value="Married" {{ old('ofw_civil_status') == 'Married' ? 'selected' : '' }}>Married</option>
+                    <option value="Widowed" {{ old('ofw_civil_status') == 'Widowed' ? 'selected' : '' }}>Widowed</option>
                 </select>
             </div>
 
@@ -229,63 +138,63 @@
 
             <div class="col-12 col-md-4">
               <label class="form-label">Email Address</label>
-              <input type="email" class="form-control" name="ofw_email" placeholder="ex. sample@email.com" value="{{ session('general_form_data.ofw_email') }}">
+              <input type="email" class="form-control" name="ofw_email" placeholder="ex. sample@email.com" value="{{ old('ofw_email') }}" required>
             </div>
 
             <div class="col-6 col-md-4">
               <label class="form-label">Contact Number</label>
-              <input type="text" class="form-control" name="ofw_phone" placeholder="ex. 09123456768" value="{{ session('general_form_data.ofw_phone') }}">
+              <input type="text" class="form-control" name="ofw_phone" placeholder="ex. 09123456768" value="{{ old('ofw_phone') }}" required>
             </div>
               
             <div class="col-6 col-md-4">
               <label class="form-label">Date of Birth</label>
-              <input type="date" class="form-control" name="ofw_bday" value="{{ session('general_form_data.ofw_bday') }}">
+              <input type="date" class="form-control" name="ofw_bday" value="{{ old('ofw_bday') }}" required>
             </div>
           </div>
 
           <div class="row g-3 mb-3">
             <div class="col-12 col-md-3">
               <label class="form-label">Agency</label>
-              <input type="text" class="form-control uppercase" name="ofw_agency" placeholder="ex. Agency Name" value="{{ session('general_form_data.ofw_agency') }}">
+              <input type="text" class="form-control uppercase" name="ofw_agency" placeholder="ex. Agency Name" value="{{ old('ofw_agency') }}" required>
             </div>
             <div class="col-12 col-md-3">
               <label class="form-label">Employer</label>
-              <input type="text" class="form-control uppercase" name="ofw_employer" placeholder="ex. Employer/Company Name" value="{{ session('general_form_data.ofw_employer') }}">
+              <input type="text" class="form-control uppercase" name="ofw_employer" placeholder="ex. Employer/Company Name" value="{{ old('ofw_employer') }}" required>
             </div>
             <div class="col-6 col-md-3">
               <label class="form-label">Bansa</label>
-              <select class="form-select" name="ofw_country" id="ofw_country">
+              <select class="form-select" name="ofw_country" id="ofw_country" required>
                 <option selected disabled>Select</option>
               </select>
               <input type="hidden" name="ofw_country_name" id="ofw_country_name">
             </div>
             <div class="col-6 col-md-3">
               <label class="form-label">Trabaho</label>
-              <input type="text" class="form-control uppercase" name="ofw_job" placeholder="ex. Driver" value="{{ session('general_form_data.ofw_job') }}">
+              <input type="text" class="form-control uppercase" name="ofw_job" placeholder="ex. Driver" value="{{ old('ofw_job') }}" required>
             </div>
           </div>
 
           <div class="mb-3">
             <label class="form-label">Address in the Philippines</label>
-            <input type="text" class="form-control mb-2 uppercase" name="ofw_address_street" placeholder="Unit/Room/House Number/Street name" value="{{ session('general_form_data.party_address_street') }}">
+            <input type="text" class="form-control mb-2 uppercase" name="ofw_house_no" placeholder="Unit/Room/House Number/Street name" value="{{ old('ofw_house_no') }}" required>
             <div class="row g-3">
               <div class="col-6 col-md-3">
-                <select class="form-select" name="ofw_province" id="ofw_province">
+                <select class="form-select" name="ofw_province" id="ofw_province" required>
                   <option value="">Province</option>
                 </select>
                 <input type="hidden" name="ofw_province_name" id="ofw_province_name">
               </div>
               <div class="col-6 col-md-3">
-                <select class="form-select" name="ofw_municipality" id="ofw_municipality" disabled>
+                <select class="form-select" name="ofw_municipality" id="ofw_municipality" disabled required>
                   <option value="">City / Municipality</option>
                 </select>
                 <input type="hidden" name="ofw_municipality_name" id="ofw_municipality_name">
               </div>
               <div class="col-6 col-md-3">
-                <select class="form-select" name="ofw_barangay" id="ofw_barangay" disabled>
+                <select class="form-select" name="ofw_barangay" id="ofw_barangay" disabled required>
                   <option value="">Barangay</option>
                 </select>
-                <input type="hidden" name="ofw_barangay_name" id="ofw_barangay_name" value="{{ session('general_form_data.ofw_barangay_name') }}">
+                <input type="hidden" name="ofw_barangay_name" id="ofw_barangay_name" value="{{ old('ofw_barangay_name') }}">
               </div>
               <div class="col-6 col-md-3">
                 <input 
@@ -293,199 +202,123 @@
                     class="form-control" 
                     name="ofw_zip_code" 
                     placeholder="ex. 2016" 
-                    value="{{ session('general_form_data.ofw_zip_code') }}" 
+                    value="{{ old('ofw_zip_code') }}" 
                     maxlength="4"          
                     pattern="\d{4}"         
                     inputmode="numeric"     
                     oninput="this.value = this.value.replace(/[^0-9]/g,'').slice(0,4);" 
-
+                    required
                 >
               </div>
             </div>
           </div>
       </div>
+      <div class="form-section">
+        <h5>B. IMPORMASYON NG HUMIHILING (Kung hindi OFW ang humihiling)</h5>
 
-      <!-- Section C -->
-      <div class="form-section form-section-c">
-        <h5>C. URI NG TULONG (Nature Of Request)</h5>
-        <p style="font-size: 0.9rem; margin-bottom: 1rem;">
-          <strong>Halagi o Naturang ng Concern:</strong> Piliin ang lahat ng bagay na sumusunod halaki handi siguruduhin sa uring <em>Concern, Pakialam ng aming PAOs information na nakahintay sa Applicant sa lahat ng impormasyon Dept. Applicant sa nakahihintay tumutulong upang makabuo at dibhiyon pura at pa maiggi oras.</em>
-        </p>
-          <!-- MIGRANT WORKERS PROCESSING DIVISION -->
-          <div style="border: 1px solid #b0c4de; border-radius: 0.25rem; padding: 0.75rem; margin-bottom: 1rem; background-color: #e8f1fb;">
-            <h6 style="font-weight: bold; margin-bottom: 0.75rem; text-decoration: underline;">MIGRANT WORKERS PROCESSING DIVISION</h6>
-            
-            <div class="mb-2">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="ofw_info_sheet_mwpd" name="mwpd[]" value="ofw_info_sheet_mwpd" {{ in_array('ofw_info_sheet_mwpd', session('general_form_data.mwpd', [])) ? 'checked' : '' }}>
-                <label class="form-check-label" for="ofw_info_sheet_mwpd">OFW Records/OFW Information Sheet</label>
-              </div>
+          <div class="row g-3 mb-3">
+            <div class="col-md-3">
+              <label class="form-label">Last Name</label>
+              <!-- <input type="text" class="form-control uppercase" name="party_lname" placeholder="Dela Cruz" value="{{ old('party_lname') }}" required> -->
+              <input type="text" class="form-control uppercase" name="party_lname" placeholder="Dela Cruz" value="{{ old('party_lname') }}" required>
             </div>
-
-            <!-- <div class="mb-2">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="oec_processing" name="mwpd[]" value="oec_processing" disabled>
-                <label class="form-check-label" for="oec_processing">Direct-Hire OEC processing concerns</label>
-              </div>
+            <div class="col-md-3">
+              <label class="form-label">First Name</label>
+              <input type="text" class="form-control uppercase" name="party_fname" placeholder="Juan" value="{{ old('party_fname') }}" required>
             </div>
-
-            <div class="mb-2">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="gov_to_gov" name="mwpd[]" value="gov_to_gov" onchange="toggleG2GCountries()" disabled>
-                <label class="form-check-label" for="gov_to_gov">Submission of Government-to-Government application</label>
-              </div>
-              <div style="margin-left: 1.5rem; margin-top: 0.5rem;">
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="g2g_country" id="taiwan" value="taiwan" onchange="toggleG2GOthers()" disabled>
-                  <label class="form-check-label" for="taiwan">Taiwan</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="g2g_country" id="moh_ksa" value="moh_ksa" onchange="toggleG2GOthers()" disabled>
-                  <label class="form-check-label" for="moh_ksa">MOH-KSA</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="g2g_country" id="japan" value="japan" onchange="toggleG2GOthers()" disabled>
-                  <label class="form-check-label" for="japan">JPEPA-Japan</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="g2g_country" id="israel" value="israel" onchange="toggleG2GOthers()" disabled>
-                  <label class="form-check-label" for="israel">Israel</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="g2g_country" id="germany" value="germany" onchange="toggleG2GOthers()" disabled>
-                  <label class="form-check-label" for="germany">Germany</label>
-                </div>
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="g2g_country" id="g2g_others" value="g2g_others" onchange="toggleG2GOthers()" disabled>
-                  <label class="form-check-label" for="g2g_others">Others:</label>
-                </div>
-                <input type="text" id="g2g_others_text" class="form-control" name="g2g_others_text" style="margin-left: 1.5rem; margin-top: 0.25rem; width: calc(100% - 1.5rem);" placeholder="Specify others" readonly>
-              </div>
+            <div class="col-md-2">
+              <label class="form-label">Name Ext.</label>
+              <input type="text" class="form-control uppercase" name="party_ename" placeholder="Jr/Sr/III" value="{{ old('party_ename') }}">
             </div>
-
-            <div class="mb-2">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="other_concerns_mwpd" name="mwpd[]" value="other_concerns_mwpd" onchange="toggleTextbox('other_concerns_mwpd_text', this.checked)" disabled>
-                <label class="form-check-label" for="other_concerns_mwpd">Other Concerns</label>
-              </div>
-              <input type="text" class="form-control" id="other_concerns_mwpd_text" name="other_concerns_mwpd_text" placeholder="Specify other concerns" style="margin-top: 0.25rem; padding-left: 1.5rem;" readonly>
-            </div> -->
+            <div class="col-md-4">
+              <label class="form-label">Middle Name</label>
+              <input type="text" class="form-control uppercase" name="party_mname" placeholder="Santos" value="{{ old('party_mname') }}">
+            </div>
           </div>
 
-          <!-- WELFARE AND REINTEGRATION SERVICES DIVISION -->
-          <div style="border: 1px solid #b0c4de; border-radius: 0.25rem; padding: 0.75rem; margin-bottom: 1rem; background-color: #e8f1fb;">
-            <h6 style="font-weight: bold; margin-bottom: 0.75rem; text-decoration: underline;">WELFARE AND REINTEGRATION SERVICES DIVISION</h6>
-            
-            <!-- <div class="mb-2">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="reint_serv" name="wrsd[]" value="reint_serv" onchange="toggleTextbox('reint_serv_text', this.checked)" disabled>
-                <label class="form-check-label" for="reint_serv">Reintegration Services:</label>
-              </div>
-              <input type="text" id="reint_serv_text" name="reint_serv_text" class="form-control" placeholder="Specify services" style="width: calc(100% - 1.5rem); margin-left: 1.5rem; margin-top: 0.25rem; margin-bottom: 0.75rem;" readonly>
+          <div class="row g-3 mb-3">
+
+            <div class="col-6 col-md-3">
+              <label class="form-label">Birthday</label>
+              <input type="date" class="form-control" name="party_bday" value="{{ old('party_bday') }}" required>
             </div>
 
-            <div class="mb-2">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="spims" name="wrsd[]" value="spims" disabled>
-                <label class="form-check-label" for="spims">Sa Pinas, Ikaw ang Ma'am at Sir (SPIMS)</label>
-              </div>
+            <div class="col-6 col-md-3">
+              <label class="form-label">Sex</label>
+              <select class="form-select" name="party_gender" required>
+                <option selected disabled>Select</option>
+                <option value="Male" {{ old('party_gender') == 'Male' ? 'selected' : '' }}>Male</option>
+                <option value="Female" {{ old('party_gender') == 'Female' ? 'selected' : '' }}>Female</option>
+              </select>
             </div>
 
-            <div class="mb-2">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="assistance_nationals" name="wrsd[]" value="assistance_nationals" onchange="toggleAssistanceTypeRadios()" disabled>
-                <label class="form-check-label" for="assistance_nationals">Assistance to Nationals:</label>
-              </div>
-              <div style="margin-left: 1.5rem; margin-top: 0.5rem;">
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="assistance_type" id="shipment_remains" value="shipment_remains" onchange="toggleAssistanceOthers()" disabled>
-                  <label class="form-check-label" for="shipment_remains">Request for shipment or remains / belongs</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="radio" name="assistance_type" id="assistance_other" value="assistance_other" onchange="toggleAssistanceOthers()" disabled>
-                  <label class="form-check-label" for="assistance_other">Others:</label>
-                </div>
-                <input type="text" id="assistance_others_text" name="assistance_others_text" class="form-control" placeholder="Specify others" style="margin-left: 1.5rem; margin-top: 0.25rem; width: calc(100% - 1.5rem); margin-bottom: 0.75rem;" readonly>
-              </div>
+            <div class="col-md-6">
+              <label class="form-label">Relationship to OFW</label>
+              <input type="text" class="form-control uppercase" name="party_relationship" placeholder="ex. Brother" value="{{ old('party_relationship') }}" required>
             </div>
 
-            <div class="mb-2">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="repatriation" name="wrsd[]" value="repatriation" disabled>
-                <label class="form-check-label" for="repatriation">Repatriation</label>
-              </div>
-            </div> -->
-
-            <div class="mb-2">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="aksyon" name="wrsd[]" value="aksyon" {{ in_array('aksyon', session('general_form_data.wrsd', [])) ? 'checked' : '' }}>
-                <label class="form-check-label" for="aksyon">Financial Assistance through AKSYON fund</label>
-              </div>
-            </div>
-
-            <!-- <div class="mb-2">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="other_concerns_wrsd" name="wrsd[]" value="others" onchange="toggleTextbox('other_concerns_wrsd_text', this.checked)" disabled>
-                <label class="form-check-label" for="other_concerns_wrsd">Others</label>
-              </div>
-              <input type="text" class="form-control" id="other_concerns_wrsd_text" name="other_concerns_wrsd_text" placeholder="Specify other concerns" style="margin-top: 0.25rem; padding-left: 1.5rem;" readonly>
-            </div> -->
           </div>
 
-          <!-- MIGRANT WORKERS PROTECTION DIVISION -->
-          <div style="border: 1px solid #b0c4de; border-radius: 0.25rem; padding: 0.75rem; margin-bottom: 1rem; background-color: #e8f1fb;">
-            <h6 style="font-weight: bold; margin-bottom: 0.75rem; text-decoration: underline;">MIGRANT WORKERS PROTECTION DIVISION</h6>
-            
-            <div class="mb-2">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="ofw_info_sheet_mwpd_protection" name="mwpd_protection[]" value="ofw_info_sheet_mwpd_protection" {{ in_array('ofw_info_sheet_mwpd_protection', session('general_form_data.mwpd_protection', [])) ? 'checked' : '' }}>
-                <label class="form-check-label" for="ofw_info_sheet_mwpd_protection">Request for OFW Information Sheet for legal purposes</label>
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label">Contact Number</label>
+              <input type="text" class="form-control" name="party_phone" placeholder="ex. 09123456768" value="{{ old('party_phone') }}" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Email Address</label>
+              <input type="email" class="form-control" name="party_email" placeholder="ex. sample@email.com" value="{{ old('party_email') }}" required>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Address in the Philippines</label>
+            <input type="text" class="form-control mb-2 uppercase" name="party_house_no" placeholder="Unit/Room/House Number/Street name" value="{{ old('party_house_no') }}" required>
+            <div class="row g-3">
+              <div class="col-6 col-md-3">
+                <select class="form-select" name="party_province" id="party_province" required>
+                  <option value="">Province</option>
+                </select>
+                <input type="hidden" name="party_province_name" id="party_province_name">
+              </div>
+              <div class="col-6 col-md-3">
+                <select class="form-select" name="party_municipality" id="party_municipality" disabled required>
+                  <option value="">City / Municipality</option>
+                </select>
+                <input type="hidden" name="party_municipality_name" id="party_municipality_name">
+              </div>
+              <div class="col-6 col-md-3">
+                <select class="form-select" name="party_barangay" id="party_barangay" disabled required>
+                  <option value="">Barangay</option>
+                </select>
+                <input type="hidden" name="party_barangay_name" id="party_barangay_name" value="{{ old('party_barangay_name') }}">
+              </div>
+              <div class="col-6 col-md-3">
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    name="party_zip_code" 
+                    placeholder="ex. 2016" 
+                    value="{{ old('party_zip_code') }}" 
+                    maxlength="4"          
+                    pattern="\d{4}"         
+                    inputmode="numeric"     
+                    oninput="this.value = this.value.replace(/[^0-9]/g,'').slice(0,4);" 
+                    required
+                >
               </div>
             </div>
-
-            <div class="mb-2">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="sena" name="mwpd_protection[]" value="sena" {{ in_array('sena', session('general_form_data.mwpd_protection', [])) ? 'checked' : '' }}>
-                <label class="form-check-label" for="sena">Request for Assistance for SEnA/Conciliation</label>
-              </div>
-            </div>
-
-            <!-- <div class="mb-2">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="legal_assistance" name="mwpd_protection[]" value="legal_assistance" disabled>
-                <label class="form-check-label" for="legal_assistance">Request for legal assistance/counseling</label>
-              </div>
-            </div>
-
-            <div class="mb-2">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="illegal_recruitment" name="mwpd_protection[]" value="illegal_recruitment" disabled>
-                <label class="form-check-label" for="illegal_recruitment">Request for the issuance of Illegal Recruitment Certification</label>
-              </div>
-            </div>
-
-            <div class="mb-2">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="disc_action" name="mwpd_protection[]" value="disc_action" disabled>
-                <label class="form-check-label" for="disc_action">Request for the issuance of Disciplinary Action Agains Employer / Work and/or Recruitment Violation</label>
-              </div>
-            </div>
-
-            <div class="mb-2">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="other_concerns_mwpd_protection" name="mwpd_protection[]" value="others" onchange="toggleTextbox('other_concerns_mwpd_protection_text', this.checked)" disabled>
-                <label class="form-check-label" for="other_concerns_mwpd_protection">Others</label>
-              </div>
-              <input type="text" class="form-control" id="other_concerns_mwpd_protection_text" name="other_concerns_mwpd_protection_text" placeholder="Specify other concerns" style="margin-top: 0.25rem; padding-left: 1.5rem;" readonly>
-            </div>
-          </div> -->
-
-
-        
+          </div>
       </div>
-
+      <div class="form-section">
+         <div class="mb-3">
+              <h5>C. PALIWANAG NG HILING (Nature of Request)</h5>
+                <p class="mb-3">Ilahad dito ang maikling paliwanag kung anong uri ng tulong ang inyong hinihingi, kasama ang mahahalagang detalye tulad ng dahilan, kailan at saan ito kinakailangan.</p>
+                <textarea class="form-control" rows="7" placeholder="Text here..." name="nature_of_request" required></textarea>
+          </div>
+      </div>
+     
       <div class="d-grid gap-2">
-        <button type="submit" class="btn btn-success btn-lg fw-bold" style="background-color: #2d7a2d; border-color: #2d7a2d;">Next</button>
+        <button type="button" class="btn btn-success btn-lg fw-bold" style="background-color: #2d7a2d; border-color: #2d7a2d;" onclick="validateAndSubmit()">Submit</button>
       </div>
     </form>
 
@@ -501,13 +334,37 @@
 
           <!-- Modal Body -->
           <div class="modal-body">
-            Please select at least one concern under Nature of Request (Section C) to proceed.
+            Please fill up all required fields before submitting the form.
           </div>
 
           <!-- Modal Footer -->
           <div class="modal-footer">
             <button type="button" class="btn btn-primary" data-bs-dismiss="modal" 
                     style="background-color: #2F5BB7; border: none;">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header" style="background-color: #2F5BB7; color: white;">
+            <h5 class="modal-title text-uppercase" id="confirmationModalLabel">Confirm Submission</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <!-- Modal Body -->
+          <div class="modal-body">
+            Are you sure you want to submit this form? Please review your information before proceeding.
+          </div>
+
+          <!-- Modal Footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-confirm" id="confirmSubmitBtn">Yes, Submit</button>
           </div>
         </div>
       </div>
@@ -524,79 +381,8 @@
             this.value = this.value.toUpperCase();
         });
     });
-    window.toggleTextbox = function(textboxId, isChecked) {
-        const textbox = document.getElementById(textboxId);
-        if (isChecked) {
-        textbox.removeAttribute('readonly');
-        textbox.focus();
-        } else {
-        textbox.setAttribute('readonly', 'readonly');
-        textbox.value = '';
-        }
-    }
-
-    window.toggleG2GOthers = function() {
-        const radios = document.getElementsByName('g2g_country');
-        const textbox = document.getElementById('g2g_others_text');
-        let selected = false;
-        for (let radio of radios) {
-        if (radio.checked && radio.value === 'g2g_others') {
-            selected = true;
-            break;
-        }
-        }
-        if (selected) {
-        textbox.removeAttribute('readonly');
-        } else {
-        textbox.setAttribute('readonly', true);
-        textbox.value = '';
-        }
-    }
-
-    window.toggleG2GCountries = function() {
-        const isChecked = document.getElementById('gov_to_gov').checked;
-        const radios = document.getElementsByName('g2g_country');
-        for (let radio of radios) {
-        radio.disabled = !isChecked;
-        if (!isChecked) {
-            radio.checked = false;
-        }
-        }
-        window.toggleG2GOthers();
-    }
-
-    window.toggleAssistanceOthers = function() {
-        const radios = document.getElementsByName('assistance_type');
-        const textbox = document.getElementById('assistance_others_text');
-        let selected = false;
-        for (let radio of radios) {
-        if (radio.checked && radio.value === 'assistance_other') {
-            selected = true;
-            break;
-        }
-        }
-        if (selected) {
-        textbox.removeAttribute('readonly');
-        } else {
-        textbox.setAttribute('readonly', true);
-        textbox.value = '';
-        }
-    }
-
-    window.toggleAssistanceTypeRadios = function() {
-        const isChecked = document.getElementById('assistance_nationals').checked;
-        const radios = document.getElementsByName('assistance_type');
-        for (let radio of radios) {
-        radio.disabled = !isChecked;
-        if (!isChecked) {
-            radio.checked = false;
-        }
-        }
-        window.toggleAssistanceOthers();
-    }
-
     
-
+    
     document.addEventListener('DOMContentLoaded', function() {
         const partyProvinceSelect = document.getElementById('party_province');
         const partyMunicipalitySelect = document.getElementById('party_municipality');
@@ -604,10 +390,6 @@
 
         const countrySelect = document.getElementById('ofw_country');
 
-        const oldProvince = "{{ session('general_form_data.party_province') }}";
-        const oldMunicipality = "{{ session('general_form_data.party_municipality') }}";
-        const oldBarangay = "{{ session('general_form_data.party_barangay') }}";
-        const oldCountry = "{{ session('general_form_data.ofw_country') }}";
 
         function resetSelect(selectEl, text) {
             selectEl.innerHTML = '';
@@ -639,41 +421,6 @@
           });
           selectEl.disabled = false;
 
-          if(selectEl === partyProvinceSelect && oldProvince){
-              selectEl.value = oldProvince;
-              selectEl.dispatchEvent(new Event('change'));
-          }
-
-          if(selectEl === partyMunicipalitySelect && oldMunicipality){
-              selectEl.value = oldMunicipality;
-              selectEl.dispatchEvent(new Event('change'));
-          }
-
-          if(selectEl === partyBarangaySelect && oldBarangay){
-              selectEl.value = oldBarangay;
-          }
-
-          // ===================== OFW AUTO RESTORE =====================
-          if (selectEl === ofwProvinceSelect && oldOfwProvince) {
-              selectEl.value = oldOfwProvince;
-              selectEl.dispatchEvent(new Event('change'));
-          }
-
-          if (selectEl === ofwMunicipalitySelect && oldOfwMunicipality) {
-              selectEl.value = oldOfwMunicipality;
-              selectEl.dispatchEvent(new Event('change'));
-          }
-
-          if (selectEl === ofwBarangaySelect && oldOfwBarangay) {
-              selectEl.value = oldOfwBarangay;
-          }
-          if(selectEl === countrySelect && oldCountry){
-              selectEl.value = oldCountry;
-
-              // also update hidden country name
-              const countryName = selectEl.options[selectEl.selectedIndex]?.text || '';
-              document.getElementById('ofw_country_name').value = countryName;
-          }
       }
 
           resetSelect(partyProvinceSelect, 'Loading provinces...');
@@ -854,11 +601,6 @@
         const ofwBarangaySelect = document.getElementById('ofw_barangay');
    
 
-        // Old values (for session restore)
-        const oldOfwProvince = "{{ session('general_form_data.ofw_province') }}";
-        const oldOfwMunicipality = "{{ session('general_form_data.ofw_municipality') }}";
-        const oldOfwBarangay = "{{ session('general_form_data.ofw_barangay') }}";
-
         // Reset & populate already exist in your code, reuse them
 
         // ===================== LOAD PROVINCES =====================
@@ -960,26 +702,44 @@
         });
       
 
+    });
 
-        document.querySelector('form').addEventListener('submit', function(e) {
-            let isChecked = false;
-            // Select all checkboxes inside Section C
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(cb => {
-                if (cb.checked) isChecked = true;
-            });
+    // Function to validate required fields and show appropriate modal
+    function validateAndSubmit() {
+        const requiredFields = document.querySelectorAll('input[required], select[required], textarea[required]');
+        let hasEmptyField = false;
 
-            if (!isChecked) {
-                e.preventDefault(); // Prevent form submission
-
-                // Show the Bootstrap modal
-                const validationModal = new bootstrap.Modal(document.getElementById('validationModal'));
-                validationModal.show();
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                hasEmptyField = true;
+                field.style.borderColor = 'red'; // Highlight empty fields
+            } else {
+                field.style.borderColor = ''; // Reset border if filled
             }
         });
 
-    });
+        if (hasEmptyField) {
+            const modal = new bootstrap.Modal(document.getElementById('validationModal'));
+            modal.show();
+        } else {
+            showConfirmationModal();
+        }
+    }
 
+    // Function to show confirmation modal
+    function showConfirmationModal() {
+        const modal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+        modal.show();
+    }
+
+    // Event listener for confirm submit button
+    document.getElementById('confirmSubmitBtn').addEventListener('click', function() {
+        // Close the modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('confirmationModal'));
+        modal.hide();
+        // Submit the form
+        document.querySelector('form').submit();
+    });
 
   </script>
 

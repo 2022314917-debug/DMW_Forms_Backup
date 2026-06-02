@@ -16,12 +16,16 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\ProcessingRequest;
 use App\Models\Request_Ofw_Address;
+use App\Models\BankAccountDetails;
 use App\Models\Request_Status_History;
+use App\Models\Startup_Equipment_Products;
+use App\Models\Ofw_Training_Record;
 use App\Models\Requirements;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 Use App\Mail\SubmittedFormsSuccessfully;
-
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Session;
 
 class FormController extends Controller
 {
@@ -36,603 +40,661 @@ class FormController extends Controller
         return view('forms.dataprivacy');
     }
 
-    public function generalForm(){
-        return view('forms.general');
+    public function RFAForm(){
+        return view('forms.rfa');
     }
 
 
-    public function storeGeneralForm(HttpRequest $request)
+    public function storeRFAForm(Request $request)
     {
+        $assistance = $request->input('uri_ng_tulong', []);
+        $steps = ['rfa'];
 
-        //     // Create Request_Form record (linking request to the "OFFICIAL DMW-RO3 RFA FORM")
-        //     $requestForm = Request_Form::where('form_name', 'OFFICIAL DMW-RO3 RFA FORM')->first();
-        //     if (!$requestForm) {
-        //         // If the form doesn't exist, create it with default division_id
-        //         $requestForm = Request_Form::create([
-        //             'division_id' => 0,
-        //             'form_name' => 'OFFICIAL DMW-RO3 RFA FORM'
-        //         ]);
-        //     }
-        //     Log::info('Request_Form record found/created with ID: ' . $requestForm->id);
+        if (in_array('LEGAL ASSISTANCE', $assistance)) {
+            $steps[] = 'sena';
+        }
+        if (
+            in_array('MEDICAL ASSISTANCE', $assistance) ||
+            in_array('TEMPORARY SHELTER', $assistance) ||
+            in_array('TRANSPORTATION ASSISTANCE', $assistance)
+        ) {
+            $steps[] = 'aksyon';
+        }
+        if (in_array('WELFARE ASSISTANCE FOR SENIOR OFW RETURNEES', $assistance)){
+            $steps[] = 'elpor';
+            $steps[] = 'ofw_statement';
+            $steps[] = 'elporb1';
+            $steps[] = 'business_canvas';
+            $steps[] = 'commitment';
+            $steps[] = 'kasulatan';
+        }
 
-        //     // Process Section C - Nature of Request
-        //     // Collect all selected field values with their field names
-        //     $sectionCFields = [];
+        $steps[] = 'requirements';
+        $steps = array_values(array_unique($steps));
 
-        //     // Add MWPD checkbox selections (values already match database field_names)
-        //     if (!empty($validated['mwpd'])) {
-        //         foreach ($validated['mwpd'] as $fieldName) {
-        //             $sectionCFields[] = [
-        //                 'field_name' => $fieldName,
-        //                 'value' => 'yes'
-        //             ];
-        //         }
-        //     }
+        // ── Prune stale session data for steps that were removed ──────────────
+        $previousSteps = session('forms.steps', []);
+        $removedSteps  = array_diff($previousSteps, $steps);
 
-        //     // Add WRSD checkbox selections - map 'others' to 'other_concerns_wrsd'
-        //     if (!empty($validated['wrsd'])) {
-        //         foreach ($validated['wrsd'] as $fieldName) {
-        //             // 'others' checkbox for "Other Concerns" maps to 'other_concerns_wrsd'
-        //             $dbFieldName = ($fieldName === 'others') ? 'other_concerns_wrsd' : $fieldName;
-        //             $sectionCFields[] = [
-        //                 'field_name' => $dbFieldName,
-        //                 'value' => 'yes'
-        //             ];
-        //         }
-        //     }
+        foreach ($removedSteps as $removed) {
+            session()->forget("forms.data.$removed");
+        }
+        // ─────────────────────────────────────────────────────────────────────
 
-        //     // Add MWPD Protection checkbox selections - map 'others' to 'other_concerns_mwpd_protection'
-        //     if (!empty($validated['mwpd_protection'])) {
-        //         foreach ($validated['mwpd_protection'] as $fieldName) {
-        //             // 'others' checkbox for "Other Concerns" maps to 'other_concerns_mwpd_protection'
-        //             $dbFieldName = ($fieldName === 'others') ? 'other_concerns_mwpd_protection' : $fieldName;
-        //             $sectionCFields[] = [
-        //                 'field_name' => $dbFieldName,
-        //                 'value' => 'yes'
-        //             ];
-        //         }
-        //     }
-
-        //     // Add G2G Country radio button if selected
-        //     if (!empty($validated['g2g_country'])) {
-        //         $sectionCFields[] = [
-        //             'field_name' => $validated['g2g_country'],
-        //             'value' => 'yes'
-        //         ];
-                
-        //         // Add G2G Others text if specified (form sends 'g2g_others_text', db field is 'g2g_others_specify')
-        //         if (!empty($validated['g2g_others_text'])) {
-        //             $sectionCFields[] = [
-        //                 'field_name' => 'g2g_others_specify',
-        //                 'value' => $validated['g2g_others_text']
-        //             ];
-        //         }
-        //     }
-
-        //     // Add Reintegration Services text if provided
-        //     if (!empty($validated['reint_serv_text'])) {
-        //         $sectionCFields[] = [
-        //             'field_name' => 'reint_serv_text',
-        //             'value' => $validated['reint_serv_text']
-        //         ];
-        //     }
-
-        //     // Add Assistance Type radio button if selected
-        //     if (!empty($validated['assistance_type'])) {
-        //         $sectionCFields[] = [
-        //             'field_name' => $validated['assistance_type'],
-        //             'value' => 'yes'
-        //         ];
-                
-        //         // Add Assistance Others text if specified
-        //         if (!empty($validated['assistance_others_text'])) {
-        //             $sectionCFields[] = [
-        //                 'field_name' => 'assistance_others_text',
-        //                 'value' => $validated['assistance_others_text']
-        //             ];
-        //         }
-        //     }
-
-        //     // Add Other Concerns text fields
-        //     if (!empty($validated['other_concerns_mwpd_text'])) {
-        //         $sectionCFields[] = [
-        //             'field_name' => 'other_concerns_mwpd_text',
-        //             'value' => $validated['other_concerns_mwpd_text']
-        //         ];
-        //     }
-
-        //     if (!empty($validated['other_concerns_wrsd_text'])) {
-        //         $sectionCFields[] = [
-        //             'field_name' => 'other_concerns_wrsd_text',
-        //             'value' => $validated['other_concerns_wrsd_text']
-        //         ];
-        //     }
-
-        //     if (!empty($validated['other_concerns_mwpd_protection_text'])) {
-        //         $sectionCFields[] = [
-        //             'field_name' => 'other_concerns_mwpd_protection_text',
-        //             'value' => $validated['other_concerns_mwpd_protection_text']
-        //         ];
-        //     }
-
-        //     // Store form entries with proper field IDs
-        //     foreach ($sectionCFields as $field) {
-        //         // Find the Request_Form_Field matching the field_name
-        //         $formField = Request_Form_Field::where('request_form_id', $requestForm->id)
-        //             ->where('field_name', $field['field_name'])
-        //             ->first();
-
-        //         if ($formField) {
-        //             // Create Request_Form_Entries record - store the field ID in value column
-        //             $formEntry = Request_Form_Entries::create([
-        //                 'request_id' => $newRequest->id,
-        //                 'request_form_field_id' => $formField->id,
-        //                 'value' => $formField->id  // Store field ID instead of value
-        //             ]);
-        //             Log::info('Request_Form_Entries created - Field ID: ' . $formField->id . ', Field Name: ' . $field['field_name']);
-
-        //             // Create Request_Form_Field_Values record - store the actual value
-        //             Request_Form_Field_Values::create([
-        //                 'request_form_entry_id' => $formEntry->id,
-        //                 'request_form_field_id' => $formField->id,
-        //                 'value' => $field['value']  // Store actual submitted value here
-        //             ]);
-        //             Log::info('Request_Form_Field_Values created - Entry ID: ' . $formEntry->id . ', Actual Value: ' . $field['value']);
-        //         } else {
-        //             Log::warning('Request_Form_Field not found for field_name: ' . $field['field_name']);
-        //         }
-        //     }
-
-
-            $mwpd = $request->input('mwpd', []);
-            $wrsd = $request->input('wrsd', []);
-            $mwpd_protection = $request->input('mwpd_protection', []);
-
-            $selectedForms = array_merge($mwpd, $wrsd, $mwpd_protection);
-
-            $total = count($selectedForms);
-
-            $steps = [];
-
-            foreach ($selectedForms as $form) {
-                $steps[] = $form;
-            }
-
-            session([
-                'forms.steps' => $steps
-            ]);
-
-            session([
-                'forms.current_step' => 0
-            ]);
-
-            session([
-                'general_form_data' => $request->all()
-            ]);
-
-
-        //     // return redirect()->route('forms.processing')->with('success', 'Form submitted successfully! Your Request ID is: ' . $total);
-            return redirect('/forms/step/' . $steps[0]);
-
-
+        session([
+            'forms.steps'      => $steps,
+            'forms.data.rfa'   => $request->except('_token'),
+        ]);
+        return redirect()->route('forms.step', ['step' => $steps[1]]);
     }
+
     public function showStep($step)
     {
         $steps = session('forms.steps', []);
 
-        // Ensure 'general' is first
-        $steps = array_diff($steps, ['general']);
-        array_unshift($steps, 'general');
-
-        // Ensure 'requirements' is last (auto include)
-        $steps = array_diff($steps, ['requirements']);
-        $steps[] = 'requirements';
-
-        session(['forms.steps' => $steps]);
-
         if (!in_array($step, $steps)) {
-            return redirect()->route('forms.index')
-                ->with('error', 'Invalid step.');
+
+            return redirect()
+                ->route('forms.index')
+                ->with('error', 'Session expired.');
         }
 
-        $formViews = [
-            'general' => 'forms.general',
-            'ofw_info_sheet_mwpd' => 'forms.processing',
-            'aksyon' => 'forms.aksyon',
-            'ofw_info_sheet_mwpd_protection' => 'forms.ofw_info_sheet_mwpd_protection',
+        $views = [
+            'rfa' => 'forms.rfa',
             'sena' => 'forms.sena',
-            'requirements' => 'forms.requirements', // auto included
+            'aksyon' => 'forms.aksyon',
+            'elpor' => 'forms.elpor',
+            'ofw_statement' => 'forms.ofw_statement',
+            'elporb1' => 'forms.elporb1',
+            'business_canvas' => 'forms.business_canvas',
+            'commitment' => 'forms.commitment',
+            'requirements' => 'forms.requirements',
+            'kasulatan' => 'forms.kasulatan'
         ];
 
-        if (!isset($formViews[$step])) {
-            abort(404, 'Form view not found');
-        }
+        $formData = session("forms.data.$step", []);
 
-        $formData = session("forms.data", []);
+        $currentIndex = array_search($step, $steps);
 
-        return view($formViews[$step], compact('formData', 'step'));
+        return view($views[$step], [
+            'step' => $step,
+            'steps' => $steps,
+            'currentStep' => $currentIndex + 1,
+            'totalSteps' => count($steps),
+            'formData' => $formData,
+        ]);
     }
 
     public function storeStep(Request $request, $step)
     {
         $steps = session('forms.steps', []);
 
-        // ensure order
-        $steps = array_diff($steps, ['general']);
-        array_unshift($steps, 'general');
+        if (!in_array($step, $steps)) {
+            return redirect()
+                ->route('forms.index')
+                ->with('error', 'Session expired.');
+        }
 
-        $steps = array_diff($steps, ['requirements']);
-        $steps[] = 'requirements';
-
-        session(['forms.steps' => $steps]);
-
+        session(["forms.data.$step" => $request->except('_token')]);
+        
         $currentIndex = array_search($step, $steps);
+        $action       = $request->input('action');
 
-        // SAVE FORM DATA FIRST
-        session([
-            "forms.data.$step" => $request->except('_token')
-        ]);
-
-        $action = $request->input('action');
-
-        // -------------------------
-        // BACK BUTTON
-        // -------------------------
         if ($action === 'back') {
-
             $prevIndex = $currentIndex - 1;
 
             if (isset($steps[$prevIndex])) {
-                return redirect('/forms/step/' . $steps[$prevIndex]);
+                return redirect()->route('forms.step', ['step' => $steps[$prevIndex]]);
             }
 
-            return redirect('/forms');
+            // Going back to the selection page — clear everything so
+            // storeRFAForm gets a clean slate for pruning
+            session()->forget('forms.data');
+            session()->forget('forms.steps');
+
+            return redirect()->route('forms.index');
         }
 
-        // -------------------------
-        // FINAL SUBMIT BUTTON
-        // -------------------------
         if ($action === 'submit') {
             return redirect()->route('forms.submit.all');
         }
 
-        // -------------------------
-        // DEFAULT: NEXT STEP
-        // -------------------------
         $nextIndex = $currentIndex + 1;
 
-        if (!isset($steps[$nextIndex])) {
-            return redirect('/forms/preview');
+        if (isset($steps[$nextIndex])) {
+            return redirect()->route('forms.step', ['step' => $steps[$nextIndex]]);
         }
 
-        return redirect('/forms/step/' . $steps[$nextIndex]);
+        return redirect()->route('forms.submit.all');
     }
 
-    public function processingForm(){
-        return view('forms.processing');
-    }
 
-  
+
+
+    public function processingForm(Request $request){
+
+    }
 
     public function ofw_info_sheet_mwpd_protection(){
-        return view('forms.ofw_info_sheet_mwpd_protection');
+
     }
-
-    public function senaForm(){
-        return view('forms.sena');
-    }
-
-    
-
-    public function aksyonForm()
-    {
-        return view('forms.aksyon');
-    }
-
-
-   
-
-    public function requirements(){
-        return view('forms.requirements');
-    }
-
     public function generalFormSubmitted(){
         return view('forms-submitted.general');
     }
 
+    
+
+
+   
+    public function aksyonForm(Request $request)
+    {
+        return view('forms.aksyon');
+    }
+
+    public function senaForm(Request $request){
+        return view('forms.sena');
+    }
+
+    public function elporForm(){
+        return view('forms.elpor');
+    }
+
+    public function ofwStatementForm(){
+        return view('forms.ofw_statement');
+    }
+    public function elporFormB1(){
+        return view('forms.elporb1');
+    }
+
+    public function businessCanvas(){
+        return view('forms.business_canvas');
+    }
+
+
+    public function commitment(){
+        return view('forms.commitment');
+    }
+
+    public function kasulatan(){
+        return view('forms.kasulatan');
+    }
+    
+
+    
+
+    public function requirements(Request $request)
+    {
+        return view('forms.requirements');
+    }
+
     public function submitAllForms(Request $request)
     {
-        $generalFormData = session('general_form_data', []);
-        $steps = session('forms.steps', []);
-        $formsData = session('forms.data', []);
+        // ── FIXED: was 'forms.rfa', data is stored under 'forms.data.*' ──────
+        $rfaData        = session('forms.data.rfa', []);
+        $aksyonData     = session('forms.data.aksyon', []);
+        $senaData       = session('forms.data.sena', []);
+        $elporData      = session('forms.data.elpor', []);
+        $ofwStatementData   = session('forms.data.ofw_statement', []);
+        $elporb1Data    = session('forms.data.elporb1', []);
+        $businessCanvasData = session('forms.data.business_canvas', []);
+        $processingData = session('forms.data.processing', []);
+        // ─────────────────────────────────────────────────────────────────────
 
-        DB::beginTransaction();
-        // dd([
-        //     'general_form_data' => session('general_form_data', []),
-        //     'forms_steps'       => session('forms.steps', []),
-        //     'forms_data'        => session('forms.data', []),
-        //     'request_all'       => $request->except('_token'),
-        //     'files'             => $request->allFiles(),
-        // ]);
         try {
-            $requestNumber = Request_Number::create([
-                'status' => 'Pending'
-            ]);
+            DB::beginTransaction();
+            if (!empty($rfaData)) {
 
-            $requestOFW = Request_OFW::create([
-                'request_id' => $requestNumber->id,
-                'ofw_lname'    => $generalFormData['ofw_lname'] ?? null,
-                'ofw_fname'    => $generalFormData['ofw_fname'] ?? null,
-                'ofw_ename'    => $generalFormData['ofw_ename'] ?? null,
-                'ofw_mname'    => $generalFormData['ofw_mname'] ?? null,
-                'ofw_passport_no' => $generalFormData['ofw_passport_no'] ?? null,
-                'ofw_gender'   => $generalFormData['ofw_gender'] ?? null,
-                'ofw_civil_status' => $generalFormData['ofw_civil_status'] ?? null,
-                'ofw_email'    => $generalFormData['ofw_email'] ?? null,
-                'ofw_phone'    => $generalFormData['ofw_phone'] ?? null,
-                'ofw_bday'     => $generalFormData['ofw_bday'] ?? null,
-                'ofw_country'  => $generalFormData['ofw_country_name'] ?? null,
-                'ofw_job'      => $generalFormData['ofw_job'] ?? null,
-                'ofw_employer' => $generalFormData['ofw_employer'] ?? null,
-                'ofw_agency'   => $generalFormData['ofw_agency'] ?? null,
-            ]);
-
-            Request_Ofw_Address::create([
-                'request_id'      => $requestNumber->id,
-                'request_ofw_id'  => $requestOFW->id,
-                'house_no'        => $generalFormData['ofw_address_street'] ?? null,
-                'province'        => $generalFormData['ofw_province_name'] ?? null,
-                'municipality'    => $generalFormData['ofw_municipality_name'] ?? null,
-                'brgy'            => $generalFormData['ofw_barangay_name'] ?? null,
-                'zip_code'        => $generalFormData['ofw_zip_code'] ?? null,
-            ]);
-
-            // Only create party record if party data is not empty
-            if (!empty($generalFormData['party_lname']) || !empty($generalFormData['party_fname']) || !empty($generalFormData['party_email']) || !empty($generalFormData['party_phone']) || !empty($generalFormData['party_bday']) || !empty($generalFormData['party_gender']) || !empty($generalFormData['party_relationship'])) {
-                $requestParty = Request_Party::create([
-                    'request_id'          => $requestNumber->id,
-                    'party_lname'         => $generalFormData['party_lname'] ?? null,
-                    'party_fname'         => $generalFormData['party_fname'] ?? null,
-                    'party_ename'         => $generalFormData['party_ename'] ?? null,
-                    'party_mname'         => $generalFormData['party_mname'] ?? null,
-                    'party_email'         => $generalFormData['party_email'] ?? null,
-                    'party_phone'         => $generalFormData['party_phone'] ?? null,
-                    'party_bday'          => $generalFormData['party_bday'] ?? null,
-                    'party_gender'        => $generalFormData['party_gender'] ?? null,
-                    'party_relationship'  => $generalFormData['party_relationship'] ?? null,
+                $requestNumber = Request_Number::create([
+                    'status'            => 'NEW_SUBMISSION',
+                    'uri_ng_tulong'     => isset($rfaData['uri_ng_tulong']) 
+                            ? json_encode($rfaData['uri_ng_tulong']) 
+                            : null,
+                    'maikling_salaysay' => $rfaData['maikling_salaysay'] ?? null,
                 ]);
 
-                Request_Party_Address::create([
-                    'request_id'       => $requestNumber->id,
-                    'request_party_id' => $requestParty->id,
-                    'house_no'         => $generalFormData['party_address_street'] ?? null,
-                    'province'         => $generalFormData['party_province_name'] ?? null,
-                    'municipality'     => $generalFormData['party_municipality_name'] ?? null,
-                    'brgy'             => $generalFormData['party_barangay_name'] ?? null,
-                    'zip_code'         => $generalFormData['party_zip_code'] ?? null,
+                $requestOfwId = Request_OFW::create([
+                    'request_id'         => $requestNumber->id,
+                    'ofw_lname'          => $rfaData['ofw_lname'] ?? null,
+                    'ofw_fname'          => $rfaData['ofw_fname'] ?? null,
+                    'ofw_ename'          => $rfaData['ofw_ename'] ?? null,
+                    'ofw_mname'          => $rfaData['ofw_mname'] ?? null,
+                    'ofw_bday'           => $rfaData['ofw_bday'] ?? null,
+                    'ofw_gender'         => $rfaData['ofw_gender'] ?? null,
+                    'ofw_civil_status'   => $rfaData['ofw_civil_status'] ?? null,
+                    'ofw_phone'          => $rfaData['ofw_phone'] ?? null,
+                    'ofw_email'          => $rfaData['ofw_email'] ?? null,
+                    'ofw_fb_acc'         => $rfaData['ofw_fb_acc'] ?? null,
+                    'ofw_passport_no'    => $rfaData['ofw_passport_no'] ?? null,
+                    'ofw_address_abroad' => $rfaData['ofw_address_abroad'] ?? null,
                 ]);
-            }
 
-            // Pre-load field map: ['field_name' => ['id' => x, 'form_id' => y]]
-            $fieldMap = Request_Form_Field::with('form')
-                ->get()
-                ->keyBy('field_name')
-                ->map(fn($f) => ['id' => $f->id, 'form_id' => $f->request_form_id]);
+                Request_Ofw_Address::create([
+                    'request_id'   => $requestNumber->id,
+                    'request_ofw_id' => $requestOfwId->id,
+                    'house_no'     => $rfaData['ofw_house_no'] ?? null,
+                    'province'     => $rfaData['ofw_province_name'] ?? null,
+                    'municipality' => $rfaData['ofw_municipality_name'] ?? null,
+                    'brgy'         => $rfaData['ofw_barangay_name'] ?? null,
+                    'zip_code'     => $rfaData['ofw_zip_code'] ?? null,
+                ]);
 
-            // Handle checkbox arrays stored in general_form_data
-            $checkboxGroups = ['mwpd', 'wrsd', 'mwpd_protection'];
+                if (
+                    !empty($rfaData['party_lname'])        ||
+                    !empty($rfaData['party_fname'])        ||
+                    !empty($rfaData['party_email'])        ||
+                    !empty($rfaData['party_phone'])        ||
+                    !empty($rfaData['party_bday'])         ||
+                    !empty($rfaData['party_relationship'])
+                ) {
+                    $requestPartyId =Request_Party::create([
+                        'request_id'       => $requestNumber->id,
+                        'party_lname'      => $rfaData['party_lname'] ?? null,
+                        'party_fname'      => $rfaData['party_fname'] ?? null,
+                        'party_ename'      => $rfaData['party_ename'] ?? null,
+                        'party_mname'      => $rfaData['party_mname'] ?? null,
+                        'party_bday'       => $rfaData['party_bday'] ?? null,
+                        'party_relationship' => $rfaData['party_relationship'] ?? null,
+                        'party_relationship_other' => $rfaData['party_relationship_other'] ?? null,
+                        'party_valid_id'   => $rfaData['party_valid_id'] ?? null,
+                        'party_email'      => $rfaData['party_email'] ?? null,
+                        'party_phone'      => $rfaData['party_phone'] ?? null,
+                        'party_fb_acc' => $rfaData['party_fb_acc'] ?? null,
+                    ]);
 
-            // Group checkboxes by their form_id first
-            $checkboxesByForm = [];
-            foreach ($checkboxGroups as $group) {
-                if (!empty($generalFormData[$group]) && is_array($generalFormData[$group])) {
-                    foreach ($generalFormData[$group] as $value) {
-                        $fieldData = $fieldMap[$value] ?? null;
+                    Request_Party_Address::create([
+                        'request_id'   => $requestNumber->id,
+                        'request_party_id' => $requestPartyId->id,
+                        'house_no'     => $rfaData['party_house_no'] ?? null,
+                        'province'     => $rfaData['party_province_name'] ?? null,
+                        'municipality' => $rfaData['party_municipality_name'] ?? null,
+                        'brgy'         => $rfaData['party_barangay_name'] ?? null,
+                        'zip_code'     => $rfaData['party_zip_code'] ?? null,
+                    ]);
+                }
 
-                        if (!$fieldData) {
-                            Log::warning("Missing checkbox field mapping: " . $value);
-                            continue;
-                        }
+                Request_Form_Entries::create([
+                    'request_id'      => $requestNumber->id,
+                    'request_form_id' => 100,
+                ]);
 
-                        $checkboxesByForm[$fieldData['form_id']][] = [
-                            'field_id' => $fieldData['id'],
-                            'value'    => 'checked',
+                if (
+                    !empty($rfaData['bank_name'])    ||
+                    !empty($rfaData['bank_branch'])  ||
+                    !empty($rfaData['bank_acc_num'])  ||
+                    !empty($rfaData['bank_acc_name'])
+                ) {
+                    BankAccountDetails::create([
+                        'request_id'   => $requestNumber->id,
+                        'bank_name'    => $rfaData['bank_name'] ?? null,
+                        'bank_branch'  => $rfaData['bank_branch'] ?? null,
+                        'bank_acc_num' => $rfaData['bank_acc_num'] ?? null,
+                        'bank_acc_name'=> $rfaData['bank_acc_name'] ?? null,
+                    ]);
+                }
+
+                // ── AKSYON ───────────────────────────────────────────────────────
+                if (!empty($aksyonData)) {
+
+                    $aksyonFields = Request_Form_Field::where('request_form_id', 101)
+                                        ->pluck('id', 'field_name');
+
+                    $aksyonEntry = Request_Form_Entries::create([
+                        'request_id'      => $requestNumber->id,
+                        'request_form_id' => 101,
+                    ]);
+
+                    $aksyonMap = [
+                        'aksyon_ofw_age'                    => $aksyonData['aksyon_ofw_age']                    ?? null,
+                        'aksyon_latest_date_departure_ph'   => $aksyonData['aksyon_latest_departure_ph']        ?? null,
+                        'aksyon_latest_date_return_ph'      => $aksyonData['aksyon_latest_return_ph']           ?? null,
+                        'aksyon_jobsite'                    => $aksyonData['aksyon_jobsite']                    ?? null,
+                        'aksyon_job_position'               => $aksyonData['aksyon_job_position']               ?? null,
+                        'aksyon_return_reason'              => $aksyonData['aksyon_return_reason']              ?? null,
+                        'aksyon_return_reason_others_specify' => $aksyonData['aksyon_return_reason_others_specify'] ?? null,
+                        'aksyon_hanapbuhay_program'         => $aksyonData['aksyon_hanapbuhay_program']         ?? null,
+                        'aksyon_nrco_livehood_program'      => $aksyonData['aksyon_nrco_livehood_program']      ?? null,
+                        'aksyon_fund'                       => $aksyonData['aksyon_fund']                       ?? null,
+                    ];
+
+                    $aksyonValues = [];
+                    foreach ($aksyonMap as $fieldName => $value) {
+                        if (!isset($aksyonFields[$fieldName])) continue;
+                        if (is_null($value)) continue; // ── Skip null values entirely ──
+                        $aksyonValues[] = [
+                            'request_form_entry_id'         => $aksyonEntry->id,
+                            'request_form_field_id' => $aksyonFields[$fieldName],
+                            'value'                 => $value,
+                            'created_at'            => now(),
+                            'updated_at'            => now(),
                         ];
                     }
-                }
-            }
 
-            // Create 1 entry per form for checkboxes
-            foreach ($checkboxesByForm as $formId => $checkboxFields) {
-                $entry = Request_Form_Entries::create([
-                    'request_id'      => $requestNumber->id,
-                    'request_form_id' => $formId,
-                    'status'          => 'Pending',
-                ]);
-
-                foreach ($checkboxFields as $field) {
-                    Request_Form_Field_Values::create([
-                        'request_form_entry_id' => $entry->id,
-                        'request_form_field_id' => $field['field_id'],
-                        'value'                 => $field['value'],
-                    ]);
-                }
-            }
-
-            // Handle formsData — group fields by form_id, 1 entry per form
-            foreach ($formsData as $step => $fields) {
-                $fieldsByForm = [];
-
-                foreach ($fields as $fieldKey => $value) {
-                    $fieldData = $fieldMap[$fieldKey] ?? null;
-
-                    if (!$fieldData) {
-                        Log::warning("Missing field mapping: " . $fieldKey);
-                        continue;
-                    }
-
-                    $fieldsByForm[$fieldData['form_id']][] = [
-                        'field_id' => $fieldData['id'],
-                        'value'    => is_array($value) ? json_encode($value) : $value,
-                    ];
+                    Request_Form_Field_Values::insert($aksyonValues);
                 }
 
-                foreach ($fieldsByForm as $formId => $formFields) {
-                    $entry = Request_Form_Entries::create([
+                // ── SENA ─────────────────────────────────────────────────────────
+                if (!empty($senaData)) {
+
+                    $senaFields = Request_Form_Field::where('request_form_id', 102)
+                                    ->pluck('id', 'field_name');
+
+                    $senaEntry = Request_Form_Entries::create([
                         'request_id'      => $requestNumber->id,
-                        'request_form_id' => $formId,
-                        'status'          => 'Pending',
+                        'request_form_id' => 102,
                     ]);
 
-                    foreach ($formFields as $field) {
-                        Request_Form_Field_Values::create([
-                            'request_form_entry_id' => $entry->id,
-                            'request_form_field_id' => $field['field_id'],
-                            'value'                 => $field['value'],
-                        ]);
+                    $senaMap = [
+                        'sena_deployment_status'                 => $senaData['ofw_deployment_status']                  ?? null,
+                        'sena_ofw_age'                           => $senaData['sena_ofw_age']                           ?? null,
+                        'sena_nature_of_work'                    => $senaData['sena_nature_of_work']                    ?? null,
+                        'sena_nature_of_work_other_specify'      => $senaData['other_professional_specify']             ?? null,
+                        'sena_jobsite'                           => $senaData['sena_country_name']                      ?? null,
+                        'sena_job_position'                      => $senaData['sena_job_position']                      ?? null,
+                        'sena_monthly_salary'                    => $senaData['sena_monthly_salary']                    ?? null,
+                        'sena_contract_start'                    => $senaData['sena_contract_start']                    ?? null,
+                        'sena_contract_end'                      => $senaData['sena_contract_end']                      ?? null,
+                        'sena_length_contract_served'            => $senaData['sena_length_contract_served']            ?? null,
+                        'sena_action_taken_employer_level'       => $senaData['sena_action_taken_employer_level']       ?? null,
+                        'sena_action_taken_mwo'                  => $senaData['sena_action_taken_mwo']                  ?? null,
+                        'sena_ph_agency_name'                    => $senaData['sena_ph_agency_name']                    ?? null,
+                        'sena_ph_agency_address'                 => $senaData['sena_ph_agency_address']                 ?? null,
+                        'sena_ph_contact_person_name'            => $senaData['sena_ph_contact_person_name']            ?? null,
+                        'sena_ph_contact_person_position'        => $senaData['sena_ph_contact_person_position']        ?? null,
+                        'sena_ph_contact_info'                   => $senaData['sena_ph_contact_info']                   ?? null,
+                        'sena_foreign_agency_name_employer_name' => $senaData['sena_foreign_agency_name_employer_name'] ?? null,
+                        'sena_foreign_agency_address'            => $senaData['sena_foreign_agency_address']            ?? null,
+                        'sena_foreign_contact_person_name'       => $senaData['sena_foreign_contact_person_name']       ?? null,
+                        'sena_foreign_contact_person_position'   => $senaData['sena_foreign_contact_person_position']   ?? null,
+                        'sena_foreign_contact_info'              => $senaData['sena_foreign_contact_info']              ?? null,
+                        'sena_nature_of_business'                => $senaData['sena_nature_of_business']                ?? null,
+                        'sena_complaints_other_office_date'      => $senaData['sena_complaints_other_office_date']      ?? null,
+                        'sena_complaints_other_office_name'      => $senaData['sena_complaints_other_office_name']      ?? null,
+                        'sena_complaints_other_office_case'      => $senaData['sena_complaints_other_office_case']      ?? null,
+                    ];
+
+                    $senaValues = [];
+                    foreach ($senaMap as $fieldName => $value) {
+                        if (!isset($senaFields[$fieldName])) continue;
+                        if (is_null($value)) continue; // ── Skip null values entirely ──
+                        $senaValues[] = [
+                            'request_form_entry_id'         => $senaEntry->id,
+                            'request_form_field_id' => $senaFields[$fieldName],
+                            'value'                 => $value,
+                            'created_at'            => now(),
+                            'updated_at'            => now(),
+                        ];
                     }
+
+                    Request_Form_Field_Values::insert($senaValues);
                 }
-            }
 
-            // -------------------------
-            // HANDLE FILE UPLOADS
-            // -------------------------
-            // Map each input name to a human-readable type label
-            $fileInputs = [
-                'passport'    => 'Philippine Passport / Travel Document',
-                'boarding'    => 'Arrival Stamp / Boarding Pass',
-                'contract'    => 'Employment Contract',
-                'visa'        => 'VISA / Latest OEC',
-                'medical'     => 'Medical Record / Abstract',
-                'endorsement' => 'Endorsement Certificate/Letter',
-                'distress'    => 'Other Proof of Distressed',
-                'valid_id'    => 'Valid ID',
-            ];
+                if (!empty($elporData) && !empty($ofwStatementData) && !empty($elporb1Data) && !empty($businessCanvasData)){
+                    $elporFields          = Request_Form_Field::where('request_form_id', 103)->pluck('id', 'field_name');
+                    $ofwStatementFields   = Request_Form_Field::where('request_form_id', 104)->pluck('id', 'field_name');
+                    //$elporb1Fields        = Request_Form_Field::where('request_form_id', 105)->pluck('id', 'field_name');
+                    $businessCanvasFields = Request_Form_Field::where('request_form_id', 106)->pluck('id', 'field_name');
 
-            foreach ($fileInputs as $inputName => $fileType) {
+                    $elporEntry = Request_Form_Entries::create([
+                        'request_id'      => $requestNumber->id,
+                        'request_form_id' => 103,
+                    ]);
 
-                if ($request->hasFile($inputName)) {
+                    
 
-                    foreach ($request->file($inputName) as $file) {
+                    $ofwStatementEntry = Request_Form_Entries::create([
+                        'request_id'      => $requestNumber->id,
+                        'request_form_id' => 104,
+                    ]);
 
-                        if (!$file->isValid()) {
-                            Log::warning("Invalid file upload for input: {$inputName}");
-                            continue;
+                    $elporb1Entry = Request_Form_Entries::create([
+                        'request_id'      => $requestNumber->id,
+                        'request_form_id' => 105,
+                    ]);
+
+                    $businessCanvasEntry = Request_Form_Entries::create([
+                        'request_id'      => $requestNumber->id,
+                        'request_form_id' => 106,
+                    ]);
+
+                    $commitmentEntry = Request_Form_Entries::create([
+                        'request_id'      => $requestNumber->id,
+                        'request_form_id' => 107,
+                    ]);
+
+                    $kasulatanEntry = Request_Form_Entries::create([
+                        'request_id'      => $requestNumber->id,
+                        'request_form_id' => 108,
+                    ]);
+
+
+                    $elporMap = [
+                        'elpor_ofw_age'                  => $elporData['elpor_ofw_age']                   ?? null,
+                        'elpor_ofw_other_data'           => $elporData['elpor_ofw_other_data']            ?? null,
+                        'elpor_phone_secondary'          => $elporData['elpor_phone_secondary']           ?? null,
+                        'elpor_jobsite'                  => $elporData['elpor_jobsite_name']              ?? null,
+                        'elpor_job_position'             => $elporData['elpor_job_position']              ?? null,
+                        'elpor_latest_date_departure_ph' => $elporData['elpor_latest_date_departure_ph']  ?? null,
+                        'elpor_latest_date_return_ph'    => $elporData['elpor_latest_date_return_ph']     ?? null,
+                        'elpor_contract_start'           => $elporData['elpor_contract_start']            ?? null,
+                        'elpor_contract_end'             => $elporData['elpor_contract_end']              ?? null,
+                        'elpor_business_type'            => $elporData['elpor_business_type']             ?? null,
+                        'elpor_business_site'            => $elporData['elpor_business_site']             ?? null,
+                        'elpor_existing_business'        => $elporData['elpor_existing_business']         ?? null,
+                        'elpor_existing_business_specify'=> $elporData['elpor_existing_business_specify'] ?? null,
+                        
+                        
+                    ];
+
+                    $ofwStatementMap = [
+                        'elpor_return_reason'             => $ofwStatementData['elpor_return_reason']         ?? null,
+                        'elpor_return_reason_details'     => $ofwStatementData['elpor_return_reason_details'] ?? null,
+                    ];
+
+                    $businessCanvasMap = [
+                        'elpor_bc_idea'        => $businessCanvasData['elpor_bc_idea']        ?? null,
+                        'elpor_bc_customer'    => $businessCanvasData['elpor_bc_customer']    ?? null,
+                        'elpor_bc_place'       => $businessCanvasData['elpor_bc_place']       ?? null,
+                        'elpor_bc_promotions'  => $businessCanvasData['elpor_bc_promotions']  ?? null,
+                        'elpor_bc_price'       => $businessCanvasData['elpor_bc_price']       ?? null,
+                        'elpor_bc_process'     => $businessCanvasData['elpor_bc_process']     ?? null,
+                        'elpor_bc_resources'   => $businessCanvasData['elpor_bc_resources']   ?? null,
+                        'elpor_bc_partners'    => $businessCanvasData['elpor_bc_partners']    ?? null,
+                        'elpor_bc_cost'        => $businessCanvasData['elpor_bc_cost']        ?? null,
+                        'elpor_bc_investment'  => $businessCanvasData['elpor_bc_investment']  ?? null,
+                        'elpor_bc_budget'      => $businessCanvasData['elpor_bc_budget']      ?? null,
+                        'elpor_bc_profit'      => $businessCanvasData['elpor_bc_profit']      ?? null,
+                    ];
+
+                    $elporValues = [];
+                    foreach ($elporMap as $fieldName => $value) {
+                        if (!isset($elporFields[$fieldName])) continue;
+                        if (is_null($value)) continue; // ── Skip null values entirely ──
+                        $elporValues[] = [
+                            'request_form_entry_id' => $elporEntry->id,
+                            'request_form_field_id' => $elporFields[$fieldName],
+                            'value'                 => $value,
+                            'created_at'            => now(),
+                            'updated_at'            => now(),
+                        ];
+                    }
+
+                    Request_Form_Field_Values::insert($elporValues);
+
+                    $ofwStatementValues = [];
+                    foreach ($ofwStatementMap as $fieldName => $value) {
+                        if (!isset($ofwStatementFields[$fieldName])) continue;
+                        if (is_null($value)) continue; // ── Skip null values entirely ──
+                        $ofwStatementValues[] = [
+                            'request_form_entry_id'         => $ofwStatementEntry->id,
+                            'request_form_field_id' => $ofwStatementFields[$fieldName],
+                            'value'                 => $value,
+                            'created_at'            => now(),
+                            'updated_at'            => now(),
+                        ];
+                    }
+
+                    Request_Form_Field_Values::insert($ofwStatementValues);
+
+                    $businessCanvasValues = [];
+                    foreach ($businessCanvasMap as $fieldName => $value) {
+                        if (!isset($businessCanvasFields[$fieldName])) continue;
+                        if (is_null($value)) continue;
+                        $businessCanvasValues[] = [
+                            'request_form_entry_id' => $businessCanvasEntry->id,
+                            'request_form_field_id' => $businessCanvasFields[$fieldName],
+                            'value'                 => $value,
+                            'created_at'            => now(),
+                            'updated_at'            => now(),
+                        ];
+                    }
+                    Request_Form_Field_Values::insert($businessCanvasValues);
+
+                    $elporb1Items = $elporb1Data['items'] ?? [];
+
+                    if (!empty($elporb1Items)) {
+
+                        $elporb1Rows = [];
+                        $now = now();
+
+                        foreach ($elporb1Items as $item) {
+                            $elporb1Rows[] = [
+                                'request_id'    => $requestNumber->id,
+                                'item_category' => $item['category']      ?? null,
+                                'supplier_name' => $item['supplier_name'] ?? null,
+                                'item_name'     => $item['item_name']     ?? null,
+                                'item_price'    => $item['item_price']    ?? 0,
+                                'item_qty'      => $item['item_qty']      ?? 0,
+                                'item_total'    => $item['item_total']    ?? 0,
+                                'created_at'    => $now,
+                                'updated_at'    => $now,
+                            ];
                         }
 
-                        $originalName = $file->getClientOriginalName();
-
-                        // ✅ Store inside: storage/app/public/requirements/{request_id}/{type}/
-                        $path = $file->storeAs(
-                            'requirements/' . $requestNumber->id . '/' . $inputName,
-                            $originalName,
-                            'public'
-                        );
-
-                        Requirements::create([
-                            'request_id' => $requestNumber->id,
-                            'file_name'  => $originalName,
-                            'file_path'  => $path, // IMPORTANT (use file_path now)
-                            'file_type'  => $fileType,
-                        ]);
+                        Startup_Equipment_Products::insert($elporb1Rows);
                     }
-                }
-            }
-            // -------------------------
-            // END FILE UPLOADS
-            // -------------------------
-            
-            // Collect all form IDs that were actually filled by the user
-            $usedFormIds = [];
 
-            // Add form IDs from checkboxes (selected forms)
-            foreach ($checkboxesByForm as $formId => $checkboxFields) {
-                $usedFormIds[] = $formId;
-            }
+                    // ── OFW Training Records ─────────────────────────────────────────
+                    $trainingKinds    = $elporData['training_kind']      ?? [];
+                    $trainingVenues   = $elporData['training_venue']     ?? [];
+                    $trainingIssuedBy = $elporData['training_issued_by'] ?? [];
+                    $trainingDates    = $elporData['training_date']      ?? [];
 
-            // Add form IDs from form data (filled data)
-            foreach ($formsData as $step => $fields) {
-                $fieldsByForm = [];
-                foreach ($fields as $fieldKey => $value) {
-                    $fieldData = $fieldMap[$fieldKey] ?? null;
-                    if (!$fieldData) {
-                        continue;
+                    if (!empty($trainingKinds)) {
+                        $trainingRows = [];
+                        $now = now();
+
+                        foreach ($trainingKinds as $index => $kind) {
+                            $trainingRows[] = [
+                                'request_id'    => $requestNumber->id,
+                                'training_name' => $kind,
+                                'venue'         => $trainingVenues[$index]   ?? null,
+                                'issued_by'     => $trainingIssuedBy[$index] ?? null,
+                                'training_date' => $trainingDates[$index]    ?? null,
+                                'created_at'    => $now,
+                                'updated_at'    => $now,
+                            ];
+                        }
+
+                        Ofw_Training_Record::insert($trainingRows);
                     }
-                    $fieldsByForm[$fieldData['form_id']][] = [
-                        'field_id' => $fieldData['id'],
-                        'value'    => is_array($value) ? json_encode($value) : $value,
-                    ];
-                }
-                foreach ($fieldsByForm as $formId => $formFields) {
-                    $usedFormIds[] = $formId;
-                }
-            }
 
-            // Get unique form IDs only from forms that were actually used
-            $usedFormIds = array_unique($usedFormIds);
+                }
 
-            // Get form names for only the forms filled by the user
-            $form_names = Request_Form::whereIn('id', $usedFormIds)->pluck('form_name', 'id')->toArray();
-            
-            $to = $generalFormData['ofw_email'] ?? null;
-            $ofw_full_name = trim(($generalFormData['ofw_fname'] ?? '') . ' ' . ($generalFormData['ofw_mname'] ?? '') . ' ' . ($generalFormData['ofw_lname'] ?? ''));
-            $partyEmail = $generalFormData['party_email'] ?? null;
-            $party_full_name = trim(($generalFormData['party_fname'] ?? '') . ' ' . ($generalFormData['party_mname'] ?? '') . ' ' . ($generalFormData['party_lname'] ?? ''));
-            $dateSubmitted = now()->toDateTimeString();
-            
-            // Check if party filled up
-            if (!empty($partyEmail) && !empty($party_full_name)) {
-                // Send email to both OFW and party with their respective names
-                $recipients = [
-                    [
-                        'email' => $to,
-                        'name' => $ofw_full_name,
-                    ],
-                    [
-                        'email' => $partyEmail,
-                        'name' => $party_full_name,
-                    ]
+                // -------------------------
+                // HANDLE FILE UPLOADS
+                // -------------------------
+                // Map each input name to a human-readable type label
+                $fileInputs = [
+                    'passport'    => 'Philippine Passport / Travel Document',
+                    'boarding'    => 'Arrival Stamp / Boarding Pass',
+                    'contract'    => 'Employment Contract',
+                    'visa'        => 'VISA / Latest OEC',
+                    'medical'     => 'Medical Record / Abstract',
+                    'endorsement' => 'Endorsement Certificate/Letter',
+                    'distress'    => 'Other Proof of Distressed',
+                    'valid_id'    => 'Valid ID',
                 ];
-                
-                foreach ($recipients as $recipient) {
-                    Mail::to($recipient['email'])->send(new SubmittedFormsSuccessfully($form_names, $requestNumber->id, $recipient['name'], $dateSubmitted));
+
+                foreach ($fileInputs as $inputName => $fileType) {
+
+                    if ($request->hasFile($inputName)) {
+
+                        foreach ($request->file($inputName) as $file) {
+
+                            if (!$file->isValid()) {
+                                Log::warning("Invalid file upload for input: {$inputName}");
+                                continue;
+                            }
+
+                            $originalName = $file->getClientOriginalName();
+
+                            // ✅ Store inside: storage/app/public/requirements/{request_id}/{type}/
+                            $path = $file->storeAs(
+                                'requirements/' . $requestNumber->id . '/' . $inputName,
+                                $originalName,
+                                'public'
+                            );
+
+                            Requirements::create([
+                                'request_id' => $requestNumber->id,
+                                'file_name'  => $originalName,
+                                'file_path'  => $path, // IMPORTANT (use file_path now)
+                                'file_type'  => $fileType,
+                            ]);
+                        }
+                    }
                 }
-            } else {
-                // Send email to OFW only
-                Mail::to($to)->send(new SubmittedFormsSuccessfully($form_names, $requestNumber->id, $ofw_full_name, $dateSubmitted));
+                // -------------------------
+                // END FILE UPLOADS
+                // -------------------------
+
+                Request_Status_History::create([
+                    'request_id'      => $requestNumber->id,
+                    'status' => 'NEW_SUBMISSION'
+                ]);
+
+                $to = $rfaData['ofw_email'] ?? null;
+                $ofw_full_name = trim(($rfaData['ofw_fname'] ?? '') . ' ' . ($rfaData['ofw_mname'] ?? '') . ' ' . ($rfaData['ofw_lname'] ?? ''));
+                $partyEmail = $rfaData['party_email'] ?? null;
+                $party_full_name = trim(($rfaData['party_fname'] ?? '') . ' ' . ($rfaData['party_mname'] ?? '') . ' ' . ($rfaData['party_lname'] ?? ''));
+                $dateSubmitted = now()->toDateTimeString();
+                
+                // Check if party filled up
+                if (!empty($partyEmail) && !empty($party_full_name)) {
+                    // Send email to both OFW and party with their respective names
+                    $recipients = [
+                        [
+                            'email' => $to,
+                            'name' => $ofw_full_name,
+                        ],
+                        [
+                            'email' => $partyEmail,
+                            'name' => $party_full_name,
+                        ]
+                    ];
+                    
+                    foreach ($recipients as $recipient) {
+                        Mail::to($recipient['email'])->send(new SubmittedFormsSuccessfully($requestNumber->id, $recipient['name'], $dateSubmitted));
+                    }
+                } else {
+                    // Send email to OFW only
+                    Mail::to($to)->send(new SubmittedFormsSuccessfully($requestNumber->id, $ofw_full_name, $dateSubmitted));
+                }
+
             }
-
-            Request_Status_History::create([
-                'request_id' => $requestNumber->id,
-                'status'     => 'Pending',
-                'remarks'    => 'Initial submission',
-            ]);
-
             DB::commit();
 
-            session()->flush();
-
-            return redirect()->route('forms.success')
-                ->with('success', 'Forms submitted successfully! Your Request ID is: ' . $requestNumber->id);
-
         } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Error submitting all forms: ' . $e->getMessage(), [
-                'trace' => $e->getTraceAsString()
-            ]);
-
-            // dd([
-            //     'general_form_data' => session('general_form_data', []),
-            //     'forms_steps'       => session('forms.steps', []),
-            //     'forms_data'        => session('forms.data', []),
-            //     'request_all'       => $request->except('_token'),
-            //     'files'             => $request->allFiles(),
-            // ]);
-
+            Log::error('Error saving form data: ' . $e->getMessage());
             dd($e->getMessage());
-            return redirect()->route('forms.index')
-                ->with('error', 'Error submitting forms: ' . $e->getMessage());
+            DB::rollBack();
+            return redirect()->route('forms.index')->with('error', 'An error occurred while saving your request. Please try again.');
         }
+
+        // ── FIXED: clear using the correct session keys ───────────────────────
+        session()->forget('forms');
+
+        return redirect()->route('forms.success');
     }
 
     public function submissionSuccess()

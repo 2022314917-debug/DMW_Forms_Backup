@@ -120,6 +120,7 @@
 
     <form id="file-form" method="POST" action="{{ route('forms.submit.all') }}" enctype="multipart/form-data">
         @csrf
+        
 
         <div class="card shadow-sm p-3 mb-5" style="background-color: #DEE9FF;">
 
@@ -268,6 +269,22 @@
                 </div>
             </div>
 
+            {{-- Valid ID --}}
+            <div class="upload-section mt-3">
+                <label class="fw-semibold">Sketch of Location of Proposed Business <span class="fw-lighter fst-italic"></span></label>
+                <small class="text-muted d-block mb-2">
+                    Upload up to 10 supported files: PDF, document or image. Max 100 MB per file.
+                </small>
+
+                <div class="drop-area empty" data-name="contract">
+                    <div class="drop-placeholder">
+                        <i class="fas fa-plus fa-2x text-muted"></i>
+                        <p class="text-muted mb-0">Upload File</p>
+                    </div>
+                    <input type="file" name="valid_id[]" accept=".pdf,.jpg,.jpeg,.png" multiple hidden>
+                </div>
+            </div>
+
         </div>
 
         @php
@@ -277,8 +294,8 @@
             $previousStep = ($currentIndex !== false && $currentIndex > 0) ? $steps[$currentIndex - 1] : null;
             $nextStep = ($currentIndex !== false && $currentIndex < count($steps) - 1) ? $steps[$currentIndex + 1] : null;
         @endphp
-
-        <div class="step-wrapper">
+       
+       <div class="step-wrapper">
             <ul class="steps">
                 @foreach($steps as $index => $step)
                     <li class="step 
@@ -290,6 +307,10 @@
             </ul>
         </div>
 
+        <!-- <div class="d-grid gap-2 mt-4">
+            <button type="submit" class="btn btn-success btn-lg fw-bold" name="submitBtn" id="submitBtn" style="background-color: #2d7a2d; border-color: #2d7a2d;" value="submit">Submit</button>
+        </div> -->
+
         <div class="d-flex justify-content-between mt-4">
             @if($previousStep)
                 <a href="/forms/step/{{ $previousStep }}" class="btn btn-back">← BACK</a>
@@ -297,34 +318,50 @@
                 <span class="btn btn-back disabled">← BACK</span>
             @endif
 
-            <button type="submit" name="action" value="submit" class="btn btn-next">
+            <button type="button" id="submitBtn" class="btn btn-next" onclick="showConfirmModal()">
                 SUBMIT →
             </button>
         </div>
 
-        <div id="upload-spinner" class="text-center my-3" style="display:none;">
-            <div class="spinner-border text-primary"></div>
-            <p>Submitting Response...</p>
+        <!-- Upload Spinner Modal -->
+        <div class="modal fade" id="uploadSpinnerModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body text-center py-4">
+                        <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <h5 class="fw-semibold mb-1">Submitting Response...</h5>
+                        <p class="text-muted mb-0" style="font-size: 13px;">Please wait and do not close this page.</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </form>
 </div>
 
 <!-- Confirmation Modal -->
-<div class="modal fade" id="confirmSubmitModal" tabindex="-1" aria-labelledby="confirmSubmitLabel" aria-hidden="true">
+<div class="modal fade" id="confirmSubmitModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="confirmSubmitLabel">Confirm Submission</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-header" style="background-color: #2F5BB7; color: white;">
+                <h5 class="modal-title text-uppercase">Confirm Submission</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                Are you sure you want to submit all the documents? Please review your files and confirm that all the given information 
-                is correct before proceeding.
+                <p>You are about to submit your documents. Please confirm the following before proceeding:</p>
+                <ul>
+                    <li>All required files have been uploaded</li>
+                    <li>File names are labeled correctly</li>
+                    <li>Documents are clear and readable</li>
+                </ul>
+                <p class="mb-0">This action cannot be undone. Are you sure you want to submit?</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="confirmSubmitBtn">Confirm Submit</button>
+                <button type="button" class="btn btn-primary" id="confirmSubmitBtn"
+                        style="background-color: #2F5BB7; border: none;">Yes, Submit</button>
             </div>
         </div>
     </div>
@@ -482,58 +519,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
-    // -------------------------
-    // Handle submit button click
-    // Show confirmation modal
-    // -------------------------
-    const form = document.getElementById('file-form');
-    const submitBtn = form.querySelector('button[name="action"][value="submit"]');
-    let isConfirmed = false;
+    // ── Confirmation modal logic ──────────────────────────
+    window.showConfirmModal = function () {
+        const modal = new bootstrap.Modal(document.getElementById('confirmSubmitModal'));
+        modal.show();
+    };
 
-    submitBtn.addEventListener('click', function (e) {
-        if (!isConfirmed) {
-            e.preventDefault();
-            
-            // Show modal
-            const confirmModal = new bootstrap.Modal(document.getElementById('confirmSubmitModal'));
-            confirmModal.show();
-        }
-    });
-
-    // -------------------------
-    // Confirm Submit Button in Modal
-    // -------------------------
-    const confirmSubmitBtn = document.getElementById('confirmSubmitBtn');
-    confirmSubmitBtn.addEventListener('click', function () {
-        isConfirmed = true;
-
-        // Final sync pass for all sections
+    document.getElementById('confirmSubmitBtn').addEventListener('click', function () {
+        // Final sync of all file inputs before submit
         document.querySelectorAll('.drop-area').forEach(section => {
             const input = section.querySelector('input[type="file"]');
             if (!input || !section._filesArray) return;
-
             const dt = new DataTransfer();
             section._filesArray.forEach(f => dt.items.add(f.file));
             input.files = dt.files;
         });
 
-        // Hide modal
-        const confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmSubmitModal'));
-        confirmModal.hide();
+        bootstrap.Modal.getInstance(document.getElementById('confirmSubmitModal')).hide();
 
-        // Show upload spinner
-        const spinner = document.getElementById('upload-spinner');
-        if (spinner) spinner.style.display = 'block';
+        const spinnerModal = new bootstrap.Modal(document.getElementById('uploadSpinnerModal'));
+        spinnerModal.show();
 
-        // Disable submit button to prevent double-submit
-        if (submitBtn) {
-            submitBtn.disabled    = true;
-            submitBtn.textContent = 'Submitting...';
-        }
+        this.disabled = true;
+        this.textContent = 'Submitting...';
 
-        // Submit the form
-        form.submit();
+        document.getElementById('file-form').submit();
     });
+
 
 });
 </script>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employees;
 use App\Models\Division;
+use App\Models\Office;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
@@ -15,8 +16,9 @@ class EmployeeController extends Controller
     {
         $employees = Employees::with('division')->paginate(10);
         $divisions = Division::all();
+        $offices = Office::all();
         
-        return view('employees.index', compact('employees', 'divisions'));
+        return view('employees.index', compact('employees', 'divisions', 'offices'));
     }
 
     /**
@@ -34,6 +36,7 @@ class EmployeeController extends Controller
             'emp_contact_no' => 'required|string|max:20',
             'emp_email' => 'required|email|unique:employees,emp_email',
             'emp_password' => 'required|string|min:8|confirmed',
+            'office_id' => 'required|exists:office,id',
             'division_id' => 'required|exists:division,id',
             'emp_position' => 'required|string|max:255',
         ]);
@@ -51,6 +54,7 @@ class EmployeeController extends Controller
     public function edit(Employees $employee)
     {
         $employee->load('division');
+        $employee->load('office');
         
         // Return JSON if requested via AJAX
         if (request()->wantsJson()) {
@@ -58,7 +62,8 @@ class EmployeeController extends Controller
         }
 
         $divisions = Division::all();
-        return view('employees.edit', compact('employee', 'divisions'));
+        $offices = Office::all();
+        return view('employees.edit', compact('employee', 'divisions', 'offices'));
     }
 
     /**

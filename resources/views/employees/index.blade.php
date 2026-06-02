@@ -16,7 +16,7 @@
                         </svg>
                     </span>
                 </div>
-                <button class="btn btn-outline-secondary btn-sm px-2 fw-bolder" data-bs-toggle="modal" data-bs-target="#employeeModal">+</button>
+                <button class="btn btn-outline-secondary btn-sm px-2 fw-bold" data-bs-toggle="modal" data-bs-target="#employeeModal">+</button>
             </div>
         </div>
 
@@ -86,7 +86,8 @@
                             <th class="px-4 py-3 text-secondary small fw-semibold">Employee Name</th>
                             <th class="px-4 py-3 text-secondary small fw-semibold">Employee Email</th>
                             <th class="px-4 py-3 text-secondary small fw-semibold">Division</th>
-                            <th class="px-4 py-3 text-secondary small fw-semibold">Account Created</th>
+                            <th class="px-4 py-3 text-secondary small fw-semibold">Office</th>
+                            <th class="px-4 py-3 text-secondary small fw-semibold">Employee Status</th>
                             <th class="px-4 py-3 text-secondary small fw-semibold">Action</th>
                         </tr>
                     </thead>
@@ -97,7 +98,8 @@
                                 <td class="px-4 py-3 small">{{ $employee->emp_lname }}, {{ $employee->emp_fname }}</td>
                                 <td class="px-4 py-3 small">{{ $employee->emp_email }}</td>
                                 <td class="px-4 py-3 small">{{ $employee->division->division_name ?? 'N/A' }}</td>
-                                <td class="px-4 py-3 small">{{ $employee->created_at ? $employee->created_at->format('M d, Y') : 'N/A' }}</td>
+                                <td class="px-4 py-3 small">{{ $employee->office->office_name ?? 'N/A' }}</td>
+                                <td class="px-4 py-3 small">{{ $employee->employee_status ?? 'N/A' }}</td>
                                 <td class="px-4 py-3">
                                     <button class="btn btn-primary btn-sm" onclick="viewEmployee('{{ $employee->id }}')">View</button>
                                     <button class="btn btn-warning btn-sm" onclick="editEmployee('{{ $employee->id }}')">Edit</button>
@@ -157,10 +159,9 @@
                         <div class="col-md-6">
                             <label class="form-label small fw-medium">Gender</label>
                             <select class="form-select form-select-sm" id="add_emp_gender" name="emp_gender" required>
-                                <option value="">Choose</option>
+                                <option value="" selected disabled>Choose</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
-                                <option value="Other">Other</option>
                             </select>
                         </div>
                         <div class="col-md-6">
@@ -169,24 +170,35 @@
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label small fw-medium">Contact No.</label>
-                        <input type="text" class="form-control form-control-sm" id="add_emp_contact_no" name="emp_contact_no" placeholder="Ex. 09001234567" required>
-                    </div>
-
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
-                            <label class="form-label small fw-medium">Division</label>
-                            <select class="form-select form-select-sm" id="add_division_id" name="division_id" required>
-                                <option value="">Choose</option>
-                                @foreach ($divisions as $division)
-                                    <option value="{{ $division->id }}">{{ $division->division_name }}</option>
-                                @endforeach
-                            </select>
+                            <label class="form-label small fw-medium">Contact No.</label>
+                            <input type="text" class="form-control form-control-sm" id="add_emp_contact_no" name="emp_contact_no" placeholder="Ex. 09001234567" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-medium">Position</label>
                             <input type="text" class="form-control form-control-sm uppercase" id="add_emp_position" name="emp_position" placeholder="Ex. Information Technology Officer III" required>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-medium">Office</label>
+                            <select class="form-select form-select-sm" id="add_office_id" name="office_id" required>
+                                <option value="" selected disabled>Choose</option>
+                                @foreach ($offices as $office)
+                                    <option value="{{ $office->id }}">{{ $office->office_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-medium">Division</label>
+                            <select class="form-select form-select-sm" id="add_division_id" name="division_id" required>
+                                <option value="" selected disabled>Choose</option>
+                                @foreach ($divisions as $division)
+                                    <option value="{{ $division->id }}">{{ $division->division_name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
 
@@ -354,10 +366,10 @@
                         <div class="col-md-6">
                             <label class="form-label small fw-medium">Gender</label>
                             <select class="form-select form-select-sm" id="edit_emp_gender" name="emp_gender" required>
-                                <option value="">Choose</option>
+                                <option value="" selected disabled>Choose</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
-                                <option value="Other">Other</option>
+
                             </select>
                         </div>
                         <div class="col-md-6">
@@ -382,7 +394,7 @@
                         <div class="col-md-6">
                             <label class="form-label small fw-medium">Division</label>
                             <select class="form-select form-select-sm" id="edit_division_id" name="division_id" required>
-                                <option value="">Choose</option>
+                                <option value="" selected disabled>Choose</option>
                                 @foreach ($divisions as $division)
                                     <option value="{{ $division->id }}">{{ $division->division_name }}</option>
                                 @endforeach
